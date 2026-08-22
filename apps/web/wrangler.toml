@@ -1,0 +1,29 @@
+name = "kanada-lms"
+main = ".open-next/worker.js"
+compatibility_date = "2025-06-01"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+# Created by `wrangler d1 create kanada-lms-db` (see README) — replace
+# database_id with the id it prints. Free tier: 5GB storage, 5M row reads/day.
+[[d1_databases]]
+binding = "DB"
+database_name = "kanada-lms-db"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+migrations_dir = "../../packages/db/migrations"
+
+# Created by `wrangler r2 bucket create kanada-lms-videos`. Free tier: 10GB
+# storage, zero egress fees.
+[[r2_buckets]]
+binding = "VIDEO_BUCKET"
+bucket_name = "kanada-lms-videos"
+
+[vars]
+R2_BUCKET_NAME = "kanada-lms-videos"
+
+# Secrets (AUTH_SECRET, R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY)
+# are NOT set here — use `wrangler secret put <NAME>` for production and
+# `.dev.vars` (see .dev.vars.example) for local development.

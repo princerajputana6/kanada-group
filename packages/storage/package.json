@@ -1,0 +1,17 @@
+{
+  "name": "@kanada/storage",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "aws4fetch": "^1.0.20"
+  },
+  "devDependencies": {
+    "@kanada/config": "workspace:*",
+    "@cloudflare/workers-types": "^5.0.0",
+    "typescript": "^5.7.3"
+  }
+}

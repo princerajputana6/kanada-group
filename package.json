@@ -1,0 +1,27 @@
+{
+  "name": "kanada-lms",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "turbo run dev --filter=web",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "preview": "turbo run preview --filter=web",
+    "deploy": "turbo run deploy --filter=web",
+    "db:generate": "pnpm --filter @kanada/db generate",
+    "db:migrate:local": "pnpm --filter web exec -- wrangler d1 migrations apply kanada-lms-db --local",
+    "db:migrate:remote": "pnpm --filter web exec -- wrangler d1 migrations apply kanada-lms-db --remote",
+    "db:seed:local": "pnpm --filter @kanada/db run seed:generate && pnpm --filter web exec -- wrangler d1 execute kanada-lms-db --local --file=../../packages/db/seed.sql",
+    "db:seed:remote": "pnpm --filter @kanada/db run seed:generate && pnpm --filter web exec -- wrangler d1 execute kanada-lms-db --remote --file=../../packages/db/seed.sql"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.3",
+    "prettier": "^3.4.2"
+  }
+}

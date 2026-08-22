@@ -1,0 +1,25 @@
+{
+  "name": "@kanada/auth",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "next-auth": "5.0.0-beta.25",
+    "bcryptjs": "^2.4.3",
+    "zod": "^3.24.1",
+    "drizzle-orm": "^0.45.2"
+  },
+  "peerDependencies": {
+    "@kanada/db": "workspace:*",
+    "next": "^15.5.0"
+  },
+  "devDependencies": {
+    "@kanada/config": "workspace:*",
+    "@kanada/db": "workspace:*",
+    "@types/bcryptjs": "^2.4.6",
+    "typescript": "^5.7.3"
+  }
+}

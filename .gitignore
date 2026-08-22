@@ -1,0 +1,17 @@
+node_modules
+.pnpm-store
+dist
+.next
+.open-next
+.wrangler
+.turbo
+*.tsbuildinfo
+.env
+.env.local
+.env.*.local
+.DS_Store
+*.log
+.vscode/*
+!.vscode/extensions.json
+coverage
+apps/web/.dev.vars

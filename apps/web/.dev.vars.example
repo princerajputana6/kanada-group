@@ -1,0 +1,8 @@
+# Copy to .dev.vars for local development (wrangler/OpenNext load it automatically).
+# Never commit the real .dev.vars file.
+
+AUTH_SECRET=replace-with-a-long-random-string
+R2_ACCOUNT_ID=your-cloudflare-account-id
+R2_UPLOAD_ACCESS_KEY_ID=your-r2-api-token-access-key-id
+R2_UPLOAD_SECRET_ACCESS_KEY=your-r2-api-token-secret-access-key
+RESEND_API_KEY=
