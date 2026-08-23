@@ -12,18 +12,22 @@ binding = "ASSETS"
 [[d1_databases]]
 binding = "DB"
 database_name = "kanada-lms-db"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "731bb6f7-03d7-4888-9fac-e14f69675e9e"
 migrations_dir = "../../packages/db/migrations"
 
 # Created by `wrangler r2 bucket create kanada-lms-videos`. Free tier: 10GB
 # storage, zero egress fees.
-[[r2_buckets]]
-binding = "VIDEO_BUCKET"
-bucket_name = "kanada-lms-videos"
+# TEMPORARILY DISABLED: R2 isn't enabled on this Cloudflare account yet
+# (requires a one-time manual step in the dashboard). Re-enable once R2 is
+# on and the bucket is created — see README.
+# [[r2_buckets]]
+# binding = "VIDEO_BUCKET"
+# bucket_name = "kanada-lms-videos"
 
 [vars]
 R2_BUCKET_NAME = "kanada-lms-videos"
 
-# Secrets (AUTH_SECRET, R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY)
-# are NOT set here — use `wrangler secret put <NAME>` for production and
-# `.dev.vars` (see .dev.vars.example) for local development.
+# Secrets (AUTH_SECRET, R2_ACCOUNT_ID, R2_UPLOAD_ACCESS_KEY_ID,
+# R2_UPLOAD_SECRET_ACCESS_KEY) are NOT set here — use `wrangler secret put
+# <NAME>` for production and `.dev.vars` (see .dev.vars.example) for local
+# development.
