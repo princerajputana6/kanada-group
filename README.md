@@ -119,6 +119,32 @@ Free-tier limits to be aware of at scale: Workers (100k requests/day), D1
 All generous enough for a training program's course catalog; upgrade only
 the specific service that's actually constrained if you outgrow it.
 
+### Automatic deploys on push
+
+`.github/workflows/deploy.yml` deploys straight to Cloudflare Workers on
+every push to `main`, via `wrangler deploy` — **use this instead of
+Cloudflare's own "Workers Builds" Git integration**, which doesn't handle
+this repo's pnpm-monorepo layout well (it runs from the repo root and can't
+find `apps/web/wrangler.toml` without extra Root Directory / Build & Deploy
+command configuration in the dashboard that the CI workflow avoids needing
+entirely). To enable it:
+
+1. Create a Cloudflare API token: dashboard → your profile icon → **API
+   Tokens** → **Create Token** → use the **"Edit Cloudflare Workers"**
+   template, scoped to this account.
+2. Add it as a GitHub Actions secret: repo → **Settings → Secrets and
+   variables → Actions → New repository secret** → name it
+   `CLOUDFLARE_API_TOKEN`.
+3. If Cloudflare's dashboard still has a "Workers Builds" Git connection
+   configured for this repo (Settings → Build), disable automatic
+   deployments there so you don't get a second, failing build on every push
+   — it's redundant with this workflow.
+
+Migrations and secrets aren't part of this workflow — run
+`pnpm db:migrate:remote` and `wrangler secret put <NAME>` (from `apps/web`)
+by hand when the schema changes or a secret needs rotating; deploys don't
+touch either.
+
 ## Monorepo layout
 
 ```
