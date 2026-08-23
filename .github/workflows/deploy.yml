@@ -24,6 +24,14 @@ jobs:
         run: pnpm --filter web exec opennextjs-cloudflare build
 
       - name: Deploy to Cloudflare Workers
-        run: pnpm --filter web exec wrangler deploy
+        shell: bash
+        run: |
+          set +e
+          pnpm --filter web exec wrangler deploy 2>&1 | tee /tmp/deploy.log
+          code=${PIPESTATUS[0]}
+          if [ "$code" -ne 0 ]; then
+            echo "::error::wrangler deploy failed (exit $code): $(tail -c 3000 /tmp/deploy.log | tr '\n' ' ')"
+            exit $code
+          fi
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
