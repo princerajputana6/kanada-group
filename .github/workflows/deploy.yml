@@ -15,18 +15,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install dependencies
-        shell: bash
-        run: |
-          set +e
-          pnpm install 2>&1 | tee /tmp/install.log
-          code=${PIPESTATUS[0]}
-          if [ "$code" -ne 0 ]; then
-            echo "::error::pnpm install failed (exit $code): $(tail -c 3000 /tmp/install.log | tr '\n' ' ')"
-            exit $code
-          fi
+        run: pnpm install
 
       - name: Build web app for Cloudflare
         run: pnpm --filter web exec opennextjs-cloudflare build
