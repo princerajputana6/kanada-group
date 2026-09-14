@@ -107,6 +107,7 @@ export const enrollments = sqliteTable(
       .notNull()
       .references(() => courses.id, { onDelete: "cascade" }),
     enrolledAt: timestamp("enrolled_at"),
+    completedAt: integer("completed_at", { mode: "timestamp" }),
   },
   (table) => [
     uniqueIndex("enrollments_user_course_idx").on(

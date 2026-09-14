@@ -4,6 +4,7 @@ import { SidebarNav } from "@/components/sidebar-nav";
 
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Overview" },
+  { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/users", label: "Users" },
   { href: "/admin/courses", label: "Courses" },
   { href: "/admin/categories", label: "Categories" },

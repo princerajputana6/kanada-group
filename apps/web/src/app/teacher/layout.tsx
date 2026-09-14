@@ -4,6 +4,8 @@ import { SidebarNav } from "@/components/sidebar-nav";
 
 const NAV_ITEMS = [
   { href: "/teacher/dashboard", label: "My Courses" },
+  { href: "/teacher/students", label: "Students" },
+  { href: "/teacher/analytics", label: "Analytics" },
   { href: "/teacher/courses/new", label: "New Course" },
 ];
 

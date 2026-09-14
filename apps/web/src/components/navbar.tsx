@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Button, buttonVariants, cn } from "@kanada/ui";
 import { getSession } from "@/lib/session";
 import { signOutAction } from "@/actions/auth-actions";
+import { Logo } from "@/components/logo";
 
 const DASHBOARD_BY_ROLE: Record<string, string> = {
   STUDENT: "/student/dashboard",
@@ -14,10 +15,10 @@ export async function Navbar() {
   const user = session?.user;
 
   return (
-    <header className="animate-fade-slide-down border-b border-border">
+    <header className="sticky top-0 z-50 border-b border-border glass">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="text-lg font-bold tracking-tight">
-          Kanada Group <span className="text-primary">LMS</span>
+        <Link href="/" className="group">
+          <Logo />
         </Link>
 
         <nav className="flex items-center gap-4 text-sm font-medium">

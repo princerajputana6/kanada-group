@@ -16,13 +16,14 @@ database_id = "731bb6f7-03d7-4888-9fac-e14f69675e9e"
 migrations_dir = "../../packages/db/migrations"
 
 # Created by `wrangler r2 bucket create kanada-lms-videos`. Free tier: 10GB
-# storage, zero egress fees.
-# TEMPORARILY DISABLED: R2 isn't enabled on this Cloudflare account yet
-# (requires a one-time manual step in the dashboard). Re-enable once R2 is
-# on and the bucket is created — see README.
-# [[r2_buckets]]
-# binding = "VIDEO_BUCKET"
-# bucket_name = "kanada-lms-videos"
+# storage, zero egress fees. Local dev works with this binding regardless
+# of remote R2 status — Miniflare fully simulates R2 locally. Deploying to
+# *production* with this binding present requires R2 to actually be enabled
+# on the Cloudflare account first (Dashboard → R2 → Enable), or `wrangler
+# deploy` fails outright — see README.
+[[r2_buckets]]
+binding = "VIDEO_BUCKET"
+bucket_name = "kanada-lms-videos"
 
 [vars]
 R2_BUCKET_NAME = "kanada-lms-videos"
