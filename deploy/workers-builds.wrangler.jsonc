@@ -1,0 +1,39 @@
+// Deploy config for Cloudflare Workers Builds — NOT a live wrangler config.
+//
+// Workers Builds runs `npx wrangler deploy` from the repository root, where
+// wrangler needs a config file. A committed root wrangler config would also
+// be picked up by every wrangler command run inside apps/web (next dev's
+// bindings, db:migrate:local, …), pointing them at the wrong .dev.vars and
+// local D1 state. So this template lives under a name wrangler never looks
+// for, and scripts/prepare-workers-builds.mjs copies it to the repo root
+// only inside Workers Builds (WORKERS_CI=1), after the root `pnpm run build`.
+//
+// Paths are relative to the repo root (where it gets copied). It mirrors
+// apps/web/wrangler.toml — keep the two in sync when bindings change.
+{
+  "name": "kanada-lms",
+  "main": "apps/web/.open-next/worker.js",
+  "compatibility_date": "2025-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "apps/web/.open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kanada-lms-db",
+      "database_id": "731bb6f7-03d7-4888-9fac-e14f69675e9e",
+      "migrations_dir": "packages/db/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "VIDEO_BUCKET",
+      "bucket_name": "kanada-lms-videos"
+    }
+  ],
+  "vars": {
+    "R2_BUCKET_NAME": "kanada-lms-videos"
+  }
+}

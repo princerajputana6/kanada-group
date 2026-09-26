@@ -130,12 +130,17 @@ so those just work:
 | Setting | Value |
 |---|---|
 | Root directory | `/` |
-| Build command | `pnpm run build` — the root script runs `opennextjs-cloudflare build` for `apps/web`, producing `apps/web/.open-next/` |
-| Deploy command | `npx wrangler deploy` — picks up the root `wrangler.jsonc`, which points at that bundle |
+| Build command | `pnpm run build` — runs `opennextjs-cloudflare build` for `apps/web` (producing `apps/web/.open-next/`), then `scripts/prepare-workers-builds.mjs` |
+| Deploy command | `npx wrangler deploy` — uses the root `wrangler.jsonc` written by that script |
 
-The root `wrangler.jsonc` mirrors `apps/web/wrangler.toml` (still the source
-of truth for local dev, `pnpm --filter web deploy` and D1 migrations) with
-repo-root-relative paths — **update both when bindings change**.
+Inside Workers Builds (`WORKERS_CI=1`) the script copies
+`deploy/workers-builds.wrangler.jsonc` to the repo root; everywhere else it
+does nothing. The root file is deliberately never committed: wrangler
+commands run inside `apps/web` (`next dev` bindings, `db:migrate:local`, …)
+would otherwise resolve it instead of `apps/web/wrangler.toml` and lose
+`.dev.vars` and the local D1 state. The template mirrors
+`apps/web/wrangler.toml` with repo-root-relative paths — **update both when
+bindings change**.
 
 `.github/workflows/deploy.yml` is kept as a manual fallback
 (`workflow_dispatch`). To use it, add a `CLOUDFLARE_API_TOKEN` repository

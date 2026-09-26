@@ -2,6 +2,7 @@
 
 import { Button } from "@kanada/ui";
 import { formatDate } from "@/lib/utils";
+import { Emblem } from "./logo";
 
 export interface CertificateProps {
   studentName: string;
@@ -30,6 +31,7 @@ export function Certificate({
       <div className="certificate animate-fade-scale-in mx-auto aspect-[1.414/1] w-full max-w-4xl overflow-hidden rounded-2xl border-[10px] border-double border-indigo-500/70 bg-white p-10 text-slate-900 shadow-2xl sm:p-16">
         <div className="flex h-full flex-col items-center justify-between text-center">
           <div>
+            <Emblem className="mx-auto mb-3 h-14 sm:h-16" />
             <p className="bg-gradient-to-r from-indigo-600 to-cyan-500 bg-clip-text text-sm font-semibold uppercase tracking-[0.3em] text-transparent">
               Kanada Group
             </p>
