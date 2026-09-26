@@ -13,14 +13,14 @@ export function Progress({
   const clamped = Math.min(100, Math.max(0, value));
   return (
     <div
-      className={cn("h-2 w-full overflow-hidden rounded-full bg-secondary", className)}
+      className={cn("h-2 w-full overflow-hidden rounded-full bg-white/[0.06]", className)}
       role="progressbar"
       aria-valuenow={clamped}
       aria-valuemin={0}
       aria-valuemax={100}
     >
       <motion.div
-        className="h-full rounded-full bg-primary"
+        className="h-full rounded-full bg-gradient-to-r from-[#7C3AED] via-[#8B5CF6] to-[#22D3EE]"
         initial={{ width: 0 }}
         animate={{ width: `${clamped}%` }}
         transition={{ duration: 0.6, ease: "easeOut" }}

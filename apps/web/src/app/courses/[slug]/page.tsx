@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Badge, Button } from "@kanada/ui";
+import { Badge, Button, buttonVariants, cn } from "@kanada/ui";
 import { getCourseDetail } from "@/lib/queries";
 import { getSession } from "@/lib/session";
 import { enrollAction } from "@/actions/enrollment-actions";
@@ -38,7 +38,7 @@ export default async function CourseDetailPage({
     : undefined;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12">
+    <div className="mx-auto max-w-6xl px-4 pb-12 pt-16 sm:px-8 md:pt-24">
       {!course.published && (
         <Badge variant="destructive" className="mb-4">
           Unpublished — only visible to you
@@ -51,8 +51,10 @@ export default async function CourseDetailPage({
             {course.category && <Badge variant="secondary">{course.category}</Badge>}
             <Badge variant="outline">{course.level}</Badge>
           </div>
-          <h1 className="text-3xl font-bold">{course.title}</h1>
-          <p className="mt-3 text-muted-foreground">{course.description}</p>
+          <h1 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-bold leading-[0.98] tracking-[-0.045em] text-white">
+            {course.title}
+          </h1>
+          <p className="mt-5 text-muted-foreground md:text-lg">{course.description}</p>
           <p className="mt-3 text-sm text-muted-foreground">
             Taught by <span className="font-medium text-foreground">{course.teacher.name}</span>
             {" · "}
@@ -61,11 +63,11 @@ export default async function CourseDetailPage({
             {` · ${totalLessons} lesson${totalLessons === 1 ? "" : "s"}`}
           </p>
 
-          <h2 className="mb-4 mt-10 text-xl font-semibold">Curriculum</h2>
+          <h2 className="mb-5 mt-14 text-2xl font-semibold">Curriculum</h2>
           <div className="space-y-4">
             {course.sections.map((section) => (
-              <div key={section.id} className="rounded-lg border border-border">
-                <div className="border-b border-border bg-secondary/40 px-4 py-2 font-medium">
+              <div key={section.id} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+                <div className="border-b border-white/[0.08] bg-white/[0.03] px-5 py-3 font-medium">
                   {section.title}
                 </div>
                 <ul className="divide-y divide-border">
@@ -74,7 +76,7 @@ export default async function CourseDetailPage({
                     return (
                       <li
                         key={lesson.id}
-                        className="flex items-center justify-between px-4 py-2 text-sm"
+                        className="flex items-center justify-between px-5 py-3 text-sm"
                       >
                         <span className={locked ? "text-muted-foreground" : ""}>
                           {locked ? "🔒 " : lesson.type === "VIDEO" ? "▶ " : "📄 "}
@@ -93,7 +95,7 @@ export default async function CourseDetailPage({
             ))}
           </div>
 
-          <h2 className="mb-4 mt-10 text-xl font-semibold">Reviews</h2>
+          <h2 className="mb-5 mt-14 text-2xl font-semibold">Reviews</h2>
           {isStudent && isEnrolled && (
             <ReviewForm courseSlug={slug} initial={myReview} />
           )}
@@ -102,7 +104,7 @@ export default async function CourseDetailPage({
               <p className="text-sm text-muted-foreground">No reviews yet.</p>
             )}
             {course.reviews.map((review) => (
-              <div key={review.id} className="rounded-lg border border-border p-4">
+              <div key={review.id} className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{review.user.name}</span>
                   <span className="text-sm text-amber-500">{"★".repeat(review.rating)}</span>
@@ -115,19 +117,20 @@ export default async function CourseDetailPage({
           </div>
         </div>
 
-        <div className="h-fit rounded-lg border border-border p-6">
-          <p className="mb-4 text-2xl font-bold text-primary">Free</p>
+        <div className="glass h-fit rounded-3xl p-6 lg:sticky lg:top-24">
+          <p className="mb-1 text-xs uppercase tracking-[0.14em] text-subtle">Price</p>
+          <p className="mb-5 font-display text-4xl font-bold tracking-tight text-white">Free</p>
           {isOwner ? (
             <Link
               href={`/teacher/courses/${course.id}/edit`}
-              className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-primary-foreground"
+              className={cn(buttonVariants(), "w-full")}
             >
               Manage course
             </Link>
           ) : isEnrolled ? (
             <Link
               href={`/student/courses/${course.slug}/learn`}
-              className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-primary-foreground"
+              className={cn(buttonVariants(), "w-full")}
             >
               Go to course
             </Link>
@@ -140,7 +143,7 @@ export default async function CourseDetailPage({
           ) : (
             <Link
               href={`/sign-in?callbackUrl=/courses/${slug}`}
-              className="block w-full rounded-md bg-primary py-2 text-center text-sm font-medium text-primary-foreground"
+              className={cn(buttonVariants(), "w-full")}
             >
               Sign in to enroll
             </Link>

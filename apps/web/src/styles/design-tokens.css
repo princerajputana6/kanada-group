@@ -1,0 +1,250 @@
+/*
+ * Kanada design tokens + the handful of global visual primitives (grid,
+ * glows, beams, noise) that React components compose. Tailwind reads the
+ * semantic HSL tokens from @kanada/ui/globals.css; these are the raw brand
+ * values for gradients, glows and anything Tailwind can't express cleanly.
+ */
+:root {
+  --bg-primary: #050505;
+  --bg-secondary: #0a0a0d;
+  --bg-card: #101014;
+
+  --text-primary: #ffffff;
+  --text-secondary: #b8b8c2;
+  --text-muted: #777783;
+
+  --purple: #7c3aed;
+  --purple-600: #6d28d9;
+  --purple-electric: #8b5cf6;
+  --purple-light: #a78bfa;
+
+  --blue: #3b82f6;
+  --cyan: #22d3ee;
+
+  --orange: #ff7a18;
+  --yellow: #fdba3b;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-strong: rgba(255, 255, 255, 0.18);
+
+  --container-width: 1400px;
+
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 40px;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Typography ---------- */
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-jakarta), var(--font-inter), ui-sans-serif, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.text-hero {
+  font-size: clamp(3rem, 8vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  font-weight: 700;
+}
+
+.text-section {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  font-weight: 700;
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #ffffff 10%, var(--purple-light) 55%, var(--cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-warm {
+  background: linear-gradient(100deg, var(--purple-light), var(--orange) 70%, var(--yellow));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--purple-light);
+}
+.eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple-electric));
+}
+
+/* ---------- Background grid ---------- */
+
+.background-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 80px 80px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+}
+
+/* ---------- Glows (radial gradients — no filter:blur needed) ---------- */
+
+.glow-purple {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.32), transparent 65%);
+}
+.glow-blue {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.24), transparent 65%);
+}
+.glow-cyan {
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.18), transparent 65%);
+}
+.glow-warm {
+  background: radial-gradient(circle, rgba(255, 122, 24, 0.18), transparent 65%);
+}
+.glow-mixed {
+  background:
+    radial-gradient(circle at 35% 40%, rgba(124, 58, 237, 0.35), transparent 55%),
+    radial-gradient(circle at 70% 65%, rgba(34, 211, 238, 0.16), transparent 55%);
+}
+
+/* ---------- Light beams ---------- */
+
+.light-beam {
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.55), transparent);
+}
+.light-beam-vertical {
+  background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.55), transparent);
+}
+
+@keyframes beam-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.animate-beam {
+  animation: beam-sweep 7s var(--ease-out-expo) infinite;
+}
+
+/* Signal pulse travelling along SVG traces in the hero die. */
+@keyframes trace-flow {
+  to {
+    stroke-dashoffset: -400;
+  }
+}
+.animate-trace {
+  stroke-dasharray: 24 376;
+  animation: trace-flow 5s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-marquee {
+  animation: marquee var(--marquee-duration, 45s) linear infinite;
+}
+.marquee:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* ---------- Surfaces ---------- */
+
+.glass {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.hairline-top {
+  position: relative;
+}
+.hairline-top::before {
+  content: "";
+  position: absolute;
+  inset: 0 10% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.6), transparent);
+}
+
+/* ---------- Motion gating ----------
+ * An inline script in <head> adds .motion-ok when the visitor hasn't asked
+ * for reduced motion and JS is running. Only then are hero elements
+ * pre-hidden for their entrance; a CSS failsafe reveals them even if the
+ * GSAP timeline never runs, so content is never stuck invisible. */
+html.motion-ok [data-hero-reveal] {
+  opacity: 0;
+  animation: hero-failsafe 0.01s linear 3s forwards;
+}
+@keyframes hero-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Keyboard focus that reads on dark surfaces. */
+:focus-visible {
+  outline: 2px solid var(--purple-light);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.45);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Gradient text on split words: each masked word carries the gradient
+ * itself, since background-clip:text doesn't survive transformed children. */
+.words-gradient [data-word] {
+  background: linear-gradient(100deg, #ffffff 0%, var(--purple-light) 60%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Ambient light at the top of every page — a single gradient on body, so
+ * inner pages share the cinematic mood at zero runtime cost. */
+body {
+  background-image:
+    radial-gradient(ellipse 70% 45% at 50% -8%, rgba(124, 58, 237, 0.16), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 85% 0%, rgba(34, 211, 238, 0.06), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* #7C3AED is right for fills but only ~3.9:1 as text on #050505. Text in
+ * the primary colour uses the lighter purple (≈8:1) to meet WCAG AA. */
+.text-primary {
+  color: var(--purple-light);
+}

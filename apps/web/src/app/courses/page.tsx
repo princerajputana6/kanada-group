@@ -11,20 +11,28 @@ export default async function CoursesPage({
   const courses = await listPublishedCourses({ search: q, category });
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="text-3xl font-bold">All courses</h1>
-      <p className="mt-2 text-muted-foreground">
+    <div className="mx-auto max-w-container px-4 pb-12 pt-16 sm:px-8 md:pt-24">
+      <p className="eyebrow mb-6">Catalog</p>
+      <h1 className="text-section text-white">All courses</h1>
+      <p className="mt-5 max-w-xl text-muted-foreground md:text-lg">
         Browse Kanada Group&apos;s VLSI training catalog.
       </p>
 
-      <form className="mt-6 max-w-md" method="get">
-        <Input type="search" name="q" placeholder="Search courses…" defaultValue={q ?? ""} />
+      <form className="mt-10 max-w-md" method="get" role="search">
+        <Input
+          type="search"
+          name="q"
+          aria-label="Search courses"
+          placeholder="Search courses…"
+          defaultValue={q ?? ""}
+          className="h-12 rounded-full px-5"
+        />
       </form>
 
       {courses.length === 0 ? (
         <p className="mt-12 text-muted-foreground">No courses match your search.</p>
       ) : (
-        <StaggerGrid className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerGrid className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}

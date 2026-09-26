@@ -2,26 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Dark-first theme. These HSL channels feed the Tailwind preset colors
+ * (bg-background, text-muted-foreground, …), so every page and component in
+ * the kit picks up the cinematic palette without per-page changes.
+ * Raw brand tokens (purple energy, glows, radii) live in the web app's
+ * styles/design-tokens.css.
+ */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --primary: 243 75% 59%;
+    color-scheme: dark;
+    --background: 0 0% 2%; /* #050505 */
+    --foreground: 0 0% 100%;
+    --card: 240 11% 7%; /* #101014 */
+    --card-foreground: 0 0% 100%;
+    --primary: 262 83% 58%; /* #7C3AED */
     --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 262 83% 58%;
+    --secondary: 240 9% 11%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 240 9% 11%;
+    --muted-foreground: 240 7% 74%; /* #B8B8C2 */
+    --accent: 258 90% 66%; /* #8B5CF6 */
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    --destructive: 0 72% 56%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 243 75% 59%;
-    --radius: 0.5rem;
+    --border: 240 5% 15%;
+    --input: 240 5% 18%;
+    --ring: 258 90% 66%;
+    --radius: 0.875rem;
   }
 }
 
