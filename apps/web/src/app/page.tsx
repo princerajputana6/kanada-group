@@ -48,7 +48,7 @@ export default async function HomePage() {
 
       <LogoMarquee
         label="Topics covered"
-        className="border-y border-white/[0.06] py-8"
+        className="theme-dark border-t border-white/[0.06] bg-background py-8"
         items={TOPICS.map((t) => (
           <span key={t} className="font-display text-xl font-semibold tracking-tight md:text-2xl">
             {t}

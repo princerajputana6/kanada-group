@@ -13,7 +13,7 @@ export function Progress({
   const clamped = Math.min(100, Math.max(0, value));
   return (
     <div
-      className={cn("h-2 w-full overflow-hidden rounded-full bg-white/[0.06]", className)}
+      className={cn("h-2 w-full overflow-hidden rounded-full bg-foreground/[0.08]", className)}
       role="progressbar"
       aria-valuenow={clamped}
       aria-valuemin={0}

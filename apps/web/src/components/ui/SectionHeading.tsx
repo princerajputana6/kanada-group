@@ -26,7 +26,7 @@ export function SectionHeading({
       )}
     >
       {eyebrow && <p className="eyebrow mb-6">{eyebrow}</p>}
-      <TextReveal as={as} className="text-section text-white">
+      <TextReveal as={as} className="text-section text-foreground">
         {title}
       </TextReveal>
       {description && (

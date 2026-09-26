@@ -17,11 +17,11 @@ export const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         outline:
-          "border border-white/15 bg-white/[0.03] text-foreground hover:border-white/30 hover:bg-white/[0.07]",
-        ghost: "hover:bg-white/[0.06] hover:text-foreground",
+          "border border-foreground/15 bg-foreground/[0.03] text-foreground hover:border-foreground/30 hover:bg-foreground/[0.06]",
+        ghost: "hover:bg-foreground/[0.06] hover:text-foreground",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        link: "text-electric-lilac underline-offset-4 hover:underline",
+        link: "text-[color:var(--link)] underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

@@ -51,7 +51,7 @@ export default async function CourseDetailPage({
             {course.category && <Badge variant="secondary">{course.category}</Badge>}
             <Badge variant="outline">{course.level}</Badge>
           </div>
-          <h1 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-bold leading-[0.98] tracking-[-0.045em] text-white">
+          <h1 className="mt-4 font-display text-[clamp(2.25rem,5vw,4rem)] font-bold leading-[0.98] tracking-[-0.045em] text-foreground">
             {course.title}
           </h1>
           <p className="mt-5 text-muted-foreground md:text-lg">{course.description}</p>
@@ -66,8 +66,8 @@ export default async function CourseDetailPage({
           <h2 className="mb-5 mt-14 text-2xl font-semibold">Curriculum</h2>
           <div className="space-y-4">
             {course.sections.map((section) => (
-              <div key={section.id} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
-                <div className="border-b border-white/[0.08] bg-white/[0.03] px-5 py-3 font-medium">
+              <div key={section.id} className="overflow-hidden rounded-2xl border border-border bg-card">
+                <div className="border-b border-border bg-secondary/60 px-5 py-3 font-medium">
                   {section.title}
                 </div>
                 <ul className="divide-y divide-border">
@@ -104,7 +104,7 @@ export default async function CourseDetailPage({
               <p className="text-sm text-muted-foreground">No reviews yet.</p>
             )}
             {course.reviews.map((review) => (
-              <div key={review.id} className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+              <div key={review.id} className="rounded-2xl border border-border bg-card p-5">
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{review.user.name}</span>
                   <span className="text-sm text-amber-500">{"★".repeat(review.rating)}</span>
@@ -119,7 +119,7 @@ export default async function CourseDetailPage({
 
         <div className="glass h-fit rounded-3xl p-6 lg:sticky lg:top-24">
           <p className="mb-1 text-xs uppercase tracking-[0.14em] text-subtle">Price</p>
-          <p className="mb-5 font-display text-4xl font-bold tracking-tight text-white">Free</p>
+          <p className="mb-5 font-display text-4xl font-bold tracking-tight text-foreground">Free</p>
           {isOwner ? (
             <Link
               href={`/teacher/courses/${course.id}/edit`}

@@ -10,7 +10,7 @@ const DASHBOARD_BY_ROLE: Record<string, string> = {
   ADMIN: "/admin/dashboard",
 };
 
-const linkClass = "text-muted-foreground transition-colors hover:text-white";
+const linkClass = "text-muted-foreground transition-colors hover:text-foreground";
 
 export async function Navbar() {
   const session = await getSession();

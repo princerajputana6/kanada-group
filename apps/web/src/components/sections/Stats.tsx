@@ -26,10 +26,10 @@ export function Stats({ stats }: { stats: PlatformStats }) {
         {items.map((item) => (
           <div
             key={item.label}
-            className="flex flex-col-reverse gap-3 border-white/[0.08] px-2 sm:px-8 lg:border-l lg:first:border-l-0"
+            className="flex flex-col-reverse gap-3 border-border px-2 sm:px-8 lg:border-l lg:first:border-l-0"
           >
             <dt className="text-sm text-muted-foreground">{item.label}</dt>
-            <dd className="font-display text-[clamp(3rem,7vw,6rem)] font-bold leading-none tracking-[-0.05em] text-white">
+            <dd className="font-display text-[clamp(3rem,7vw,6rem)] font-bold leading-none tracking-[-0.05em] text-foreground">
               <AnimatedCounter value={item.value} decimals={item.decimals} suffix={item.suffix} />
             </dd>
           </div>

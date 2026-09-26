@@ -52,7 +52,7 @@ export function Hero() {
     <section
       ref={ref}
       aria-labelledby="hero-title"
-      className="relative -mt-16 overflow-hidden pb-40 pt-32 sm:pt-40 lg:min-h-[100svh] lg:pb-48"
+      className="theme-dark relative -mt-16 overflow-hidden bg-background pb-40 pt-32 sm:pt-40 lg:min-h-[100svh] lg:pb-48"
     >
       <GlowBackground variant="hero" />
 

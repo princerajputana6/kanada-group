@@ -21,7 +21,7 @@ export function LogoMarquee({
       {items.map((item, i) => (
         <li
           key={i}
-          className="whitespace-nowrap text-muted-foreground/70 grayscale transition-colors duration-300 hover:text-white hover:grayscale-0"
+          className="whitespace-nowrap text-muted-foreground/70 grayscale transition-colors duration-300 hover:text-foreground hover:grayscale-0"
         >
           {item}
         </li>

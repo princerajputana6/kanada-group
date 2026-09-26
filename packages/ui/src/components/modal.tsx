@@ -35,7 +35,7 @@ export function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -47,7 +47,7 @@ export function Modal({
             exit={{ opacity: 0, scale: 0.95, y: 8 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
             className={cn(
-              "relative z-10 w-full max-w-lg rounded-3xl border border-white/10 bg-card p-6 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]",
+              "relative z-10 w-full max-w-lg rounded-3xl border border-border bg-card p-6 shadow-[0_30px_80px_-20px_rgba(10,8,30,0.35)]",
               className,
             )}
           >

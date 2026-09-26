@@ -45,7 +45,7 @@ function CourseArt({ course }: { course: CourseCardData }) {
   return (
     <div
       aria-hidden="true"
-      className="relative h-full w-full transition-transform duration-700 ease-out-expo group-hover/course:scale-[1.04]"
+      className="theme-dark relative h-full w-full transition-transform duration-700 ease-out-expo group-hover/course:scale-[1.04]"
       style={{
         background: `radial-gradient(circle at 25% 30%, hsl(${hue} 85% 60% / 0.45), transparent 60%), radial-gradient(circle at 80% 80%, hsl(${hue - 60} 90% 55% / 0.25), transparent 55%), #0a0a0d`,
       }}
@@ -68,7 +68,7 @@ export function CourseCard({ course }: { course: CourseCardData }) {
     <StaggerItem>
       <Link href={`/courses/${course.slug}`} className="group/course block h-full rounded-3xl">
         <MotionCard className="flex h-full flex-col overflow-hidden">
-          <div className="aspect-[16/9] overflow-hidden border-b border-white/[0.06]">
+          <div className="aspect-[16/9] overflow-hidden border-b border-border">
             <CourseArt course={course} />
           </div>
           <CardHeader>
@@ -81,7 +81,7 @@ export function CourseCard({ course }: { course: CourseCardData }) {
           <CardContent>
             <p className="line-clamp-3 text-sm text-muted-foreground">{course.description}</p>
           </CardContent>
-          <CardFooter className="mt-auto flex items-center justify-between border-t border-white/[0.06] pt-4 text-sm text-muted-foreground">
+          <CardFooter className="mt-auto flex items-center justify-between border-t border-border pt-4 text-sm text-muted-foreground">
             <span>{course.teacher.name}</span>
             <span>
               {course.enrollments.length} student{course.enrollments.length === 1 ? "" : "s"}

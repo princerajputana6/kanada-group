@@ -30,7 +30,7 @@ const COLUMNS = [
 
 export function Footer() {
   return (
-    <footer className="relative mt-24 overflow-hidden">
+    <footer className="theme-dark relative mt-24 overflow-hidden bg-background">
       <LightBeam sweep={false} />
       <div className="mx-auto grid max-w-container gap-12 px-4 py-16 sm:px-8 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div>
@@ -50,7 +50,7 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               {col.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-muted-foreground transition-colors hover:text-white">
+                  <Link href={l.href} className="text-muted-foreground transition-colors hover:text-foreground">
                     {l.label}
                   </Link>
                 </li>

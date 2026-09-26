@@ -23,7 +23,7 @@ export function Platform() {
 
         <div className="mt-16 grid gap-4 md:mt-20 lg:grid-cols-3 lg:gap-6">
           <GlassCard className="p-6 sm:p-8 lg:col-span-2 lg:row-span-2">
-            <h3 className="font-display text-2xl font-semibold tracking-tight text-white">
+            <h3 className="font-display text-2xl font-semibold tracking-tight text-foreground">
               Lessons that remember where you left off
             </h3>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
@@ -34,7 +34,7 @@ export function Platform() {
               <ImageReveal>
                 <div
                   data-card-media
-                  className="overflow-hidden rounded-2xl border border-white/10 bg-surface"
+                  className="theme-dark overflow-hidden rounded-2xl border border-white/10 bg-surface shadow-[0_30px_60px_-30px_rgba(20,16,50,0.45)]"
                 >
                   <div className="relative aspect-[16/7] bg-[radial-gradient(circle_at_30%_40%,rgba(124,58,237,0.35),transparent_60%),radial-gradient(circle_at_75%_70%,rgba(34,211,238,0.18),transparent_55%)]">
                     <div className="background-grid absolute inset-0 [mask-image:none]" />
@@ -75,18 +75,18 @@ export function Platform() {
           </GlassCard>
 
           <GlassCard className="p-6 sm:p-8">
-            <h3 className="font-display text-xl font-semibold tracking-tight text-white">Progress you can see</h3>
+            <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Progress you can see</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Every completed lesson moves the bar. Your dashboard shows each course at a glance.
             </p>
             <div className="mt-8 space-y-4" aria-hidden="true">
               {[82, 45, 12].map((v, i) => (
                 <div key={v}>
-                  <div className="mb-1.5 flex justify-between text-xs text-subtle">
+                  <div className="mb-1.5 flex justify-between text-xs text-muted-foreground">
                     <span>{["CMOS Technology", "RTL Design", "Analog IC"][i]}</span>
                     <span className="tabular-nums">{v}%</span>
                   </div>
-                  <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+                  <div className="h-1.5 overflow-hidden rounded-full bg-foreground/[0.08]">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#7C3AED] to-[#22D3EE]"
                       style={{ width: `${v}%` }}
@@ -98,7 +98,7 @@ export function Platform() {
           </GlassCard>
 
           <GlassCard className="p-6 sm:p-8">
-            <h3 className="font-display text-xl font-semibold tracking-tight text-white">Taught by practitioners</h3>
+            <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Taught by practitioners</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Courses are built by engineers who work in the industry, structured into sections
               and lessons you can preview before enrolling.

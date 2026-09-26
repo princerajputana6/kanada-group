@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
@@ -23,12 +23,30 @@ export function NavShell({
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
+  // Match the section currently under the bar: dark islands (hero, tracks,
+  // footer…) get the dark treatment, everything else the light one.
+  const [overDark, setOverDark] = useState(false);
+
+  useLayoutEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      setScrolled(window.scrollY > 12);
+      const below = document.elementFromPoint(window.innerWidth / 2, 72);
+      setOverDark(!!below?.closest(".theme-dark"));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [pathname]);
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -45,10 +63,13 @@ export function NavShell({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        "sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-500",
-        scrolled || open
-          ? "border-white/[0.08] bg-[rgba(5,5,5,0.75)] backdrop-blur-xl"
-          : "border-transparent bg-transparent",
+        "sticky top-0 z-50 border-b text-foreground transition-[background-color,border-color,backdrop-filter] duration-500",
+        overDark && "theme-dark",
+        !(scrolled || open)
+          ? "border-transparent bg-transparent"
+          : overDark
+            ? "border-white/[0.08] bg-[rgba(5,5,5,0.75)] backdrop-blur-xl"
+            : "border-border bg-[rgba(250,250,252,0.8)] backdrop-blur-xl",
       )}
     >
       <div className="mx-auto flex h-16 max-w-container items-center justify-between px-4 sm:px-8">
@@ -69,9 +90,9 @@ export function NavShell({
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((o) => !o)}
         >
-          <span className={cn("absolute h-px w-5 bg-white transition-transform duration-300", open ? "rotate-45" : "-translate-y-1.5")} />
-          <span className={cn("absolute h-px w-5 bg-white transition-opacity duration-300", open && "opacity-0")} />
-          <span className={cn("absolute h-px w-5 bg-white transition-transform duration-300", open ? "-rotate-45" : "translate-y-1.5")} />
+          <span className={cn("absolute h-px w-5 bg-foreground transition-transform duration-300", open ? "rotate-45" : "-translate-y-1.5")} />
+          <span className={cn("absolute h-px w-5 bg-foreground transition-opacity duration-300", open && "opacity-0")} />
+          <span className={cn("absolute h-px w-5 bg-foreground transition-transform duration-300", open ? "-rotate-45" : "translate-y-1.5")} />
         </button>
       </div>
 
@@ -84,7 +105,7 @@ export function NavShell({
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-x-0 top-full overflow-hidden border-b border-white/[0.08] bg-[rgba(5,5,5,0.94)] backdrop-blur-xl md:hidden"
+            className="absolute inset-x-0 top-full overflow-hidden border-b border-border bg-background/95 backdrop-blur-xl md:hidden"
           >
             <div className="flex flex-col gap-5 px-4 py-6 text-base font-medium sm:px-8 [&_a]:py-1">
               {links}

@@ -7,7 +7,7 @@ import { cn } from "@kanada/ui";
 export function LightBeam({ className, sweep = true }: { className?: string; sweep?: boolean }) {
   return (
     <div aria-hidden="true" className={cn("pointer-events-none relative h-px w-full overflow-hidden", className)}>
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[color:var(--beam-base)] to-transparent" />
       {sweep && <div className="light-beam animate-beam absolute inset-y-0 left-0 w-1/2" />}
     </div>
   );

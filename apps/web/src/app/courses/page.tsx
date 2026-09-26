@@ -13,7 +13,7 @@ export default async function CoursesPage({
   return (
     <div className="mx-auto max-w-container px-4 pb-12 pt-16 sm:px-8 md:pt-24">
       <p className="eyebrow mb-6">Catalog</p>
-      <h1 className="text-section text-white">All courses</h1>
+      <h1 className="text-section text-foreground">All courses</h1>
       <p className="mt-5 max-w-xl text-muted-foreground md:text-lg">
         Browse Kanada Group&apos;s VLSI training catalog.
       </p>

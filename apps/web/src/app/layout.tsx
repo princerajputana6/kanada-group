@@ -25,8 +25,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
-  colorScheme: "dark",
+  themeColor: "#FAFAFC",
+  colorScheme: "light",
 };
 
 // Runs before paint: only opt into pre-hidden entrance states when motion
@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </main>
         <Footer />
         <NoiseOverlay />
-        <Toaster richColors position="top-center" theme="dark" />
+        <Toaster richColors position="top-center" theme="light" />
       </body>
     </html>
   );

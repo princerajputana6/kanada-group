@@ -44,7 +44,7 @@ const TRACKS = [
 export function Tracks() {
   return (
     <HorizontalScroll
-      className="py-20 lg:flex lg:min-h-screen lg:flex-col lg:justify-center"
+      className="theme-dark bg-background py-20 lg:flex lg:min-h-screen lg:flex-col lg:justify-center"
       header={
         <div className="mx-auto mb-12 flex max-w-container flex-col gap-6 px-4 sm:px-8 lg:flex-row lg:items-end lg:justify-between">
           <div>

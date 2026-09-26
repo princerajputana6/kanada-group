@@ -7,7 +7,7 @@ import { TextReveal } from "@/components/ui/TextReveal";
 export function CTA() {
   return (
     <section aria-labelledby="cta-title" className="px-4 sm:px-8">
-      <div className="relative mx-auto max-w-container overflow-hidden rounded-[40px] border border-white/10 px-6 py-24 text-center sm:px-12 md:py-32">
+      <div className="theme-dark relative mx-auto max-w-container overflow-hidden rounded-[40px] border border-white/10 bg-background px-6 py-24 text-center sm:px-12 md:py-32">
         <GlowBackground variant="cta" />
         <LightBeam className="absolute inset-x-0 top-0" />
         <div className="relative">
