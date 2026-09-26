@@ -35,10 +35,13 @@ export default async function StudentDashboardPage() {
         <StaggerGrid className="mt-8 grid gap-4 sm:grid-cols-2">
           {items.map(({ course, percent, completedLessons, totalLessons }) => (
             <StaggerItem key={course.id}>
-              <Link href={`/student/courses/${course.slug}/learn`}>
-                <MotionCard className="h-full">
+              <MotionCard className="h-full">
+                <Link href={`/student/courses/${course.slug}/learn`}>
                   <CardHeader>
-                    {course.category && <Badge variant="secondary">{course.category}</Badge>}
+                    <div className="flex items-center gap-2">
+                      {course.category && <Badge variant="secondary">{course.category}</Badge>}
+                      {percent === 100 && <Badge variant="success">Completed</Badge>}
+                    </div>
                     <CardTitle className="mt-1 line-clamp-2">{course.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -47,8 +50,18 @@ export default async function StudentDashboardPage() {
                       {completedLessons}/{totalLessons} lessons complete ({percent}%)
                     </p>
                   </CardContent>
-                </MotionCard>
-              </Link>
+                </Link>
+                {percent === 100 && (
+                  <div className="px-6 pb-6">
+                    <Link
+                      href={`/student/courses/${course.slug}/certificate`}
+                      className="text-sm font-medium text-primary hover:underline"
+                    >
+                      🎓 View certificate
+                    </Link>
+                  </div>
+                )}
+              </MotionCard>
             </StaggerItem>
           ))}
         </StaggerGrid>

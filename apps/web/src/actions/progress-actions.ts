@@ -6,6 +6,36 @@ import { courses, enrollments, lessonProgress, lessons, sections } from "@kanada
 import { getDb } from "@/lib/db";
 import { requireRole } from "@/lib/session";
 
+async function maybeCompleteCourse(userId: string, courseId: string) {
+  const db = await getDb();
+
+  const allSections = await db.query.sections.findMany({
+    where: eq(sections.courseId, courseId),
+    with: { lessons: true },
+  });
+  const allLessonIds = allSections.flatMap((s) => s.lessons.map((l) => l.id));
+  if (allLessonIds.length === 0) return;
+
+  const progressRows = await db.query.lessonProgress.findMany({
+    where: eq(lessonProgress.userId, userId),
+  });
+  const completedIds = new Set(
+    progressRows.filter((p) => p.completed).map((p) => p.lessonId),
+  );
+  const allComplete = allLessonIds.every((id) => completedIds.has(id));
+  if (!allComplete) return;
+
+  const enrollment = await db.query.enrollments.findFirst({
+    where: and(eq(enrollments.userId, userId), eq(enrollments.courseId, courseId)),
+  });
+  if (enrollment && !enrollment.completedAt) {
+    await db
+      .update(enrollments)
+      .set({ completedAt: new Date() })
+      .where(eq(enrollments.id, enrollment.id));
+  }
+}
+
 async function assertEnrolled(lessonId: string, userId: string) {
   const db = await getDb();
   const lesson = await db.query.lessons.findFirst({ where: eq(lessons.id, lessonId) });
@@ -76,6 +106,8 @@ export async function markLessonCompleteAction(lessonId: string) {
       lastWatchedAt: new Date(),
     });
   }
+
+  await maybeCompleteCourse(user.id, course.id);
 
   revalidatePath(`/student/courses/${course.slug}/learn`);
   revalidatePath("/student/dashboard");

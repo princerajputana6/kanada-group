@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@kanada/ui";
+import { Logo } from "./logo";
 
 /**
  * Client chrome for the navbar: transparent → frosted on scroll, the
@@ -51,16 +52,8 @@ export function NavShell({
       )}
     >
       <div className="mx-auto flex h-16 max-w-container items-center justify-between px-4 sm:px-8">
-        <Link href="/" className="group flex items-center gap-2.5 font-display text-[17px] font-bold tracking-tight">
-          <span
-            aria-hidden="true"
-            className="relative grid h-7 w-7 place-items-center rounded-lg bg-[linear-gradient(135deg,#7C3AED,#22D3EE)] shadow-[0_0_24px_-4px_rgba(139,92,246,0.8)]"
-          >
-            <span className="h-2.5 w-2.5 rounded-[3px] border border-white/90" />
-          </span>
-          <span>
-            Kanada Group <span className="text-electric-lilac">LMS</span>
-          </span>
+        <Link href="/" className="group font-display" aria-label="Kanada Group home">
+          <Logo />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-7 text-sm font-medium md:flex">

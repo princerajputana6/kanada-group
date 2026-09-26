@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: MOTION_GATE }} />
       </head>
-      <body className="min-h-screen overflow-x-clip bg-background font-sans text-foreground antialiased">
+      <body className="flex min-h-screen flex-col overflow-x-clip bg-background font-sans text-foreground antialiased">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-sm"
@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
         <SmoothScroll />
         <Navbar />
-        <main id="main">
+        <main id="main" className="flex-1">
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />

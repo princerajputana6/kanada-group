@@ -1,4 +1,4 @@
-import { and, eq, like, or, sql } from "drizzle-orm";
+import { and, eq, inArray, like, or, sql } from "drizzle-orm";
 import { courses, enrollments, lessonProgress, lessons, users } from "@kanada/db";
 import { getDb } from "./db";
 
@@ -157,6 +157,167 @@ export async function getAdminStats() {
     users: allUsers,
     courses: allCourses,
   };
+}
+
+export async function getTeacherAnalytics(teacherId: string) {
+  const db = await getDb();
+  const teacherCourses = await db.query.courses.findMany({
+    where: eq(courses.teacherId, teacherId),
+    with: {
+      enrollments: { with: { user: true } },
+      reviews: true,
+      sections: { with: { lessons: true } },
+    },
+    orderBy: (c, { desc }) => [desc(c.createdAt)],
+  });
+
+  const allLessonIds = teacherCourses.flatMap((c) =>
+    c.sections.flatMap((s) => s.lessons.map((l) => l.id)),
+  );
+  const progressRows =
+    allLessonIds.length > 0
+      ? await db.query.lessonProgress.findMany({
+          where: inArray(lessonProgress.lessonId, allLessonIds),
+        })
+      : [];
+  const completedByLesson = new Map<string, number>();
+  for (const p of progressRows) {
+    if (p.completed) completedByLesson.set(p.lessonId, (completedByLesson.get(p.lessonId) ?? 0) + 1);
+  }
+
+  const uniqueStudentIds = new Set<string>();
+  const perCourse = teacherCourses.map((course) => {
+    const lessonIds = course.sections.flatMap((s) => s.lessons.map((l) => l.id));
+    const totalLessons = lessonIds.length;
+    const enrollmentCount = course.enrollments.length;
+    course.enrollments.forEach((e) => uniqueStudentIds.add(e.userId));
+
+    const completedEnrollments = course.enrollments.filter((e) => e.completedAt).length;
+    const avgRating =
+      course.reviews.length > 0
+        ? course.reviews.reduce((sum, r) => sum + r.rating, 0) / course.reviews.length
+        : null;
+
+    return {
+      id: course.id,
+      title: course.title,
+      slug: course.slug,
+      published: course.published,
+      enrollmentCount,
+      completedEnrollments,
+      completionRate:
+        enrollmentCount === 0 ? 0 : Math.round((completedEnrollments / enrollmentCount) * 100),
+      totalLessons,
+      avgRating,
+    };
+  });
+
+  const totalEnrollments = perCourse.reduce((sum, c) => sum + c.enrollmentCount, 0);
+  const recentStudents = teacherCourses
+    .flatMap((c) => c.enrollments.map((e) => ({ ...e, courseTitle: c.title })))
+    .sort((a, b) => (b.enrolledAt?.getTime() ?? 0) - (a.enrolledAt?.getTime() ?? 0))
+    .slice(0, 10);
+
+  return {
+    courses: perCourse,
+    totalCourses: teacherCourses.length,
+    totalStudents: uniqueStudentIds.size,
+    totalEnrollments,
+    recentStudents,
+  };
+}
+
+export async function getTeacherStudents(teacherId: string) {
+  const db = await getDb();
+  const teacherCourses = await db.query.courses.findMany({
+    where: eq(courses.teacherId, teacherId),
+    with: { enrollments: { with: { user: true } } },
+  });
+
+  const byStudent = new Map<
+    string,
+    { student: (typeof teacherCourses)[number]["enrollments"][number]["user"]; courses: string[] }
+  >();
+
+  for (const course of teacherCourses) {
+    for (const enrollment of course.enrollments) {
+      const existing = byStudent.get(enrollment.userId);
+      if (existing) {
+        existing.courses.push(course.title);
+      } else {
+        byStudent.set(enrollment.userId, {
+          student: enrollment.user,
+          courses: [course.title],
+        });
+      }
+    }
+  }
+
+  return Array.from(byStudent.values());
+}
+
+export async function getAdminAnalytics() {
+  const db = await getDb();
+  const [allCourses, allEnrollments, allReviews] = await Promise.all([
+    db.query.courses.findMany({
+      with: { enrollments: true, reviews: true, teacher: true },
+    }),
+    db.query.enrollments.findMany(),
+    db.query.reviews.findMany(),
+  ]);
+
+  const topCourses = [...allCourses]
+    .sort((a, b) => b.enrollments.length - a.enrollments.length)
+    .slice(0, 5)
+    .map((c) => ({
+      title: c.title,
+      slug: c.slug,
+      teacherName: c.teacher.name,
+      enrollmentCount: c.enrollments.length,
+    }));
+
+  const completedCount = allEnrollments.filter((e) => e.completedAt).length;
+  const avgRating =
+    allReviews.length > 0
+      ? allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length
+      : null;
+
+  const categoryBreakdown = new Map<string, number>();
+  for (const c of allCourses) {
+    const key = c.category ?? "Uncategorized";
+    categoryBreakdown.set(key, (categoryBreakdown.get(key) ?? 0) + 1);
+  }
+
+  return {
+    topCourses,
+    completedCount,
+    completionRate:
+      allEnrollments.length === 0
+        ? 0
+        : Math.round((completedCount / allEnrollments.length) * 100),
+    avgRating,
+    categoryBreakdown: Array.from(categoryBreakdown.entries()).map(([name, count]) => ({
+      name,
+      count,
+    })),
+  };
+}
+
+export async function getCertificateData(courseSlug: string, userId: string) {
+  const db = await getDb();
+  const course = await db.query.courses.findFirst({
+    where: eq(courses.slug, courseSlug),
+    with: { teacher: true },
+  });
+  if (!course) return null;
+
+  const enrollment = await db.query.enrollments.findFirst({
+    where: and(eq(enrollments.userId, userId), eq(enrollments.courseId, course.id)),
+    with: { user: true },
+  });
+  if (!enrollment || !enrollment.completedAt) return null;
+
+  return { course, enrollment, student: enrollment.user };
 }
 
 export async function getLessonWithCourse(lessonId: string) {

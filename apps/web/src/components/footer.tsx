@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "./logo";
 import { LightBeam } from "./ui/LightBeam";
 
 const COLUMNS = [
@@ -8,6 +9,13 @@ const COLUMNS = [
       { href: "/courses", label: "All courses" },
       { href: "/sign-up", label: "Create an account" },
       { href: "/sign-in", label: "Sign in" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { href: "/about", label: "About" },
+      { href: "/contact", label: "Contact" },
     ],
   },
   {
@@ -24,11 +32,11 @@ export function Footer() {
   return (
     <footer className="relative mt-24 overflow-hidden">
       <LightBeam sweep={false} />
-      <div className="mx-auto grid max-w-container gap-12 px-4 py-16 sm:px-8 md:grid-cols-[1.5fr_1fr_1fr]">
+      <div className="mx-auto grid max-w-container gap-12 px-4 py-16 sm:px-8 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div>
-          <p className="font-display text-lg font-bold tracking-tight">
-            Kanada Group <span className="text-electric-lilac">LMS</span>
-          </p>
+          <Link href="/" className="group inline-block font-display" aria-label="Kanada Group home">
+            <Logo />
+          </Link>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
             Inspired by ancient wisdom. Driven by modern innovation. Digital &amp; analog VLSI
             training, from semiconductor fundamentals to tapeout.

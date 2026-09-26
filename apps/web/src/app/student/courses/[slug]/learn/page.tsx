@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button, cn } from "@kanada/ui";
+import { Button, buttonVariants, cn } from "@kanada/ui";
 import { requireRole } from "@/lib/session";
 import { getCourseForLearning } from "@/lib/queries";
 import { VideoPlayer } from "@/components/video-player";
@@ -75,6 +75,14 @@ export default async function LearnPage({
         <p className="mb-3 text-sm font-medium text-muted-foreground">
           {completedCount}/{allLessons.length} lessons complete
         </p>
+        {completedCount === allLessons.length && (
+          <Link
+            href={`/student/courses/${slug}/certificate`}
+            className={cn(buttonVariants({ size: "sm" }), "mb-4 w-full")}
+          >
+            🎓 View certificate
+          </Link>
+        )}
         <div className="space-y-4">
           {course.sections.map((section) => (
             <div key={section.id}>
