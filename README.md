@@ -121,26 +121,28 @@ the specific service that's actually constrained if you outgrow it.
 
 ### Automatic deploys on push
 
-`.github/workflows/deploy.yml` deploys straight to Cloudflare Workers on
-every push to `main`, via `wrangler deploy` — **use this instead of
-Cloudflare's own "Workers Builds" Git integration**, which doesn't handle
-this repo's pnpm-monorepo layout well (it runs from the repo root and can't
-find `apps/web/wrangler.toml` without extra Root Directory / Build & Deploy
-command configuration in the dashboard that the CI workflow avoids needing
-entirely). To enable it:
+Pushes to `main` are deployed by Cloudflare's **Workers Builds** Git
+integration (dashboard → Workers → `kanada-lms` → Settings → Build), which
+uses Cloudflare's own build token — no API token or GitHub secret needed.
+It runs from the repo root with its default commands, and the repo is set up
+so those just work:
 
-1. Create a Cloudflare API token: dashboard → your profile icon → **API
-   Tokens** → **Create Token** → use the **"Edit Cloudflare Workers"**
-   template, scoped to this account.
-2. Add it as a GitHub Actions secret: repo → **Settings → Secrets and
-   variables → Actions → New repository secret** → name it
-   `CLOUDFLARE_API_TOKEN`.
-3. If Cloudflare's dashboard still has a "Workers Builds" Git connection
-   configured for this repo (Settings → Build), disable automatic
-   deployments there so you don't get a second, failing build on every push
-   — it's redundant with this workflow.
+| Setting | Value |
+|---|---|
+| Root directory | `/` |
+| Build command | `pnpm run build` — the root script runs `opennextjs-cloudflare build` for `apps/web`, producing `apps/web/.open-next/` |
+| Deploy command | `npx wrangler deploy` — picks up the root `wrangler.jsonc`, which points at that bundle |
 
-Migrations and secrets aren't part of this workflow — run
+The root `wrangler.jsonc` mirrors `apps/web/wrangler.toml` (still the source
+of truth for local dev, `pnpm --filter web deploy` and D1 migrations) with
+repo-root-relative paths — **update both when bindings change**.
+
+`.github/workflows/deploy.yml` is kept as a manual fallback
+(`workflow_dispatch`). To use it, add a `CLOUDFLARE_API_TOKEN` repository
+secret (Cloudflare → My Profile → API Tokens → "Edit Cloudflare Workers"
+template) and run it from the Actions tab.
+
+Migrations and secrets aren't part of either deploy path — run
 `pnpm db:migrate:remote` and `wrangler secret put <NAME>` (from `apps/web`)
 by hand when the schema changes or a secret needs rotating; deploys don't
 touch either.

@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "turbo run dev --filter=web",
-    "build": "turbo run build",
+    "build": "pnpm --filter web exec opennextjs-cloudflare build",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "preview": "turbo run preview --filter=web",
@@ -17,7 +17,8 @@
     "db:migrate:local": "pnpm --filter web exec -- wrangler d1 migrations apply kanada-lms-db --local",
     "db:migrate:remote": "pnpm --filter web exec -- wrangler d1 migrations apply kanada-lms-db --remote",
     "db:seed:local": "pnpm --filter @kanada/db run seed:generate && pnpm --filter web exec -- wrangler d1 execute kanada-lms-db --local --file=../../packages/db/seed.sql",
-    "db:seed:remote": "pnpm --filter @kanada/db run seed:generate && pnpm --filter web exec -- wrangler d1 execute kanada-lms-db --remote --file=../../packages/db/seed.sql"
+    "db:seed:remote": "pnpm --filter @kanada/db run seed:generate && pnpm --filter web exec -- wrangler d1 execute kanada-lms-db --remote --file=../../packages/db/seed.sql",
+    "build:next": "turbo run build"
   },
   "devDependencies": {
     "turbo": "^2.3.3",

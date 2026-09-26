@@ -1,8 +1,10 @@
 name: Deploy to Cloudflare
 
+# Manual fallback only. Pushes to main are deployed by Cloudflare Workers
+# Builds (build: `pnpm run build`, deploy: `npx wrangler deploy`, using the
+# root wrangler.jsonc). Running this workflow needs a valid
+# CLOUDFLARE_API_TOKEN repository secret.
 on:
-  push:
-    branches: [main]
   workflow_dispatch: {}
 
 jobs:

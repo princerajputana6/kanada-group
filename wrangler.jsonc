@@ -1,0 +1,38 @@
+// Root deploy config for Cloudflare Workers Builds.
+//
+// Workers Builds runs `npx wrangler deploy` from the repository root. Without
+// a config here, wrangler's framework auto-detection refuses to run at a
+// workspace root. This mirrors apps/web/wrangler.toml (the source of truth
+// for local dev, `pnpm deploy` and D1 migrations) with paths relative to the
+// repo root — keep the two in sync when bindings change.
+//
+// Expects the OpenNext bundle to already exist: the root `build` script
+// (`pnpm run build`) produces apps/web/.open-next/.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kanada-lms",
+  "main": "apps/web/.open-next/worker.js",
+  "compatibility_date": "2025-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "apps/web/.open-next/assets",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kanada-lms-db",
+      "database_id": "731bb6f7-03d7-4888-9fac-e14f69675e9e",
+      "migrations_dir": "packages/db/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "VIDEO_BUCKET",
+      "bucket_name": "kanada-lms-videos"
+    }
+  ],
+  "vars": {
+    "R2_BUCKET_NAME": "kanada-lms-videos"
+  }
+}
