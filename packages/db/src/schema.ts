@@ -33,6 +33,9 @@ export const users = sqliteTable(
     image: text("image"),
     bio: text("bio"),
     banned: integer("banned", { mode: "boolean" }).notNull().default(false),
+    /** Sessions signed in before this instant are rejected — bumped on
+     * password reset, ban and "sign out everywhere". Null = no cut-off. */
+    sessionsValidAfter: integer("sessions_valid_after", { mode: "timestamp" }),
     createdAt: timestamp("created_at"),
   },
   (table) => [uniqueIndex("users_email_idx").on(table.email)],

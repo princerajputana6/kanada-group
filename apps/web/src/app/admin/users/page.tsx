@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Badge, Button, Select, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kanada/ui";
 import { requireRole } from "@/lib/session";
 import { getAdminStats } from "@/lib/queries";
@@ -10,7 +11,8 @@ export default async function AdminUsersPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Users</h1>
+      <h1 className="text-3xl font-bold">All users</h1>
+      <p className="mt-1 text-muted-foreground">Students, teachers and admins. Open a name for full details and account actions.</p>
       <div className="mt-6">
         <Table>
           <TableHeader>
@@ -28,7 +30,10 @@ export default async function AdminUsersPage() {
               return (
                 <TableRow key={user.id}>
                   <TableCell className="font-medium">
-                    {user.name} {isSelf && <span className="text-muted-foreground">(you)</span>}
+                    <Link href={`/admin/users/${user.id}`} className="hover:text-primary">
+                      {user.name}
+                    </Link>{" "}
+                    {isSelf && <span className="text-muted-foreground">(you)</span>}
                   </TableCell>
                   <TableCell className="text-muted-foreground">{user.email}</TableCell>
                   <TableCell>

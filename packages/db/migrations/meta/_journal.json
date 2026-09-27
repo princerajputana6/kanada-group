@@ -15,6 +15,13 @@
       "when": 1787477000580,
       "tag": "0001_foamy_ultron",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1790502894353,
+      "tag": "0002_sloppy_nova",
+      "breakpoints": true
     }
   ]
 }

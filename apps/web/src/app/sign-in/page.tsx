@@ -6,9 +6,9 @@ import { SignInForm } from "@/components/sign-in-form";
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ callbackUrl?: string }>;
+  searchParams: Promise<{ callbackUrl?: string; passwordChanged?: string }>;
 }) {
-  const { callbackUrl } = await searchParams;
+  const { callbackUrl, passwordChanged } = await searchParams;
 
   return (
     <div className="relative mx-auto flex min-h-[75vh] max-w-md items-center px-4 py-16">
@@ -18,6 +18,11 @@ export default async function SignInPage({
           <CardTitle className="text-2xl">Sign in</CardTitle>
         </CardHeader>
         <CardContent>
+          {passwordChanged && (
+            <p className="mb-4 rounded-xl border border-emerald-500/25 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-700">
+              Password changed. Sign in with your new password.
+            </p>
+          )}
           <SignInForm callbackUrl={callbackUrl} />
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}

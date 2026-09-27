@@ -17,7 +17,7 @@ export function SidebarNav({
   return (
     <nav className="space-y-1 text-sm">
       {items.map((item) => {
-        const active = pathname === item.href;
+        const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
         return (
           <Link
             key={item.href}

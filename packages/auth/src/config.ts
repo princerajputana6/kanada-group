@@ -66,7 +66,28 @@ export function buildAuthConfig(getDb: () => Db | Promise<Db>): NextAuthConfig {
           // Always set by our own authorize() above — never actually undefined.
           t.id = user.id!;
           t.role = user.role as Role;
+          t.authTime = Math.floor(Date.now() / 1000);
+          return t;
         }
+
+        // JWTs are otherwise stateless, so re-check the account on every
+        // session read: bans, deletions, password resets and "sign out
+        // everywhere" take effect immediately, and role changes apply
+        // without the user signing in again. Returning null clears the
+        // session cookie.
+        const db = await getDb();
+        const current = await db.query.users.findFirst({
+          where: eq(users.id, t.id),
+          columns: { role: true, banned: true, sessionsValidAfter: true },
+        });
+        if (!current || current.banned) return null;
+        if (
+          current.sessionsValidAfter &&
+          (t.authTime ?? 0) < Math.floor(current.sessionsValidAfter.getTime() / 1000)
+        ) {
+          return null;
+        }
+        t.role = current.role;
         return t;
       },
       async session({ session, token }) {

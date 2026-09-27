@@ -29,5 +29,8 @@ type DefaultSessionUser = {
 export interface AppJWT {
   id: string;
   role: Role;
+  /** Unix seconds of the actual sign-in. Unlike `iat`, Auth.js doesn't reset
+   * it when it re-signs the token on each request. */
+  authTime?: number;
   [key: string]: unknown;
 }
