@@ -1,14 +1,14 @@
-import { createUploadUrl, videoKeyFor, deleteVideo } from "@kanada/storage";
+import {
+  createUploadUrl,
+  videoKeyFor,
+  resumeKeyFor,
+  paymentKeyFor,
+  deleteVideo,
+} from "@kanada/storage";
 import { getEnv } from "./cloudflare";
 
-export async function getPresignedUploadUrl(
-  courseId: string,
-  lessonId: string,
-  filename: string,
-  contentType: string,
-) {
+async function signUpload(key: string, contentType: string) {
   const env = await getEnv();
-  const key = videoKeyFor(courseId, lessonId, filename);
   const url = await createUploadUrl(
     {
       accountId: env.R2_ACCOUNT_ID,
@@ -20,6 +20,27 @@ export async function getPresignedUploadUrl(
     contentType,
   );
   return { url, key };
+}
+
+export async function getPresignedUploadUrl(
+  courseId: string,
+  lessonId: string,
+  filename: string,
+  contentType: string,
+) {
+  return signUpload(videoKeyFor(courseId, lessonId, filename), contentType);
+}
+
+export async function getPresignedResumeUrl(filename: string, contentType: string) {
+  return signUpload(resumeKeyFor(crypto.randomUUID(), filename), contentType);
+}
+
+export async function getPresignedPaymentUrl(
+  enrollmentId: string,
+  filename: string,
+  contentType: string,
+) {
+  return signUpload(paymentKeyFor(enrollmentId, crypto.randomUUID(), filename), contentType);
 }
 
 export async function removeVideo(key: string) {

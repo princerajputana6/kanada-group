@@ -22,5 +22,6 @@ declare global {
     R2_UPLOAD_ACCESS_KEY_ID: string;
     R2_UPLOAD_SECRET_ACCESS_KEY: string;
     RESEND_API_KEY?: string;
+    RESEND_FROM?: string;
   }
 }

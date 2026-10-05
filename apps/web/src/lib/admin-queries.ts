@@ -264,6 +264,57 @@ export async function getEnrollment(enrollmentId: string) {
   return db.query.enrollments.findFirst({ where: eq(enrollments.id, enrollmentId) });
 }
 
+/**
+ * All payment-bearing enrollments (paid tracks) for the admin review queue.
+ * Excludes free-course enrollments (paymentStatus NONE). Pending reviews
+ * (SUBMITTED) float to the top.
+ */
+export async function getPaymentEnrollments() {
+  const db = await getDb();
+  const rows = await db.query.enrollments.findMany({
+    with: {
+      user: { columns: { id: true, name: true, email: true } },
+      course: { columns: { id: true, title: true, slug: true } },
+    },
+  });
+
+  const order: Record<string, number> = {
+    SUBMITTED: 0,
+    AWAITING: 1,
+    REJECTED: 2,
+    PAID: 3,
+    NONE: 4,
+  };
+
+  return rows
+    .filter((e) => e.paymentStatus !== "NONE")
+    .map((e) => ({
+      id: e.id,
+      studentName: e.user.name,
+      studentEmail: e.user.email,
+      courseTitle: e.course.title,
+      courseSlug: e.course.slug,
+      amount: e.amount,
+      status: e.paymentStatus,
+      hasScreenshot: !!e.paymentScreenshotKey,
+      enrolledAt: e.enrolledAt,
+      paidAt: e.paidAt,
+    }))
+    .sort((a, b) => {
+      const d = (order[a.status] ?? 9) - (order[b.status] ?? 9);
+      return d !== 0 ? d : b.enrolledAt.getTime() - a.enrolledAt.getTime();
+    });
+}
+
+export async function getPaymentCounts() {
+  const rows = await getPaymentEnrollments();
+  return {
+    pending: rows.filter((r) => r.status === "SUBMITTED").length,
+    paid: rows.filter((r) => r.status === "PAID").length,
+    total: rows.length,
+  };
+}
+
 /** Parses the directory's URL search params (shared by the page and CSV export). */
 export function parseStudentFilters(sp: Record<string, string | string[] | undefined>): StudentFilters {
   const one = (k: string) => {

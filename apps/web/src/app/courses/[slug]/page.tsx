@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge, Button, buttonVariants, cn } from "@kanada/ui";
-import { getCourseDetail } from "@/lib/queries";
+import { getCourseDetail, getFoundationsCompletion } from "@/lib/queries";
 import { getSession } from "@/lib/session";
 import { enrollAction } from "@/actions/enrollment-actions";
-import { formatDuration } from "@/lib/utils";
+import { formatDuration, formatPrice } from "@/lib/utils";
 import { ReviewForm } from "@/components/review-form";
+import { PaymentUpload } from "@/components/payment-upload";
 
 export default async function CourseDetailPage({
   params,
@@ -23,9 +24,18 @@ export default async function CourseDetailPage({
   }
 
   const isStudent = session?.user.role === "STUDENT";
-  const isEnrolled = isStudent
-    ? course.enrollments.some((e) => e.userId === session!.user.id)
-    : false;
+  const myEnrollment = isStudent
+    ? course.enrollments.find((e) => e.userId === session!.user.id)
+    : undefined;
+  const isEnrolled = !!myEnrollment;
+  const hasAccess = course.isFree
+    ? isEnrolled
+    : myEnrollment?.paymentStatus === "PAID";
+  // For paid tracks: has the student finished the free Foundations program?
+  const foundations =
+    isStudent && !course.isFree
+      ? await getFoundationsCompletion(session!.user.id)
+      : null;
 
   const avgRating =
     course.reviews.length > 0
@@ -72,7 +82,7 @@ export default async function CourseDetailPage({
                 </div>
                 <ul className="divide-y divide-border">
                   {section.lessons.map((lesson) => {
-                    const locked = !lesson.isPreview && !isEnrolled && !isOwner && !isAdmin;
+                    const locked = !lesson.isPreview && !hasAccess && !isOwner && !isAdmin;
                     return (
                       <li
                         key={lesson.id}
@@ -119,7 +129,10 @@ export default async function CourseDetailPage({
 
         <div className="glass h-fit rounded-3xl p-6 lg:sticky lg:top-24">
           <p className="mb-1 text-xs uppercase tracking-[0.14em] text-subtle">Price</p>
-          <p className="mb-5 font-display text-4xl font-bold tracking-tight text-foreground">Free</p>
+          <p className="mb-5 font-display text-4xl font-bold tracking-tight text-foreground">
+            {course.isFree ? "Free" : formatPrice(course.price)}
+          </p>
+
           {isOwner ? (
             <Link
               href={`/teacher/courses/${course.id}/edit`}
@@ -127,26 +140,99 @@ export default async function CourseDetailPage({
             >
               Manage course
             </Link>
-          ) : isEnrolled ? (
+          ) : isAdmin ? (
             <Link
               href={`/student/courses/${course.slug}/learn`}
-              className={cn(buttonVariants(), "w-full")}
+              className={cn(buttonVariants({ variant: "outline" }), "w-full")}
             >
-              Go to course
+              Preview course
             </Link>
-          ) : isStudent ? (
-            <form action={enrollAction.bind(null, slug)}>
-              <Button type="submit" className="w-full">
-                Enroll for free
-              </Button>
-            </form>
-          ) : (
+          ) : !isStudent ? (
             <Link
               href={`/sign-in?callbackUrl=/courses/${slug}`}
               className={cn(buttonVariants(), "w-full")}
             >
               Sign in to enroll
             </Link>
+          ) : hasAccess ? (
+            <Link
+              href={`/student/courses/${course.slug}/learn`}
+              className={cn(buttonVariants(), "w-full")}
+            >
+              Go to course
+            </Link>
+          ) : course.isFree ? (
+            <form action={enrollAction.bind(null, slug)}>
+              <Button type="submit" className="w-full">
+                Enroll for free
+              </Button>
+            </form>
+          ) : foundations && !foundations.completed ? (
+            // Paid track locked until the free Foundations program is complete.
+            <div className="space-y-3 text-sm">
+              <p className="rounded-xl border border-border bg-secondary/50 p-3 text-muted-foreground">
+                🔒 Complete the free{" "}
+                <span className="font-medium text-foreground">
+                  {foundations.freeCourseTitle ?? "Foundations"}
+                </span>{" "}
+                program to unlock this paid track.
+              </p>
+              {foundations.freeCourseSlug && (
+                <Link
+                  href={`/courses/${foundations.freeCourseSlug}`}
+                  className={cn(buttonVariants(), "w-full")}
+                >
+                  Go to Foundations
+                </Link>
+              )}
+            </div>
+          ) : myEnrollment?.paymentStatus === "SUBMITTED" ? (
+            <div className="rounded-xl border border-border bg-secondary/50 p-4 text-sm">
+              <p className="font-medium text-foreground">⏳ Payment under review</p>
+              <p className="mt-1 text-muted-foreground">
+                We&apos;ve received your payment proof. You&apos;ll get an email once
+                an admin verifies it.
+              </p>
+            </div>
+          ) : (
+            // AWAITING, REJECTED, or not-yet-enrolled (foundations complete).
+            <div className="space-y-4 text-sm">
+              {myEnrollment?.paymentStatus === "REJECTED" && (
+                <p className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-destructive">
+                  Your previous payment proof was rejected. Please pay and upload a
+                  valid screenshot.
+                </p>
+              )}
+              {!myEnrollment ? (
+                <form action={enrollAction.bind(null, slug)}>
+                  <Button type="submit" className="w-full">
+                    Proceed to payment
+                  </Button>
+                </form>
+              ) : (
+                <>
+                  <div>
+                    <p className="mb-2 font-medium text-foreground">
+                      Scan &amp; pay {formatPrice(course.price)}
+                    </p>
+                    <div className="mx-auto w-fit overflow-hidden rounded-2xl border border-border">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src="/brand/payment-qr.png"
+                        alt="PhonePe payment QR code"
+                        width={240}
+                        height={453}
+                        className="w-full max-w-[240px]"
+                      />
+                    </div>
+                    <p className="mt-2 text-center text-xs text-muted-foreground">
+                      Scan with any UPI app, then upload your payment screenshot below.
+                    </p>
+                  </div>
+                  <PaymentUpload enrollmentId={myEnrollment.id} />
+                </>
+              )}
+            </div>
           )}
         </div>
       </div>

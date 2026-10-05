@@ -8,6 +8,7 @@ import {
   MotionCard,
   StaggerItem,
 } from "@kanada/ui";
+import { formatPrice } from "@/lib/utils";
 
 export interface CourseCardData {
   slug: string;
@@ -16,6 +17,8 @@ export interface CourseCardData {
   thumbnailUrl?: string | null;
   category: string | null;
   level: string;
+  isFree?: boolean;
+  price?: number | null;
   teacher: { name: string };
   enrollments: unknown[];
   reviews: { rating: number }[];
@@ -25,7 +28,7 @@ export interface CourseCardData {
 function hueFor(slug: string) {
   let h = 0;
   for (const ch of slug) h = (h * 31 + ch.charCodeAt(0)) % 360;
-  return 240 + (h % 70); // stays in the violet → blue → cyan band
+  return 175 + (h % 45); // teal → cyan → blue band (brand)
 }
 
 function CourseArt({ course }: { course: CourseCardData }) {
@@ -72,9 +75,14 @@ export function CourseCard({ course }: { course: CourseCardData }) {
             <CourseArt course={course} />
           </div>
           <CardHeader>
-            <div className="mb-1 flex items-center gap-2">
+            <div className="mb-1 flex flex-wrap items-center gap-2">
               {course.category && <Badge variant="secondary">{course.category}</Badge>}
               <Badge variant="outline">{course.level}</Badge>
+              {course.isFree ? (
+                <Badge variant="success">Free</Badge>
+              ) : (
+                <Badge>{formatPrice(course.price)}</Badge>
+              )}
             </div>
             <CardTitle className="line-clamp-2">{course.title}</CardTitle>
           </CardHeader>

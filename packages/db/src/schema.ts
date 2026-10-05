@@ -12,6 +12,23 @@ export type Role = (typeof ROLES)[number];
 export const LESSON_TYPES = ["VIDEO", "TEXT"] as const;
 export type LessonType = (typeof LESSON_TYPES)[number];
 
+/**
+ * Payment lifecycle for a (student, paid-course) enrollment:
+ *  NONE      — free course, or not yet started (full access for free courses)
+ *  AWAITING  — student picked the paid track; shown the QR, yet to pay
+ *  SUBMITTED — student uploaded a payment screenshot; awaiting admin review
+ *  PAID      — admin verified the payment; course unlocked
+ *  REJECTED  — admin rejected the screenshot; student may re-upload
+ */
+export const PAYMENT_STATUSES = [
+  "NONE",
+  "AWAITING",
+  "SUBMITTED",
+  "PAID",
+  "REJECTED",
+] as const;
+export type PaymentStatus = (typeof PAYMENT_STATUSES)[number];
+
 const id = () =>
   text("id")
     .primaryKey()
@@ -32,6 +49,20 @@ export const users = sqliteTable(
     role: text("role", { enum: ROLES }).notNull().default("STUDENT"),
     image: text("image"),
     bio: text("bio"),
+    // ---- VLSI Training Program registration profile (students) ----
+    whatsapp: text("whatsapp"),
+    /** Course Completed/Enrolled: "B.Tech/B.E.", "M.Tech/M.S." or other. */
+    qualification: text("qualification"),
+    branch: text("branch"),
+    completionYear: text("completion_year"),
+    /** Current affiliation — company or college name. */
+    affiliation: text("affiliation"),
+    workExperience: text("work_experience"),
+    priorTools: text("prior_tools"),
+    /** Interested field in VLSI: "Analog", "Digital" or other. */
+    interestField: text("interest_field"),
+    /** R2 object key of the uploaded resume (PDF). */
+    resumeKey: text("resume_key"),
     banned: integer("banned", { mode: "boolean" }).notNull().default(false),
     /** Sessions signed in before this instant are rejected — bumped on
      * password reset, ban and "sign out everywhere". Null = no cut-off. */
@@ -111,6 +142,15 @@ export const enrollments = sqliteTable(
       .references(() => courses.id, { onDelete: "cascade" }),
     enrolledAt: timestamp("enrolled_at"),
     completedAt: integer("completed_at", { mode: "timestamp" }),
+    // ---- Payment (paid tracks only; free courses stay NONE) ----
+    paymentStatus: text("payment_status", { enum: PAYMENT_STATUSES })
+      .notNull()
+      .default("NONE"),
+    /** Price snapshot (in the course's currency units) at enrollment time. */
+    amount: integer("amount"),
+    /** R2 object key of the payment screenshot the student uploaded. */
+    paymentScreenshotKey: text("payment_screenshot_key"),
+    paidAt: integer("paid_at", { mode: "timestamp" }),
   },
   (table) => [
     uniqueIndex("enrollments_user_course_idx").on(

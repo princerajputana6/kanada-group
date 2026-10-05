@@ -43,7 +43,7 @@ export async function Navbar() {
               Sign in
             </Link>
             <Link href="/sign-up" className={cn(buttonVariants({ size: "sm" }), "px-4")}>
-              Get started
+              Register Yourself
             </Link>
           </>
         )

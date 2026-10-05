@@ -33,37 +33,61 @@ export default async function StudentDashboardPage() {
         </p>
       ) : (
         <StaggerGrid className="mt-8 grid gap-4 sm:grid-cols-2">
-          {items.map(({ course, percent, completedLessons, totalLessons }) => (
-            <StaggerItem key={course.id}>
-              <MotionCard className="h-full">
-                <Link href={`/student/courses/${course.slug}/learn`}>
-                  <CardHeader>
-                    <div className="flex items-center gap-2">
-                      {course.category && <Badge variant="secondary">{course.category}</Badge>}
-                      {percent === 100 && <Badge variant="success">Completed</Badge>}
+          {items.map(({ course, percent, completedLessons, totalLessons, locked, paymentStatus }) => {
+            const href = locked
+              ? `/courses/${course.slug}`
+              : `/student/courses/${course.slug}/learn`;
+            const paymentLabel =
+              paymentStatus === "SUBMITTED"
+                ? "Payment under review"
+                : paymentStatus === "REJECTED"
+                  ? "Payment rejected — retry"
+                  : "Payment required";
+            return (
+              <StaggerItem key={course.id}>
+                <MotionCard className="h-full">
+                  <Link href={href}>
+                    <CardHeader>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {course.category && <Badge variant="secondary">{course.category}</Badge>}
+                        {!locked && percent === 100 && <Badge variant="success">Completed</Badge>}
+                        {locked && (
+                          <Badge variant={paymentStatus === "REJECTED" ? "destructive" : "outline"}>
+                            🔒 {paymentLabel}
+                          </Badge>
+                        )}
+                      </div>
+                      <CardTitle className="mt-1 line-clamp-2">{course.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {locked ? (
+                        <p className="text-sm text-muted-foreground">
+                          Complete payment to unlock this track.
+                        </p>
+                      ) : (
+                        <>
+                          <Progress value={percent} />
+                          <p className="mt-2 text-sm text-muted-foreground">
+                            {completedLessons}/{totalLessons} lessons complete ({percent}%)
+                          </p>
+                        </>
+                      )}
+                    </CardContent>
+                  </Link>
+                  {!locked && percent === 100 && (
+                    <div className="px-6 pb-6">
+                      <Link
+                        href={`/student/courses/${course.slug}/certificate`}
+                        className="text-sm font-medium text-primary hover:underline"
+                      >
+                        🎓 View certificate
+                      </Link>
                     </div>
-                    <CardTitle className="mt-1 line-clamp-2">{course.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Progress value={percent} />
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {completedLessons}/{totalLessons} lessons complete ({percent}%)
-                    </p>
-                  </CardContent>
-                </Link>
-                {percent === 100 && (
-                  <div className="px-6 pb-6">
-                    <Link
-                      href={`/student/courses/${course.slug}/certificate`}
-                      className="text-sm font-medium text-primary hover:underline"
-                    >
-                      🎓 View certificate
-                    </Link>
-                  </div>
-                )}
-              </MotionCard>
-            </StaggerItem>
-          ))}
+                  )}
+                </MotionCard>
+              </StaggerItem>
+            );
+          })}
         </StaggerGrid>
       )}
     </div>

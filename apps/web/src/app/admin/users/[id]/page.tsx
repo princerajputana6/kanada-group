@@ -97,6 +97,50 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
         </CardContent>
       </Card>
 
+      {(u.whatsapp || u.resumeKey || u.qualification) && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Registration details</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <dl className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {u.whatsapp && <Fact label="WhatsApp">{u.whatsapp}</Fact>}
+              {u.qualification && <Fact label="Course">{u.qualification}</Fact>}
+              {u.branch && <Fact label="Branch">{u.branch}</Fact>}
+              {u.completionYear && <Fact label="Completion year">{u.completionYear}</Fact>}
+              {u.affiliation && <Fact label="Affiliation">{u.affiliation}</Fact>}
+              {u.interestField && <Fact label="Interested field">{u.interestField}</Fact>}
+              {u.workExperience && (
+                <div className="sm:col-span-2 lg:col-span-3">
+                  <Fact label="Work experience">
+                    <span className="font-normal text-muted-foreground">{u.workExperience}</span>
+                  </Fact>
+                </div>
+              )}
+              {u.priorTools && (
+                <div className="sm:col-span-2 lg:col-span-3">
+                  <Fact label="Prior tools used">
+                    <span className="font-normal text-muted-foreground">{u.priorTools}</span>
+                  </Fact>
+                </div>
+              )}
+              {u.resumeKey && (
+                <Fact label="Resume">
+                  <a
+                    href={`/api/resume/${u.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    View resume (PDF) →
+                  </a>
+                </Fact>
+              )}
+            </dl>
+          </CardContent>
+        </Card>
+      )}
+
       {!isSelf && (
         <Card>
           <CardHeader>

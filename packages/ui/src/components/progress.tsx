@@ -20,7 +20,7 @@ export function Progress({
       aria-valuemax={100}
     >
       <motion.div
-        className="h-full rounded-full bg-gradient-to-r from-[#7C3AED] via-[#8B5CF6] to-[#22D3EE]"
+        className="h-full rounded-full bg-gradient-to-r from-[#218390] via-[#2ba3b4] to-[#22D3EE]"
         initial={{ width: 0 }}
         animate={{ width: `${clamped}%` }}
         transition={{ duration: 0.6, ease: "easeOut" }}

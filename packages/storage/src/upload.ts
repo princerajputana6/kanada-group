@@ -47,6 +47,23 @@ export function videoKeyFor(courseId: string, lessonId: string, filename: string
   return `videos/${courseId}/${lessonId}.${ext}`;
 }
 
+function extOf(filename: string, fallback: string) {
+  const ext = filename.split(".").pop()?.toLowerCase();
+  return ext && /^[a-z0-9]{1,5}$/.test(ext) ? ext : fallback;
+}
+
+/** Resume PDFs, namespaced by a server-generated token (no user id yet at
+ * registration time), e.g. `resumes/<token>.pdf`. */
+export function resumeKeyFor(token: string, filename: string) {
+  return `resumes/${token}.${extOf(filename, "pdf")}`;
+}
+
+/** Payment screenshots, namespaced per enrollment, e.g.
+ * `payments/<enrollmentId>/<token>.png`. */
+export function paymentKeyFor(enrollmentId: string, token: string, filename: string) {
+  return `payments/${enrollmentId}/${token}.${extOf(filename, "png")}`;
+}
+
 export async function deleteVideo(bucket: R2Bucket, key: string): Promise<void> {
   await bucket.delete(key);
 }

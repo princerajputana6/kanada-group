@@ -82,8 +82,8 @@ const TRACKS = [
   },
   {
     title: "Analog VLSI",
-    gradient: "from-fuchsia-500/20 to-purple-500/10",
-    accent: "text-fuchsia-300",
+    gradient: "from-teal-500/20 to-cyan-500/10",
+    accent: "text-teal-300",
     description:
       "Amplifiers, op-amps, bandgap references, data converters, and analog layout for real-world ICs.",
     topics: ["Op-Amps & Amplifiers", "Bandgap References", "Data Converters", "Analog Layout"],
@@ -214,7 +214,7 @@ export function RoadmapSection() {
 
       <div className="relative">
         {/* connector line */}
-        <div className="absolute left-0 right-0 top-6 hidden h-px bg-gradient-to-r from-primary via-accent to-fuchsia-500 lg:block" />
+        <div className="absolute left-0 right-0 top-6 hidden h-px bg-gradient-to-r from-primary via-accent to-cyan-500 lg:block" />
         <RevealGroup className="grid gap-8 lg:grid-cols-4">
           {ROADMAP.map((m, i) => (
             <RevealItem key={m.weeks}>
@@ -420,7 +420,7 @@ export function CtaSection() {
                 href="/sign-up"
                 className={cn(buttonVariants({ size: "lg" }), "mt-8 glow-primary")}
               >
-                Create your free account
+                Register Yourself
               </Link>
             </Magnetic>
           </div>

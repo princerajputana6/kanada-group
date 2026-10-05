@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Badge, Card, CardContent, CardHeader, CardTitle } from "@kanada/ui";
-import { getPortalOverview } from "@/lib/admin-queries";
+import { getPortalOverview, getPaymentCounts } from "@/lib/admin-queries";
 import { formatDate } from "@/lib/utils";
 
 function Stat({ label, value, hint, href }: { label: string; value: number; hint?: string; href?: string }) {
@@ -19,7 +19,7 @@ function Stat({ label, value, hint, href }: { label: string; value: number; hint
 }
 
 export default async function AdminDashboardPage() {
-  const o = await getPortalOverview();
+  const [o, payments] = await Promise.all([getPortalOverview(), getPaymentCounts()]);
 
   return (
     <div className="space-y-10">
@@ -33,6 +33,7 @@ export default async function AdminDashboardPage() {
         <Stat label="Active learners (7 days)" value={o.activeLearners7} hint="Watched or completed a lesson" href="/admin/students?sort=active" />
         <Stat label="Enrollments" value={o.enrollments} hint={`+${o.enrollments30} in the last 30 days`} />
         <Stat label="Course completions" value={o.completions} />
+        <Stat label="Payments to review" value={payments.pending} hint={`${payments.paid} paid · ${payments.total} total`} href="/admin/enrollments" />
         <Stat label="Teachers" value={o.teachers} href="/admin/users" />
         <Stat label="Courses" value={o.courses} hint={`${o.publishedCourses} published`} href="/admin/courses" />
         <Stat label="Banned accounts" value={o.banned} href="/admin/students?status=banned" />

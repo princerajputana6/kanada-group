@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Button, buttonVariants, cn } from "@kanada/ui";
 import { requireRole } from "@/lib/session";
 import { getCourseForLearning } from "@/lib/queries";
@@ -20,7 +20,12 @@ export default async function LearnPage({
 
   const data = await getCourseForLearning(slug, user.id);
   if (!data) notFound();
-  const { course, progressByLesson } = data;
+  const { course, enrollment, progressByLesson } = data;
+
+  // Paid tracks are only accessible once payment is verified.
+  if (!course.isFree && enrollment.paymentStatus !== "PAID") {
+    redirect(`/courses/${slug}`);
+  }
 
   const allLessons = course.sections.flatMap((s) => s.lessons);
   if (allLessons.length === 0) {

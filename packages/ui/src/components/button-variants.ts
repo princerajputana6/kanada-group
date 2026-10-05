@@ -13,7 +13,7 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-[linear-gradient(135deg,#7C3AED,#8B5CF6_50%,#6D28D9)] bg-[length:200%_100%] bg-left text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_8px_30px_-10px_rgba(124,58,237,0.7)] hover:bg-right hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_10px_40px_-8px_rgba(139,92,246,0.85)]",
+          "bg-[linear-gradient(135deg,#218390,#2ba3b4_50%,#1a6b76)] bg-[length:200%_100%] bg-left text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_8px_30px_-10px_rgba(33, 131, 144,0.7)] hover:bg-right hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_10px_40px_-8px_rgba(43, 163, 180,0.85)]",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         outline:

@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Overview" },
   { href: "/admin/students", label: "Students" },
   { href: "/admin/users", label: "All users" },
+  { href: "/admin/enrollments", label: "Payments" },
   { href: "/admin/courses", label: "Courses" },
   { href: "/admin/categories", label: "Categories" },
   { href: "/admin/analytics", label: "Analytics" },

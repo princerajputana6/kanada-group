@@ -73,7 +73,7 @@ export function Hero() {
             className="font-display text-[clamp(3rem,8vw,6.9rem)] xl:text-[clamp(3rem,6.6vw,6.9rem)] font-bold leading-[0.92] tracking-[-0.055em] text-white"
             lineClassNames={[undefined, undefined, "words-gradient"]}
           >
-            {["Learn VLSI design", "from silicon", "to tapeout."]}
+            {["Learn VLSI design", "from basic", "to advance."]}
           </TextReveal>
 
           <p
@@ -94,7 +94,7 @@ export function Hero() {
                 </AnimatedButton>
               </MagneticButton>
               <AnimatedButton href="/sign-up" size="lg" variant="secondary" arrow={false}>
-                Create a free account
+                Register Yourself
               </AnimatedButton>
             </div>
             <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-subtle">
@@ -110,14 +110,14 @@ export function Hero() {
 
         <div data-hero="visual" data-hero-reveal className="relative mx-auto w-full max-w-[460px]">
           <div aria-hidden="true" className="glow-purple absolute -inset-16 rounded-full" />
-          <div className="relative rounded-[32px] border border-white/10 bg-white/[0.02] p-3 shadow-[0_40px_120px_-40px_rgba(124,58,237,0.6)]">
+          <div className="relative rounded-[32px] border border-white/10 bg-white/[0.02] p-3 shadow-[0_40px_120px_-40px_rgba(33, 131, 144,0.6)]">
             <DieVisual className="h-auto w-full" />
           </div>
           <div className="glass absolute -bottom-6 left-4 right-4 rounded-2xl px-4 py-3 sm:left-auto sm:right-[-1.5rem] sm:min-w-64">
             <p className="text-xs font-medium text-subtle">Now playing</p>
             <p className="mt-0.5 text-sm font-semibold text-white">CMOS Inverter Operation</p>
             <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-white/10">
-              <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#22D3EE]" />
+              <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#218390] to-[#22D3EE]" />
             </div>
           </div>
         </div>

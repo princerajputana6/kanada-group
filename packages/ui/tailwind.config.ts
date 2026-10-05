@@ -43,11 +43,14 @@ const preset: Omit<Config, "content"> = {
           DEFAULT: "#0A0A0D",
           raised: "#101014",
         },
+        // Brand teal family (names kept for compatibility with existing
+        // `bg-electric-purple` / `text-electric-lilac` usages).
         electric: {
-          purple: "#8B5CF6",
-          lilac: "#A78BFA",
+          purple: "#2BA3B4",
+          lilac: "#67C9D6",
           blue: "#3B82F6",
           cyan: "#22D3EE",
+          teal: "#218390",
           orange: "#FF7A18",
           yellow: "#FDBA3B",
         },

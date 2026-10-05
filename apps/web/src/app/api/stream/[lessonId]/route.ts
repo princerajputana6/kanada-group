@@ -43,6 +43,10 @@ export async function GET(
         ),
       });
       if (!enrollment) return new Response("Forbidden", { status: 403 });
+      // Paid-track videos require a verified payment.
+      if (!course.isFree && enrollment.paymentStatus !== "PAID") {
+        return new Response("Payment required", { status: 402 });
+      }
     }
   }
 

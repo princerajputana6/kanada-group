@@ -17,19 +17,19 @@
     --foreground: 240 24% 6%; /* #0B0B12 */
     --card: 0 0% 100%;
     --card-foreground: 240 24% 6%;
-    --primary: 262 83% 58%; /* #7C3AED */
+    --primary: 187 63% 35%; /* #218390 — Kanada brand teal */
     --primary-foreground: 0 0% 100%;
     --secondary: 240 14% 95%;
     --secondary-foreground: 240 24% 6%;
     --muted: 240 14% 95%;
     --muted-foreground: 240 8% 38%;
-    --accent: 258 90% 66%;
+    --accent: 187 55% 42%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 240 12% 90%;
     --input: 240 10% 86%;
-    --ring: 262 83% 58%;
+    --ring: 187 63% 35%;
     --radius: 0.875rem;
   }
 
@@ -39,19 +39,19 @@
     --foreground: 0 0% 100%;
     --card: 240 11% 7%; /* #101014 */
     --card-foreground: 0 0% 100%;
-    --primary: 262 83% 58%;
+    --primary: 187 51% 54%; /* #4FBAC6 — brighter teal on near-black */
     --primary-foreground: 0 0% 100%;
     --secondary: 240 9% 11%;
     --secondary-foreground: 0 0% 100%;
     --muted: 240 9% 11%;
     --muted-foreground: 240 7% 74%; /* #B8B8C2 */
-    --accent: 258 90% 66%; /* #8B5CF6 */
+    --accent: 187 51% 54%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 56%;
     --destructive-foreground: 0 0% 100%;
     --border: 240 5% 15%;
     --input: 240 5% 18%;
-    --ring: 258 90% 66%;
+    --ring: 187 51% 54%;
     color: hsl(var(--foreground));
   }
 }
@@ -66,7 +66,7 @@
     text-rendering: optimizeLegibility;
   }
   ::selection {
-    background: hsl(255 92% 68% / 0.35);
+    background: hsl(187 60% 42% / 0.30);
   }
   /* Slim, themed scrollbar */
   ::-webkit-scrollbar {
@@ -82,7 +82,7 @@
     border: 2px solid hsl(var(--background));
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(255 40% 40%);
+    background: hsl(187 45% 38%);
   }
 }
 
@@ -93,10 +93,10 @@
   .text-gradient {
     background-image: linear-gradient(
       120deg,
-      hsl(255 95% 78%),
-      hsl(280 92% 72%),
-      hsl(190 95% 62%),
-      hsl(255 95% 78%)
+      hsl(187 70% 45%),
+      hsl(190 85% 50%),
+      hsl(174 72% 46%),
+      hsl(187 70% 45%)
     );
     background-size: 250% auto;
     -webkit-background-clip: text;
@@ -128,7 +128,7 @@
   }
 
   .glow-primary {
-    box-shadow: 0 0 60px -12px hsl(255 92% 68% / 0.6);
+    box-shadow: 0 0 60px -12px hsl(187 70% 48% / 0.55);
   }
 
   .glow-accent {
@@ -140,7 +140,7 @@
     position: relative;
     background:
       linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
-      linear-gradient(130deg, hsl(255 92% 68% / 0.5), hsl(190 95% 55% / 0.35), transparent 60%)
+      linear-gradient(130deg, hsl(187 65% 45% / 0.5), hsl(190 90% 50% / 0.35), transparent 60%)
         border-box;
     border: 1px solid transparent;
   }

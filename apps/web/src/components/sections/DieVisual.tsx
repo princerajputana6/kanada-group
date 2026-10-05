@@ -9,17 +9,17 @@ const pads = Array.from({ length: PADS_PER_SIDE }, (_, i) => 78 + i * 29);
 
 // Traces from blocks out to the pad ring: [path, colour, delay seconds]
 const TRACES: [string, string, number][] = [
-  ["M175 150 V60 H165", "#A78BFA", 0],
+  ["M175 150 V60 H165", "#67c9d6", 0],
   ["M205 150 V92 H310 V60", "#22D3EE", 1.2],
-  ["M330 140 H420", "#A78BFA", 2.1],
+  ["M330 140 H420", "#67c9d6", 2.1],
   ["M330 200 H370 V250 H420", "#22D3EE", 0.6],
-  ["M135 330 V420", "#A78BFA", 1.6],
+  ["M135 330 V420", "#67c9d6", 1.6],
   ["M240 360 V395 H278 V420", "#FDBA3B", 2.8],
-  ["M340 330 V420", "#A78BFA", 3.4],
+  ["M340 330 V420", "#67c9d6", 3.4],
   ["M110 215 H60", "#22D3EE", 2.4],
-  ["M110 180 H88 V120 H60", "#A78BFA", 0.9],
-  ["M250 230 V270", "#8B5CF6", 1.9],
-  ["M190 230 V250 H150 V270", "#8B5CF6", 3.0],
+  ["M110 180 H88 V120 H60", "#67c9d6", 0.9],
+  ["M250 230 V270", "#2ba3b4", 1.9],
+  ["M190 230 V250 H150 V270", "#2ba3b4", 3.0],
 ];
 
 function Block({
@@ -39,7 +39,7 @@ function Block({
 }) {
   return (
     <g>
-      <rect x={x} y={y} width={w} height={h} rx="6" fill="url(#block)" stroke="rgba(167,139,250,0.35)" />
+      <rect x={x} y={y} width={w} height={h} rx="6" fill="url(#block)" stroke="rgba(103, 201, 214,0.35)" />
       {children}
       <text
         x={x + 10}
@@ -69,18 +69,18 @@ export function DieVisual({ className }: { className?: string }) {
           <stop offset="1" stopColor="#0a0a0d" />
         </linearGradient>
         <linearGradient id="block" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="rgba(139,92,246,0.18)" />
-          <stop offset="1" stopColor="rgba(139,92,246,0.03)" />
+          <stop offset="0" stopColor="rgba(43, 163, 180,0.18)" />
+          <stop offset="1" stopColor="rgba(43, 163, 180,0.03)" />
         </linearGradient>
         <radialGradient id="core-glow">
-          <stop offset="0" stopColor="rgba(139,92,246,0.55)" />
-          <stop offset="1" stopColor="rgba(139,92,246,0)" />
+          <stop offset="0" stopColor="rgba(43, 163, 180,0.55)" />
+          <stop offset="1" stopColor="rgba(43, 163, 180,0)" />
         </radialGradient>
         <pattern id="sram" width="8" height="8" patternUnits="userSpaceOnUse">
           <rect width="5" height="5" x="1.5" y="1.5" rx="1" fill="rgba(34,211,238,0.22)" />
         </pattern>
         <pattern id="stdcell" width="12" height="6" patternUnits="userSpaceOnUse">
-          <rect width="10" height="3" x="1" y="1.5" fill="rgba(167,139,250,0.14)" />
+          <rect width="10" height="3" x="1" y="1.5" fill="rgba(103, 201, 214,0.14)" />
         </pattern>
       </defs>
 
@@ -96,7 +96,7 @@ export function DieVisual({ className }: { className?: string }) {
       ))}
 
       {/* Die */}
-      <rect x="60" y="60" width="360" height="360" rx="14" fill="url(#die)" stroke="rgba(139,92,246,0.45)" />
+      <rect x="60" y="60" width="360" height="360" rx="14" fill="url(#die)" stroke="rgba(43, 163, 180,0.45)" />
       <circle cx="220" cy="190" r="150" fill="url(#core-glow)" />
 
       {/* Static routing underlay */}
@@ -121,7 +121,7 @@ export function DieVisual({ className }: { className?: string }) {
       </Block>
 
       {/* Light pulses */}
-      <g fill="none" strokeWidth="2" strokeLinecap="round" style={{ filter: "drop-shadow(0 0 4px rgba(167,139,250,0.9))" }}>
+      <g fill="none" strokeWidth="2" strokeLinecap="round" style={{ filter: "drop-shadow(0 0 4px rgba(103, 201, 214,0.9))" }}>
         {TRACES.map(([d, color, delay], i) => (
           <path
             key={i}

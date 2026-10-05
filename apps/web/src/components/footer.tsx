@@ -7,7 +7,7 @@ const COLUMNS = [
     title: "Learn",
     links: [
       { href: "/courses", label: "All courses" },
-      { href: "/sign-up", label: "Create an account" },
+      { href: "/sign-up", label: "Register Yourself" },
       { href: "/sign-in", label: "Sign in" },
     ],
   },

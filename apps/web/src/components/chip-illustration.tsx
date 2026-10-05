@@ -22,8 +22,8 @@ export function ChipIllustration({ className }: { className?: string }) {
       <svg viewBox="0 0 300 200" className="h-full w-full" fill="none">
         <defs>
           <linearGradient id="chipIllGrad" x1="0" y1="0" x2="300" y2="200" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#a78bfa" />
-            <stop offset="0.5" stopColor="#8b5cf6" />
+            <stop stopColor="#67c9d6" />
+            <stop offset="0.5" stopColor="#2ba3b4" />
             <stop offset="1" stopColor="#22d3ee" />
           </linearGradient>
           <filter id="chipGlow" x="-50%" y="-50%" width="200%" height="200%">

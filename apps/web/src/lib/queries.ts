@@ -73,13 +73,17 @@ export async function getStudentDashboard(userId: string) {
     progressRows.filter((p) => p.completed).map((p) => p.lessonId),
   );
 
-  return rows.map(({ course, enrolledAt }) => {
+  return rows.map(({ course, enrolledAt, paymentStatus }) => {
     const allLessons = course.sections.flatMap((s) => s.lessons);
     const total = allLessons.length;
     const completed = allLessons.filter((l) => completedLessonIds.has(l.id)).length;
+    // Paid tracks are only reachable once payment is verified.
+    const locked = !course.isFree && paymentStatus !== "PAID";
     return {
       course,
       enrolledAt,
+      paymentStatus,
+      locked,
       totalLessons: total,
       completedLessons: completed,
       percent: total === 0 ? 0 : Math.round((completed / total) * 100),
@@ -110,7 +114,42 @@ export async function getCourseForLearning(slug: string, userId: string) {
   });
   const progressByLesson = new Map(progressRows.map((p) => [p.lessonId, p]));
 
-  return { course, progressByLesson };
+  return { course, enrollment, progressByLesson };
+}
+
+/**
+ * Whether the student has fully completed every published FREE course — the
+ * "complete the basics first" gate before the paid tracks can be bought.
+ * Returns the free course's slug/title too (for linking them to it).
+ */
+export async function getFoundationsCompletion(userId: string) {
+  const db = await getDb();
+  const freeCourses = await db.query.courses.findMany({
+    where: and(eq(courses.isFree, true), eq(courses.published, true)),
+    with: { sections: { with: { lessons: { columns: { id: true } } } } },
+  });
+
+  const progressRows = await db.query.lessonProgress.findMany({
+    where: eq(lessonProgress.userId, userId),
+  });
+  const completed = new Set(
+    progressRows.filter((p) => p.completed).map((p) => p.lessonId),
+  );
+
+  let allComplete = freeCourses.length > 0;
+  for (const c of freeCourses) {
+    const lessonIds = c.sections.flatMap((s) => s.lessons.map((l) => l.id));
+    if (lessonIds.length === 0 || !lessonIds.every((id) => completed.has(id))) {
+      allComplete = false;
+    }
+  }
+
+  const primary = freeCourses[0];
+  return {
+    completed: allComplete,
+    freeCourseSlug: primary?.slug ?? null,
+    freeCourseTitle: primary?.title ?? null,
+  };
 }
 
 export async function getTeacherCourses(teacherId: string) {

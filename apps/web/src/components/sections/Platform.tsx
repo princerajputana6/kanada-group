@@ -36,7 +36,7 @@ export function Platform() {
                   data-card-media
                   className="theme-dark overflow-hidden rounded-2xl border border-white/10 bg-surface shadow-[0_30px_60px_-30px_rgba(20,16,50,0.45)]"
                 >
-                  <div className="relative aspect-[16/7] bg-[radial-gradient(circle_at_30%_40%,rgba(124,58,237,0.35),transparent_60%),radial-gradient(circle_at_75%_70%,rgba(34,211,238,0.18),transparent_55%)]">
+                  <div className="relative aspect-[16/7] bg-[radial-gradient(circle_at_30%_40%,rgba(33,131,144,0.35),transparent_60%),radial-gradient(circle_at_75%_70%,rgba(34,211,238,0.18),transparent_55%)]">
                     <div className="background-grid absolute inset-0 [mask-image:none]" />
                     <div className="absolute inset-0 grid place-items-center">
                       <span className="grid h-16 w-16 place-items-center rounded-full border border-white/20 bg-white/10 backdrop-blur">
@@ -48,7 +48,7 @@ export function Platform() {
                     <div className="absolute inset-x-5 bottom-4 flex items-center gap-3 text-[11px] tabular-nums text-white/70">
                       <span>08:42</span>
                       <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/15">
-                        <div className="h-full w-[58%] rounded-full bg-gradient-to-r from-[#7C3AED] to-[#22D3EE]" />
+                        <div className="h-full w-[58%] rounded-full bg-gradient-to-r from-[#218390] to-[#22D3EE]" />
                       </div>
                       <span>14:57</span>
                     </div>
@@ -88,7 +88,7 @@ export function Platform() {
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-foreground/[0.08]">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#7C3AED] to-[#22D3EE]"
+                      className="h-full rounded-full bg-gradient-to-r from-[#218390] to-[#22D3EE]"
                       style={{ width: `${v}%` }}
                     />
                   </div>
@@ -104,7 +104,7 @@ export function Platform() {
               and lessons you can preview before enrolling.
             </p>
             <div className="mt-8 flex -space-x-3" aria-hidden="true">
-              {["#7C3AED", "#3B82F6", "#22D3EE", "#FF7A18"].map((c) => (
+              {["#218390", "#3B82F6", "#22D3EE", "#FF7A18"].map((c) => (
                 <span
                   key={c}
                   className="h-11 w-11 rounded-full border-2 border-background"

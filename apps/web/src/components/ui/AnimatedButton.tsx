@@ -8,7 +8,7 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-[linear-gradient(135deg,#7C3AED,#8B5CF6_50%,#6D28D9)] bg-[length:200%_100%] bg-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_40px_-10px_rgba(124,58,237,0.7)] transition-[background-position,box-shadow] hover:bg-right hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_14px_60px_-8px_rgba(139,92,246,0.9)]",
+    "bg-[linear-gradient(135deg,#218390,#2ba3b4_50%,#1a6b76)] bg-[length:200%_100%] bg-left text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_10px_40px_-10px_rgba(33, 131, 144,0.7)] transition-[background-position,box-shadow] hover:bg-right hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_14px_60px_-8px_rgba(43, 163, 180,0.9)]",
   secondary:
     "border border-foreground/15 bg-foreground/[0.03] text-foreground backdrop-blur hover:border-foreground/30 hover:bg-foreground/[0.06]",
   ghost: "text-muted-foreground hover:text-foreground",

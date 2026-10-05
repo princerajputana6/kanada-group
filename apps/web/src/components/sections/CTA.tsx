@@ -25,7 +25,7 @@ export function CTA() {
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <MagneticButton>
               <AnimatedButton href="/sign-up" size="lg">
-                Create a free account
+                Register Yourself
               </AnimatedButton>
             </MagneticButton>
             <AnimatedButton href="/courses" size="lg" variant="secondary" arrow={false}>

@@ -8,7 +8,7 @@ const TRACKS = [
     title: "Semiconductor Fundamentals",
     body: "Band theory, PN junctions and MOSFET physics — the ground truth every design decision rests on.",
     tags: ["Device physics", "PN junctions", "MOSFETs"],
-    accent: "from-[#7C3AED]/40",
+    accent: "from-[#218390]/40",
     glyph: "M8 40h64M8 24h64M40 8v64", // lattice
   },
   {
@@ -94,7 +94,7 @@ export function Tracks() {
         </article>
       ))}
 
-      <article className="relative flex h-[400px] w-[82vw] max-w-[380px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-3xl border border-electric-purple/40 bg-[linear-gradient(160deg,rgba(124,58,237,0.35),rgba(10,10,13,0.9)_65%)] p-7 sm:h-[420px]">
+      <article className="relative flex h-[400px] w-[82vw] max-w-[380px] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-3xl border border-electric-purple/40 bg-[linear-gradient(160deg,rgba(33,131,144,0.35),rgba(10,10,13,0.9)_65%)] p-7 sm:h-[420px]">
         <div aria-hidden="true" className="glow-purple absolute -right-24 -top-24 h-72 w-72" />
         <p className="relative eyebrow">Start anywhere</p>
         <div className="relative">

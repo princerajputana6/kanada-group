@@ -116,7 +116,7 @@ export function SpotlightCard({
         className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
           background:
-            "radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), hsl(255 92% 68% / 0.14), transparent 45%)",
+            "radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), hsl(187 65% 45% / 0.16), transparent 45%)",
         }}
       />
       {children}
@@ -141,7 +141,7 @@ export function AuroraOrbs({ className }: { className?: string }) {
       <motion.div
         animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-fuchsia-500/20 blur-[110px]"
+        className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-cyan-500/20 blur-[110px]"
       />
     </div>
   );

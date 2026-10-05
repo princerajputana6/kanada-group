@@ -18,6 +18,11 @@ export function formatDuration(totalSeconds: number | null | undefined): string 
     : `${minutes}:${pad(seconds)}`;
 }
 
+export function formatPrice(amount: number | null | undefined): string {
+  if (!amount || amount <= 0) return "Free";
+  return `₹${amount.toLocaleString("en-IN")}`;
+}
+
 export function formatDate(date: Date | string | number): string {
   return new Date(date).toLocaleDateString("en-US", {
     year: "numeric",

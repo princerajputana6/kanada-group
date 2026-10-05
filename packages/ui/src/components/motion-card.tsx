@@ -20,7 +20,7 @@ export const MotionCard = React.forwardRef<
         "rounded-3xl border border-border bg-card text-card-foreground shadow-[var(--glass-shadow)] transition-colors duration-300 hover:border-primary/30",
         className,
       )}
-      whileHover={{ y: -5, boxShadow: "0 24px 60px -24px rgba(124,58,237,0.35)" }}
+      whileHover={{ y: -5, boxShadow: "0 24px 60px -24px rgba(33,131,144,0.35)" }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
       {...props}
     />
