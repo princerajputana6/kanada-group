@@ -221,9 +221,7 @@ export default async function CourseDetailPage({
                         className="h-56 w-56"
                       />
                     </div>
-                    <p className="mt-2 text-center text-xs font-medium text-foreground">
-                      PhonePe · SULEKHA DEVI
-                    </p>
+                 
                     <p className="mt-2 text-center text-xs text-muted-foreground">
                       Scan with any UPI app, then upload your payment screenshot below.
                     </p>
