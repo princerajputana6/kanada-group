@@ -1,0 +1,1 @@
+ALTER TABLE `courses` ADD `original_price` integer;

@@ -6,6 +6,12 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
+  experimental: {
+    // Resume / payment-screenshot uploads post the file to a server action.
+    serverActions: {
+      bodySizeLimit: "12mb",
+    },
+  },
 };
 
 // Lets `next dev` (not just `wrangler dev`) resolve Cloudflare bindings

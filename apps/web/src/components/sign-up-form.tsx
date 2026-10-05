@@ -3,30 +3,9 @@
 import { useActionState, useRef, useState, type ChangeEvent } from "react";
 import { Button, Input, Label, Select, Textarea } from "@kanada/ui";
 import { signUpAction, type ActionState } from "@/actions/auth-actions";
-import { requestResumeUploadUrlAction } from "@/actions/upload-actions";
+import { uploadResumeAction } from "@/actions/upload-actions";
 
 const MAX_RESUME_BYTES = 10 * 1024 * 1024; // 10 MB
-
-function uploadWithProgress(
-  url: string,
-  file: File,
-  onProgress: (percent: number) => void,
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open("PUT", url);
-    xhr.setRequestHeader("Content-Type", file.type);
-    xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
-    };
-    xhr.onload = () =>
-      xhr.status >= 200 && xhr.status < 300
-        ? resolve()
-        : reject(new Error(`Upload failed (${xhr.status})`));
-    xhr.onerror = () => reject(new Error("Upload failed"));
-    xhr.send(file);
-  });
-}
 
 /** A field whose value is a fixed list plus a free-text "Other". */
 function OptionWithOther({
@@ -83,7 +62,7 @@ export function SignUpForm() {
 
   const [resumeKey, setResumeKey] = useState("");
   const [resumeName, setResumeName] = useState("");
-  const [uploadPct, setUploadPct] = useState<number | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [resumeError, setResumeError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -100,16 +79,17 @@ export function SignUpForm() {
       setResumeError("Resume must be 10 MB or smaller.");
       return;
     }
-    setUploadPct(0);
+    setUploading(true);
     try {
-      const { url, key } = await requestResumeUploadUrlAction(file.name, file.type);
-      await uploadWithProgress(url, file, setUploadPct);
+      const fd = new FormData();
+      fd.append("file", file);
+      const { key } = await uploadResumeAction(fd);
       setResumeKey(key);
       setResumeName(file.name);
     } catch (err) {
       setResumeError(err instanceof Error ? err.message : "Upload failed");
     } finally {
-      setUploadPct(null);
+      setUploading(false);
     }
   }
 
@@ -232,8 +212,8 @@ export function SignUpForm() {
           onChange={handleResume}
           className="block w-full text-sm text-muted-foreground file:mr-3 file:rounded-lg file:border-0 file:bg-secondary file:px-3 file:py-2 file:text-sm file:font-medium hover:file:bg-secondary/70"
         />
-        {uploadPct !== null && (
-          <p className="text-xs text-muted-foreground">Uploading… {uploadPct}%</p>
+        {uploading && (
+          <p className="text-xs text-muted-foreground">Uploading…</p>
         )}
         {resumeKey && (
           <p className="text-xs text-primary">✓ {resumeName} uploaded</p>
@@ -247,7 +227,7 @@ export function SignUpForm() {
       <Button
         type="submit"
         className="w-full"
-        disabled={pending || uploadPct !== null || !resumeKey}
+        disabled={pending || uploading || !resumeKey}
       >
         {pending ? "Registering…" : "Register Yourself"}
       </Button>

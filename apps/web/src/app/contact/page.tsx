@@ -9,8 +9,8 @@ export default function ContactPage() {
       <div className="mt-8 space-y-4 rounded-lg border border-border p-6">
         <div>
           <p className="text-sm font-semibold">Email</p>
-          <a href="mailto:connect@biztreck.world" className="text-primary hover:underline">
-            connect@biztreck.world
+          <a href="mailto:info@kanadagroup.com" className="text-primary hover:underline">
+            info@kanadagroup.com
           </a>
         </div>
         <div>

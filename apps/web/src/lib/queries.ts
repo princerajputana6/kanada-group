@@ -21,7 +21,8 @@ export async function listPublishedCourses(opts?: { search?: string; category?: 
   return db.query.courses.findMany({
     where: and(...conditions),
     with: { teacher: true, reviews: true, enrollments: true },
-    orderBy: (c, { desc }) => [desc(c.createdAt)],
+    // Basics (free) first, then the paid tracks in creation order.
+    orderBy: (c, { desc, asc }) => [desc(c.isFree), asc(c.createdAt)],
   });
 }
 

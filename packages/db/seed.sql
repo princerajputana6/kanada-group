@@ -8,138 +8,138 @@ DELETE FROM lesson_progress;
    DELETE FROM users WHERE email LIKE '%@kanadagroup.dev';
 
 INSERT INTO users (id, name, email, password_hash, role, bio, created_at) VALUES
-    ('b1b0a11d-2dd2-4310-b02a-832e302f98b5', 'Kanada Admin', 'admin@kanadagroup.dev', '$2a$10$7UvdkYDQLdDutm4Kro.8H.cgrzWayJxt535hW7/Vts5wXekW.Svfm', 'ADMIN', 'Platform administrator.', 1791222820),
-    ('aca4b840-c156-4eff-bf28-434ff7bb4059', 'Demo Student', 'student@kanadagroup.dev', '$2a$10$7UvdkYDQLdDutm4Kro.8H.cgrzWayJxt535hW7/Vts5wXekW.Svfm', 'STUDENT', 'Learning VLSI design.', 1791222820),
-    ('0bf7b8b1-62f9-49ae-b4cf-b6da8bda41a5', 'Dr. Vibhu Srivastava', 'teacher@kanadagroup.dev', '$2a$10$7UvdkYDQLdDutm4Kro.8H.cgrzWayJxt535hW7/Vts5wXekW.Svfm', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791222820),
-    ('3abaccb7-30d9-45d3-bfed-31570bf02785', 'Dr. Anshul Verma', 'teacher2@kanadagroup.dev', '$2a$10$7UvdkYDQLdDutm4Kro.8H.cgrzWayJxt535hW7/Vts5wXekW.Svfm', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791222820),
-    ('c2bd77fd-df2d-4f93-aa90-54a344eb50fb', 'Er. Deepak', 'teacher3@kanadagroup.dev', '$2a$10$7UvdkYDQLdDutm4Kro.8H.cgrzWayJxt535hW7/Vts5wXekW.Svfm', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791222820),
-    ('14d8d3ca-6f07-4557-859b-94bf14b32424', 'Dr. Rahul Mishra', 'teacher4@kanadagroup.dev', '$2a$10$7UvdkYDQLdDutm4Kro.8H.cgrzWayJxt535hW7/Vts5wXekW.Svfm', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791222820),
-    ('c2b5e7c3-326f-4b3d-a9a7-a19feba84203', 'Er. Tejal Patel', 'teacher5@kanadagroup.dev', '$2a$10$7UvdkYDQLdDutm4Kro.8H.cgrzWayJxt535hW7/Vts5wXekW.Svfm', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791222820);
+    ('61f3a016-4bf7-4d0c-b1a1-db10b7d6fa82', 'Kanada Admin', 'admin@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'ADMIN', 'Platform administrator.', 1791226838),
+    ('757f3f8f-aaf9-4856-9a3f-6b52498661f9', 'Demo Student', 'student@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'STUDENT', 'Learning VLSI design.', 1791226838),
+    ('321ef702-812a-49fa-b988-adc2aced0e0e', 'Dr. Vibhu Srivastava', 'teacher@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
+    ('d44789de-71c9-4445-b09b-98d0756f0c61', 'Dr. Anshul Verma', 'teacher2@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
+    ('33784211-ce9a-410c-8222-c18a6002a735', 'Er. Deepak', 'teacher3@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
+    ('3e8e7c74-4fe2-4366-8a8b-b6a2e2477b05', 'Dr. Rahul Mishra', 'teacher4@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
+    ('473244ca-4027-468a-ba95-df6bc4c07251', 'Er. Tejal Patel', 'teacher5@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838);
 
 INSERT INTO categories (id, name, slug) VALUES
-    ('caab4809-d08e-4a51-a6bb-50689141a966', 'Foundations', 'foundations'),
-    ('4b320874-f8ce-4876-b228-e7d1a976bcf8', 'Digital VLSI', 'digital-vlsi'),
-    ('92629a03-b257-4013-a027-3b7792ce63ce', 'Analog VLSI', 'analog-vlsi');
+    ('0f5c4119-98a7-4292-8203-ecde3817d37d', 'Foundations', 'foundations'),
+    ('91f2fb2b-5ec0-4e2c-be00-093dd4aa9cee', 'Digital VLSI', 'digital-vlsi'),
+    ('89c34ada-1489-4547-946c-30d31c51c32b', 'Analog VLSI', 'analog-vlsi');
 
-INSERT INTO courses (id, title, slug, description, category, level, is_free, price, published, teacher_id, created_at) VALUES
-      ('cf107b00-8701-4175-b43c-8c34944b8c7c', 'VLSI Foundations — Free 8-Week Program', 'vlsi-foundations', 'Our free, open 8-week common program. Build the semiconductor, CMOS and digital fundamentals every VLSI engineer needs — from MOS physics to Verilog & FPGA. Complete it to unlock the Digital and Analog design tracks.', 'Foundations', 'BEGINNER', 1, NULL, 1, '0bf7b8b1-62f9-49ae-b4cf-b6da8bda41a5', 1791212020);
-
-INSERT INTO sections (id, course_id, title, "order") VALUES
-    ('06e39272-ceb5-444e-adfc-59a7d2a0145e', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 'Week 1: Semiconductor Fundamentals', 0),
-    ('28e7ae4d-51a1-4db9-ad21-ea9c119612af', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 'Week 2: MOS Capacitor Characteristics', 1),
-    ('f8e56149-80c7-4684-b7ea-d2b2b198ce40', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 'Week 3: MOSFET Fundamentals', 2),
-    ('95206551-f15f-46cb-9701-6edeb7a1c3e8', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 'Week 4: CMOS Fabrication Technology', 3),
-    ('a4c10052-4c51-4443-b290-e25fda1a1e86', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 'Week 5: CMOS Inverter Fundamentals', 4),
-    ('82e2a4eb-54bc-4c8c-8135-5dafe5337364', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 'Week 6: Basic Analog Circuits', 5),
-    ('cd289c87-9dae-42e6-b719-1ef7f775dfef', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 'Week 7: Combinational Logic Design', 6),
-    ('7f4de113-8f97-4e82-867c-cc1545d1ac36', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 'Week 8: Introduction to Verilog & FPGA', 7);
-
-INSERT INTO lessons (id, section_id, title, type, content, "order", is_preview) VALUES
-    ('83635e00-c820-430b-8f85-11bc91fa6942', '06e39272-ceb5-444e-adfc-59a7d2a0145e', 'Semiconductor Fundamentals — Overview', 'TEXT', 'This week covers: Review of semiconductor physics; MOS capacitor; Energy band diagrams; Charge distribution.', 0, 1),
-    ('1708d62f-bdf6-4f1e-8a45-e86ef974baa7', '06e39272-ceb5-444e-adfc-59a7d2a0145e', 'Semiconductor Fundamentals — Lecture', 'VIDEO', NULL, 1, 0),
-    ('669fcc0c-c979-4428-b6c0-09fbe5817896', '28e7ae4d-51a1-4db9-ad21-ea9c119612af', 'MOS Capacitor Characteristics — Overview', 'TEXT', 'This week covers: C–V characteristics; Ideal MOS capacitor model; Accumulation, depletion & inversion; Diffusion & depletion capacitance.', 0, 0),
-    ('be14f9c9-ebd9-4039-b29f-50b3dd559b9d', '28e7ae4d-51a1-4db9-ad21-ea9c119612af', 'MOS Capacitor Characteristics — Lecture', 'VIDEO', NULL, 1, 0),
-    ('9e2b5a29-aa77-4c3d-917c-fe21fd77216e', 'f8e56149-80c7-4684-b7ea-d2b2b198ce40', 'MOSFET Fundamentals — Overview', 'TEXT', 'This week covers: MOSFET introduction & structure; Modes of operation; Threshold voltage derivation; Body effect & process dependence.', 0, 0),
-    ('51021fef-6bc7-4507-9536-b5755067fc4d', 'f8e56149-80c7-4684-b7ea-d2b2b198ce40', 'MOSFET Fundamentals — Lecture', 'VIDEO', NULL, 1, 0),
-    ('f7eee85d-6f95-4a0e-9bf9-78152b07875e', '95206551-f15f-46cb-9701-6edeb7a1c3e8', 'CMOS Fabrication Technology — Overview', 'TEXT', 'This week covers: MOSFET fabrication process; Oxidation & diffusion; Ion implantation; Lithography & metallization; Process-flow overview.', 0, 0),
-    ('8b4e0f4b-aa50-4a0f-acc9-ce663637cb47', '95206551-f15f-46cb-9701-6edeb7a1c3e8', 'CMOS Fabrication Technology — Lecture', 'VIDEO', NULL, 1, 0),
-    ('dd826026-a3cd-4a43-9261-35045247313a', 'a4c10052-4c51-4443-b290-e25fda1a1e86', 'CMOS Inverter Fundamentals — Overview', 'TEXT', 'This week covers: CMOS inverter operation; Static DC characteristics & VTC; Switching threshold & noise margins; Beta ratio & PMOS/NMOS sizing; Design trade-offs.', 0, 0),
-    ('a41461c0-4d17-4106-a5b1-9ac7b75cbbbb', 'a4c10052-4c51-4443-b290-e25fda1a1e86', 'CMOS Inverter Fundamentals — Lecture', 'VIDEO', NULL, 1, 0),
-    ('cc79f624-8bcd-4168-8d4e-87989f3a0de2', '82e2a4eb-54bc-4c8c-8135-5dafe5337364', 'Basic Analog Circuits — Overview', 'TEXT', 'This week covers: PN junction; Diodes and applications.', 0, 0),
-    ('e4939173-8ebf-499b-8844-f023c12e853d', '82e2a4eb-54bc-4c8c-8135-5dafe5337364', 'Basic Analog Circuits — Lecture', 'VIDEO', NULL, 1, 0),
-    ('8a61a067-97a2-4d78-9113-c55918275cd6', 'cd289c87-9dae-42e6-b719-1ef7f775dfef', 'Combinational Logic Design — Overview', 'TEXT', 'This week covers: Logic gates & truth tables; Logic simplification; Adders, encoders, decoders; Multiplexers.', 0, 0),
-    ('3c73ff2d-0034-44dc-9a4c-2fa201c25dcf', 'cd289c87-9dae-42e6-b719-1ef7f775dfef', 'Combinational Logic Design — Lecture', 'VIDEO', NULL, 1, 0),
-    ('d5b49fa1-2fb4-44b2-97f9-8b7f47788908', '7f4de113-8f97-4e82-867c-cc1545d1ac36', 'Introduction to Verilog & FPGA — Overview', 'TEXT', 'This week covers: Modelling styles; Verilog operators & data types; Combinational modelling in Verilog; PLA & PAL; FPGA architecture & overview.', 0, 0),
-    ('392f3d6c-8e44-4468-a6ce-7b6e062db167', '7f4de113-8f97-4e82-867c-cc1545d1ac36', 'Introduction to Verilog & FPGA — Lecture', 'VIDEO', NULL, 1, 0);
-
-INSERT INTO courses (id, title, slug, description, category, level, is_free, price, published, teacher_id, created_at) VALUES
-      ('0666d57e-4961-4b4c-a55c-a30dae71209a', 'Digital VLSI Design', 'digital-vlsi-design', 'The complete digital design track (Weeks 9–20): static & alternative logic, layout, delay modelling, power, sequential design, RTL-to-GDSII physical design, signoff, DFT and a final project reviewed by an external expert.', 'Digital VLSI', 'ADVANCED', 0, 14999, 1, '3abaccb7-30d9-45d3-bfed-31570bf02785', 1791215620);
+INSERT INTO courses (id, title, slug, description, category, level, is_free, price, original_price, published, teacher_id, created_at) VALUES
+      ('648e1d75-a62f-4849-b134-30d365f817cf', 'VLSI Foundations — Free 8-Week Program', 'vlsi-foundations', 'Our free, open 8-week common program. Build the semiconductor, CMOS and digital fundamentals every VLSI engineer needs — from MOS physics to Verilog & FPGA. Complete it to unlock the Digital and Analog design tracks.', 'Foundations', 'BEGINNER', 1, NULL, NULL, 1, '321ef702-812a-49fa-b988-adc2aced0e0e', 1791216038);
 
 INSERT INTO sections (id, course_id, title, "order") VALUES
-    ('18427d53-5386-433e-b9bc-938dab84447b', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 9: Static CMOS Logic & Alternative Logic', 0),
-    ('6887b4a6-1c78-4e9c-b1d3-06b397f7325c', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 10: Digital Layout Design', 1),
-    ('e7e575ea-0c6c-4d7f-bf69-1c7a127cdfc2', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 11: Delay Modelling', 2),
-    ('601d3d29-ed16-4a2b-af5b-2757b50d5c3c', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 12: Elmore Delay & Logical Effort', 3),
-    ('c2865345-c11b-49bc-9783-56a75ad0e7ab', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 13: CMOS Power Analysis', 4),
-    ('ac414210-9ae9-457d-b8b0-cc7cebb32b9b', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 14: Sequential Circuit Design', 5),
-    ('6de89553-b80f-4e59-aac0-05d47f999610', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 15: Registers, Counters & FSMs', 6),
-    ('c56f6795-4e0a-48e2-b048-bce5426b4e9d', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 16: RTL Design & Logic Synthesis', 7),
-    ('566fc44d-b887-476b-abdf-deb133ea559c', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 17: Physical Design', 8),
-    ('72fde2a9-3791-4aef-8cc3-76b5fd087e5d', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 18: Signoffs', 9),
-    ('f2ae7e23-b64b-4d1b-a83b-fd3cad89a16b', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 19: Design for Testability (DFT)', 10),
-    ('0098aacf-ef55-4770-aef8-a87d903dd8b6', '0666d57e-4961-4b4c-a55c-a30dae71209a', 'Week 20: Final Digital Design Project', 11);
+    ('6042c597-17c4-43bc-88eb-74e84fe06b88', '648e1d75-a62f-4849-b134-30d365f817cf', 'Week 1: Semiconductor Fundamentals', 0),
+    ('37ec0b0e-9fd8-4a60-a95d-f21abaeb3223', '648e1d75-a62f-4849-b134-30d365f817cf', 'Week 2: MOS Capacitor Characteristics', 1),
+    ('f1051daf-9559-4208-a78b-cb9102e30cdd', '648e1d75-a62f-4849-b134-30d365f817cf', 'Week 3: MOSFET Fundamentals', 2),
+    ('2d95b3d4-e179-4c1b-ba2f-0a1354039b8c', '648e1d75-a62f-4849-b134-30d365f817cf', 'Week 4: CMOS Fabrication Technology', 3),
+    ('ff472df5-7b24-47ff-b4d1-8904c358c503', '648e1d75-a62f-4849-b134-30d365f817cf', 'Week 5: CMOS Inverter Fundamentals', 4),
+    ('f81a8918-fb71-480c-9ab3-1d3996b60bd2', '648e1d75-a62f-4849-b134-30d365f817cf', 'Week 6: Basic Analog Circuits', 5),
+    ('e650a53b-774c-4275-984c-fe6cdab51e27', '648e1d75-a62f-4849-b134-30d365f817cf', 'Week 7: Combinational Logic Design', 6),
+    ('52e133b0-48b6-46cd-9d05-83d576b9a297', '648e1d75-a62f-4849-b134-30d365f817cf', 'Week 8: Introduction to Verilog & FPGA', 7);
 
 INSERT INTO lessons (id, section_id, title, type, content, "order", is_preview) VALUES
-    ('072f158e-46fc-4af2-9f13-d00a17e0cb9a', '18427d53-5386-433e-b9bc-938dab84447b', 'Static CMOS Logic & Alternative Logic — Overview', 'TEXT', 'This week covers: CMOS logic gates; Pull-up & pull-down networks; Compound gates; Pass Transistor Logic (PTL); Transmission gates; Ratioed, dynamic, domino & tristate logic.', 0, 0),
-    ('016e130b-31fe-4811-b751-29397876c6f2', '18427d53-5386-433e-b9bc-938dab84447b', 'Static CMOS Logic & Alternative Logic — Lecture', 'VIDEO', NULL, 1, 0),
-    ('8aa56d7f-c19f-440e-bec2-faa3039805c2', '6887b4a6-1c78-4e9c-b1d3-06b397f7325c', 'Digital Layout Design — Overview', 'TEXT', 'This week covers: Stick diagrams; CMOS layout basics; Interconnects & vias; Design rules & DRC; Layout optimization.', 0, 0),
-    ('7211af40-d428-4a20-88b0-878084d3acd9', '6887b4a6-1c78-4e9c-b1d3-06b397f7325c', 'Digital Layout Design — Lecture', 'VIDEO', NULL, 1, 0),
-    ('5f56d48f-1d6b-4f5b-88b1-e9565fe75046', 'e7e575ea-0c6c-4d7f-bf69-1c7a127cdfc2', 'Delay Modelling — Overview', 'TEXT', 'This week covers: RC delay models; Lumped & distributed RC models; Delay estimation; Effective resistance & capacitance.', 0, 0),
-    ('53eaedcf-7184-441e-a1a2-3e7953b1ab29', 'e7e575ea-0c6c-4d7f-bf69-1c7a127cdfc2', 'Delay Modelling — Lecture', 'VIDEO', NULL, 1, 0),
-    ('6b05e7b0-305b-4df8-b4ee-82baa1a322da', '601d3d29-ed16-4a2b-af5b-2757b50d5c3c', 'Elmore Delay & Logical Effort — Overview', 'TEXT', 'This week covers: Elmore delay derivation; Logical, electrical & branching effort; Path effort & delay optimization; Worked examples; Project allotted.', 0, 0),
-    ('f480289e-690d-419e-8c4d-64e9f922e3f3', '601d3d29-ed16-4a2b-af5b-2757b50d5c3c', 'Elmore Delay & Logical Effort — Lecture', 'VIDEO', NULL, 1, 0),
-    ('80be2358-3a01-4220-bfc8-1f40746aae30', 'c2865345-c11b-49bc-9783-56a75ad0e7ab', 'CMOS Power Analysis — Overview', 'TEXT', 'This week covers: Dynamic & static power; Internal power; Leakage mechanisms; Short-circuit power; Power-performance trade-offs.', 0, 0),
-    ('5fd8b8c2-4467-4d7a-a252-9b1db8b69706', 'c2865345-c11b-49bc-9783-56a75ad0e7ab', 'CMOS Power Analysis — Lecture', 'VIDEO', NULL, 1, 0),
-    ('d0ed7533-c91e-4f7c-8e13-98de5c4de23a', 'ac414210-9ae9-457d-b8b0-cc7cebb32b9b', 'Sequential Circuit Design — Overview', 'TEXT', 'This week covers: Storage elements; SR & D latches; Edge-triggered flip-flops; Master-slave structures; Static Timing Analysis (STA).', 0, 0),
-    ('bc3e0f11-9592-435a-bda3-809ae369a57a', 'ac414210-9ae9-457d-b8b0-cc7cebb32b9b', 'Sequential Circuit Design — Lecture', 'VIDEO', NULL, 1, 0),
-    ('7ee1c175-f47c-4901-9d5b-79c2f300978f', '6de89553-b80f-4e59-aac0-05d47f999610', 'Registers, Counters & FSMs — Overview', 'TEXT', 'This week covers: Shift registers & phase-shifters; Ripple & synchronous counters; Frequency division; Moore & Mealy FSMs; FSM design examples.', 0, 0),
-    ('0b4b498e-4f4e-4137-b221-094900c24034', '6de89553-b80f-4e59-aac0-05d47f999610', 'Registers, Counters & FSMs — Lecture', 'VIDEO', NULL, 1, 0),
-    ('e1c7a10a-5661-495b-abde-02e41ef97503', 'c56f6795-4e0a-48e2-b048-bce5426b4e9d', 'RTL Design & Logic Synthesis — Overview', 'TEXT', 'This week covers: RTL coding guidelines; Synthesizable Verilog; Functional verification & testbenches; Timing constraints (SDC); Logic synthesis & technology mapping; LEC.', 0, 0),
-    ('abb85616-db2e-470c-a8f8-ca37110da794', 'c56f6795-4e0a-48e2-b048-bce5426b4e9d', 'RTL Design & Logic Synthesis — Lecture', 'VIDEO', NULL, 1, 0),
-    ('031ebe2c-2bdc-4c03-bb6b-bdcfe354abb5', '566fc44d-b887-476b-abdf-deb133ea559c', 'Physical Design — Overview', 'TEXT', 'This week covers: Floor planning; IO & macro placement; Power planning & placement; Clock Tree Synthesis (CTS); Routing.', 0, 0),
-    ('1259f36a-fe7f-4c35-a360-9c8d9410aa70', '566fc44d-b887-476b-abdf-deb133ea559c', 'Physical Design — Lecture', 'VIDEO', NULL, 1, 0),
-    ('61d887f4-2f62-4202-84d5-12abb09b8e7d', '72fde2a9-3791-4aef-8cc3-76b5fd087e5d', 'Signoffs — Overview', 'TEXT', 'This week covers: STA & DRVs; Signal integrity; DRC & LVS; IR-drop & electromigration analysis; ECO flow; GDSII generation & tapeout.', 0, 0),
-    ('61de6575-fb39-400d-9e94-9e4b616b113a', '72fde2a9-3791-4aef-8cc3-76b5fd087e5d', 'Signoffs — Lecture', 'VIDEO', NULL, 1, 0),
-    ('56755ea2-d9ac-419c-90fb-f57a5844c7ff', 'f2ae7e23-b64b-4d1b-a83b-fd3cad89a16b', 'Design for Testability (DFT) — Overview', 'TEXT', 'This week covers: Manufacturing defects & yield; Fault models & stuck-at faults; Controllability & observability; Scan-chain architecture; Industrial tools: Tessent, TestMAX, Modus; Project submission.', 0, 0),
-    ('122f301d-c20b-4c83-b8be-650b33b7ee18', 'f2ae7e23-b64b-4d1b-a83b-fd3cad89a16b', 'Design for Testability (DFT) — Lecture', 'VIDEO', NULL, 1, 0),
-    ('522e8cd7-0783-4128-b661-e35838e0b402', '0098aacf-ef55-4770-aef8-a87d903dd8b6', 'Final Digital Design Project — Overview', 'TEXT', 'This week covers: Final project presentation & review; Review by external expert.', 0, 0),
-    ('c0fb291f-2c83-461b-9e03-06e531920842', '0098aacf-ef55-4770-aef8-a87d903dd8b6', 'Final Digital Design Project — Lecture', 'VIDEO', NULL, 1, 0);
+    ('9e251ca0-4d75-4b6b-9334-11954f15f2aa', '6042c597-17c4-43bc-88eb-74e84fe06b88', 'Semiconductor Fundamentals — Overview', 'TEXT', 'This week covers: Review of semiconductor physics; MOS capacitor; Energy band diagrams; Charge distribution.', 0, 1),
+    ('1700df34-1442-4c37-bf33-d0415ee670de', '6042c597-17c4-43bc-88eb-74e84fe06b88', 'Semiconductor Fundamentals — Lecture', 'VIDEO', NULL, 1, 0),
+    ('2ec65caf-6869-45ca-86e1-42ee4299346e', '37ec0b0e-9fd8-4a60-a95d-f21abaeb3223', 'MOS Capacitor Characteristics — Overview', 'TEXT', 'This week covers: C–V characteristics; Ideal MOS capacitor model; Accumulation, depletion & inversion; Diffusion & depletion capacitance.', 0, 0),
+    ('a50d1d20-58d0-45ae-a882-a4c64bd052f8', '37ec0b0e-9fd8-4a60-a95d-f21abaeb3223', 'MOS Capacitor Characteristics — Lecture', 'VIDEO', NULL, 1, 0),
+    ('ede58a2a-b3ed-4e94-add1-f356af79bfc3', 'f1051daf-9559-4208-a78b-cb9102e30cdd', 'MOSFET Fundamentals — Overview', 'TEXT', 'This week covers: MOSFET introduction & structure; Modes of operation; Threshold voltage derivation; Body effect & process dependence.', 0, 0),
+    ('7dd6ab59-6434-4171-b70e-bf13f6cb502c', 'f1051daf-9559-4208-a78b-cb9102e30cdd', 'MOSFET Fundamentals — Lecture', 'VIDEO', NULL, 1, 0),
+    ('8cfef2c2-9dfb-48c5-be8e-970ce6f8fc8a', '2d95b3d4-e179-4c1b-ba2f-0a1354039b8c', 'CMOS Fabrication Technology — Overview', 'TEXT', 'This week covers: MOSFET fabrication process; Oxidation & diffusion; Ion implantation; Lithography & metallization; Process-flow overview.', 0, 0),
+    ('de288b06-a254-4f05-8458-d44e3f556df7', '2d95b3d4-e179-4c1b-ba2f-0a1354039b8c', 'CMOS Fabrication Technology — Lecture', 'VIDEO', NULL, 1, 0),
+    ('c40d485c-1ee3-438a-adb5-26526c35b60d', 'ff472df5-7b24-47ff-b4d1-8904c358c503', 'CMOS Inverter Fundamentals — Overview', 'TEXT', 'This week covers: CMOS inverter operation; Static DC characteristics & VTC; Switching threshold & noise margins; Beta ratio & PMOS/NMOS sizing; Design trade-offs.', 0, 0),
+    ('b4bebcd6-c4e6-40ea-b148-edced7afb5f6', 'ff472df5-7b24-47ff-b4d1-8904c358c503', 'CMOS Inverter Fundamentals — Lecture', 'VIDEO', NULL, 1, 0),
+    ('95e7ef43-d2b6-4306-8bdc-c38472458899', 'f81a8918-fb71-480c-9ab3-1d3996b60bd2', 'Basic Analog Circuits — Overview', 'TEXT', 'This week covers: PN junction; Diodes and applications.', 0, 0),
+    ('a613a80a-587f-4a94-8d5a-05ab92173927', 'f81a8918-fb71-480c-9ab3-1d3996b60bd2', 'Basic Analog Circuits — Lecture', 'VIDEO', NULL, 1, 0),
+    ('74692ec9-1e71-4e75-aee3-e31e553e99d8', 'e650a53b-774c-4275-984c-fe6cdab51e27', 'Combinational Logic Design — Overview', 'TEXT', 'This week covers: Logic gates & truth tables; Logic simplification; Adders, encoders, decoders; Multiplexers.', 0, 0),
+    ('21f955ba-77b7-41fa-9242-397dcf80a6ee', 'e650a53b-774c-4275-984c-fe6cdab51e27', 'Combinational Logic Design — Lecture', 'VIDEO', NULL, 1, 0),
+    ('483de785-82e1-4fbb-ab6e-755dfe39be19', '52e133b0-48b6-46cd-9d05-83d576b9a297', 'Introduction to Verilog & FPGA — Overview', 'TEXT', 'This week covers: Modelling styles; Verilog operators & data types; Combinational modelling in Verilog; PLA & PAL; FPGA architecture & overview.', 0, 0),
+    ('f4461a46-f33c-445f-8e33-c24df462f4e0', '52e133b0-48b6-46cd-9d05-83d576b9a297', 'Introduction to Verilog & FPGA — Lecture', 'VIDEO', NULL, 1, 0);
 
-INSERT INTO courses (id, title, slug, description, category, level, is_free, price, published, teacher_id, created_at) VALUES
-      ('6ee43a5e-2a80-451d-b968-d3141221df64', 'Analog VLSI Design', 'analog-vlsi-design', 'The complete analog design track (Weeks 9–20): MOS & differential amplifiers, op-amps, bandgap references, memory circuits, analog layout, noise & reliability, mixed-signal design and a final analog IC project.', 'Analog VLSI', 'ADVANCED', 0, 14999, 1, 'c2bd77fd-df2d-4f93-aa90-54a344eb50fb', 1791219220);
+INSERT INTO courses (id, title, slug, description, category, level, is_free, price, original_price, published, teacher_id, created_at) VALUES
+      ('268b9499-7cba-4152-9318-47073cceccb2', 'Digital VLSI Design', 'digital-vlsi-design', 'The complete digital design track (Weeks 9–20): static & alternative logic, layout, delay modelling, power, sequential design, RTL-to-GDSII physical design, signoff, DFT and a final project reviewed by an external expert.', 'Digital VLSI', 'ADVANCED', 0, 4999, 9999, 1, 'd44789de-71c9-4445-b09b-98d0756f0c61', 1791219638);
 
 INSERT INTO sections (id, course_id, title, "order") VALUES
-    ('6e04034d-25a6-46f1-80d3-dcf22b464fc1', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 9: MOS Amplifiers', 0),
-    ('a594af40-4c99-4320-a14a-4dbb2901c369', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 10: Advanced Amplifiers', 1),
-    ('96212719-9cd9-475a-8138-3a5e7651cfdd', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 11: Differential Amplifier', 2),
-    ('4eaa485b-2a19-4d00-ae8b-651d263869b2', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 12: Operational Amplifier', 3),
-    ('38943ce4-41cd-457d-8590-d6c62841df21', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 13: Advanced Op-Amps I', 4),
-    ('850e6707-cd99-4d20-aaf9-0be780537c23', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 14: Advanced Op-Amps II', 5),
-    ('1eb5d571-7e81-4c6f-a649-81d458c0de0d', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 15: Bandgap Reference', 6),
-    ('674e9d23-1882-43ed-8637-c733c2c09537', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 16: Memory Circuits', 7),
-    ('36859b18-db85-4b5a-963f-62fefae15076', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 17: Analog Layout', 8),
-    ('ad9ad12e-d4ae-4ff8-a3e7-96b20d7570b0', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 18: Noise & Reliability', 9),
-    ('62e13e61-bbc4-4a90-969d-3d508dd83462', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 19: Mixed Signal', 10),
-    ('92e8d9fa-17f1-4121-aa89-35cb7a85f102', '6ee43a5e-2a80-451d-b968-d3141221df64', 'Week 20: Final Analog IC Design Project', 11);
+    ('a0986a96-de5c-4330-8114-ca537cfa591f', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 9: Static CMOS Logic & Alternative Logic', 0),
+    ('2a1861c1-2ab4-4f48-8a54-f5f672657440', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 10: Digital Layout Design', 1),
+    ('7b011623-9647-48ef-8633-363e7726710e', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 11: Delay Modelling', 2),
+    ('0860d884-aa5f-4452-950f-f0d0c69350e3', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 12: Elmore Delay & Logical Effort', 3),
+    ('93465fa9-e8c4-4967-b991-bd71712c665e', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 13: CMOS Power Analysis', 4),
+    ('9a91a39b-6452-44f1-afd4-93e23236e497', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 14: Sequential Circuit Design', 5),
+    ('198256de-c443-4da8-93f9-700d4a44e178', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 15: Registers, Counters & FSMs', 6),
+    ('3795d11d-93a2-4f55-a084-ed6dd264b737', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 16: RTL Design & Logic Synthesis', 7),
+    ('29e46ede-5955-4f10-9392-548a8fe03ec7', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 17: Physical Design', 8),
+    ('96ee54df-1309-4f1b-b72a-2ad36554eee9', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 18: Signoffs', 9),
+    ('f9bb9812-aa82-47fd-a72a-19c3c5d36ef8', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 19: Design for Testability (DFT)', 10),
+    ('8183c662-ea7f-44d2-99d8-bd19f6925d10', '268b9499-7cba-4152-9318-47073cceccb2', 'Week 20: Final Digital Design Project', 11);
 
 INSERT INTO lessons (id, section_id, title, type, content, "order", is_preview) VALUES
-    ('ab900b5a-055c-408f-bb1a-09528e9b3860', '6e04034d-25a6-46f1-80d3-dcf22b464fc1', 'MOS Amplifiers — Overview', 'TEXT', 'This week covers: Small-signal model; Common Source, Drain & Gate; Gain, Rin/Rout; Frequency response; Lab.', 0, 0),
-    ('38773600-5a5a-45ed-bc70-b38878a8de75', '6e04034d-25a6-46f1-80d3-dcf22b464fc1', 'MOS Amplifiers — Lecture', 'VIDEO', NULL, 1, 0),
-    ('fdbd888f-30c1-40a3-a4f1-e08e9a969650', 'a594af40-4c99-4320-a14a-4dbb2901c369', 'Advanced Amplifiers — Overview', 'TEXT', 'This week covers: Cascade & cascode; Multistage amplifiers; Current mirrors & active loads; Small-signal analysis; Lab.', 0, 0),
-    ('8381eec8-01c6-4e6c-a398-443dcaeec6df', 'a594af40-4c99-4320-a14a-4dbb2901c369', 'Advanced Amplifiers — Lecture', 'VIDEO', NULL, 1, 0),
-    ('2285837c-6fb3-4ce4-ad70-21624806931f', '96212719-9cd9-475a-8138-3a5e7651cfdd', 'Differential Amplifier — Overview', 'TEXT', 'This week covers: Differential pair; Active loads; CMRR & PSRR; Offset; Design & analysis; Lab.', 0, 0),
-    ('3f8adf49-38ba-4f4d-baed-9066ec3f5fe5', '96212719-9cd9-475a-8138-3a5e7651cfdd', 'Differential Amplifier — Lecture', 'VIDEO', NULL, 1, 0),
-    ('164595da-3d0a-4c5a-aeaa-091e4a5d12d6', '4eaa485b-2a19-4d00-ae8b-651d263869b2', 'Operational Amplifier — Overview', 'TEXT', 'This week covers: Two-stage Op-Amp; Folded cascode; Compensation & GBW; Phase margin & slew rate; Project allotted.', 0, 0),
-    ('733663fa-69ac-4dfa-bf23-7fa2bb5079c1', '4eaa485b-2a19-4d00-ae8b-651d263869b2', 'Operational Amplifier — Lecture', 'VIDEO', NULL, 1, 0),
-    ('a5ce27e0-9d91-48ae-aa08-7d2c51d72a0f', '38943ce4-41cd-457d-8590-d6c62841df21', 'Advanced Op-Amps I — Overview', 'TEXT', 'This week covers: Rail-to-rail design; Low power; High speed.', 0, 0),
-    ('dc00bc79-5acf-4774-869e-b86aeb8a449b', '38943ce4-41cd-457d-8590-d6c62841df21', 'Advanced Op-Amps I — Lecture', 'VIDEO', NULL, 1, 0),
-    ('550363fe-888b-4489-add4-006b24709aad', '850e6707-cd99-4d20-aaf9-0be780537c23', 'Advanced Op-Amps II — Overview', 'TEXT', 'This week covers: Gain boosting; Design trade-offs; Corner simulations.', 0, 0),
-    ('5cfd6c30-cc8e-47ae-8a18-62ee454c5974', '850e6707-cd99-4d20-aaf9-0be780537c23', 'Advanced Op-Amps II — Lecture', 'VIDEO', NULL, 1, 0),
-    ('ab979893-0422-46bb-ad94-f313de064a10', '1eb5d571-7e81-4c6f-a649-81d458c0de0d', 'Bandgap Reference — Overview', 'TEXT', 'This week covers: PTAT & CTAT; Startup circuits; Temperature compensation; Applications; Lab.', 0, 0),
-    ('ee248fcb-c39c-41bb-ba80-8c51a9946a63', '1eb5d571-7e81-4c6f-a649-81d458c0de0d', 'Bandgap Reference — Lecture', 'VIDEO', NULL, 1, 0),
-    ('5decd807-b0bb-44ad-8f89-a19668991c79', '674e9d23-1882-43ed-8637-c733c2c09537', 'Memory Circuits — Overview', 'TEXT', 'This week covers: SRAM / DRAM / ROM / Flash; 6T SRAM; Read/Write operation; Sense amplifier; Peripheral circuits.', 0, 0),
-    ('e577c567-b00c-458e-a29e-bddfe52eaa69', '674e9d23-1882-43ed-8637-c733c2c09537', 'Memory Circuits — Lecture', 'VIDEO', NULL, 1, 0),
-    ('df6f39be-9dd2-492d-8c99-6188d7bb9874', '36859b18-db85-4b5a-963f-62fefae15076', 'Analog Layout — Overview', 'TEXT', 'This week covers: Layout basics & matching; Common centroid & interdigitation; Dummy devices & guard rings; Latch-up; DRC/LVS/PEX & post-layout simulation.', 0, 0),
-    ('5999710d-9a17-4ec5-a423-bdf00a80e8ba', '36859b18-db85-4b5a-963f-62fefae15076', 'Analog Layout — Lecture', 'VIDEO', NULL, 1, 0),
-    ('5469c0a1-5cf6-434c-a2a5-6160f4b64aa0', 'ad9ad12e-d4ae-4ff8-a3e7-96b20d7570b0', 'Noise & Reliability — Overview', 'TEXT', 'This week covers: Thermal & flicker noise; Monte Carlo analysis; Corners; ESD & reliability; Analog design flow.', 0, 0),
-    ('870937d9-e64b-45ee-a799-e241072f2d3d', 'ad9ad12e-d4ae-4ff8-a3e7-96b20d7570b0', 'Noise & Reliability — Lecture', 'VIDEO', NULL, 1, 0),
-    ('df003ac3-7385-4140-b38e-5ad6158773e5', '62e13e61-bbc4-4a90-969d-3d508dd83462', 'Mixed Signal — Overview', 'TEXT', 'This week covers: ADC overview; DAC basics; PLL basics; Memory array; Mixed-signal flow; Project submission.', 0, 0),
-    ('e0b5bec1-5ce8-4578-99f6-6d38d93196d8', '62e13e61-bbc4-4a90-969d-3d508dd83462', 'Mixed Signal — Lecture', 'VIDEO', NULL, 1, 0),
-    ('dd4c44fd-908d-40f5-9607-063a89467456', '92e8d9fa-17f1-4121-aa89-35cb7a85f102', 'Final Analog IC Design Project — Overview', 'TEXT', 'This week covers: Project presentation & review; Review by external expert.', 0, 0),
-    ('945cdf68-5e5d-4af1-938e-238bf327f613', '92e8d9fa-17f1-4121-aa89-35cb7a85f102', 'Final Analog IC Design Project — Lecture', 'VIDEO', NULL, 1, 0);
+    ('166edc9b-e818-4e2b-ba8c-2535bc231105', 'a0986a96-de5c-4330-8114-ca537cfa591f', 'Static CMOS Logic & Alternative Logic — Overview', 'TEXT', 'This week covers: CMOS logic gates; Pull-up & pull-down networks; Compound gates; Pass Transistor Logic (PTL); Transmission gates; Ratioed, dynamic, domino & tristate logic.', 0, 0),
+    ('4258fecd-e9a5-45e9-b2a9-38800b36ad6d', 'a0986a96-de5c-4330-8114-ca537cfa591f', 'Static CMOS Logic & Alternative Logic — Lecture', 'VIDEO', NULL, 1, 0),
+    ('b276161a-7c61-441b-b52d-a402bc8dd78e', '2a1861c1-2ab4-4f48-8a54-f5f672657440', 'Digital Layout Design — Overview', 'TEXT', 'This week covers: Stick diagrams; CMOS layout basics; Interconnects & vias; Design rules & DRC; Layout optimization.', 0, 0),
+    ('50ad10d1-9c30-4605-9756-7d42585ab06d', '2a1861c1-2ab4-4f48-8a54-f5f672657440', 'Digital Layout Design — Lecture', 'VIDEO', NULL, 1, 0),
+    ('1fb50e2a-fa69-4cfd-b5c6-a986bffe2ee5', '7b011623-9647-48ef-8633-363e7726710e', 'Delay Modelling — Overview', 'TEXT', 'This week covers: RC delay models; Lumped & distributed RC models; Delay estimation; Effective resistance & capacitance.', 0, 0),
+    ('02700b18-e135-47e9-9d18-76fc05050d0c', '7b011623-9647-48ef-8633-363e7726710e', 'Delay Modelling — Lecture', 'VIDEO', NULL, 1, 0),
+    ('08b1126a-aeab-40d9-a397-0b390ca45c75', '0860d884-aa5f-4452-950f-f0d0c69350e3', 'Elmore Delay & Logical Effort — Overview', 'TEXT', 'This week covers: Elmore delay derivation; Logical, electrical & branching effort; Path effort & delay optimization; Worked examples; Project allotted.', 0, 0),
+    ('a366dd1b-b605-4f99-83bf-889e5b599941', '0860d884-aa5f-4452-950f-f0d0c69350e3', 'Elmore Delay & Logical Effort — Lecture', 'VIDEO', NULL, 1, 0),
+    ('45911581-a92b-49ef-940c-fd82d500acfd', '93465fa9-e8c4-4967-b991-bd71712c665e', 'CMOS Power Analysis — Overview', 'TEXT', 'This week covers: Dynamic & static power; Internal power; Leakage mechanisms; Short-circuit power; Power-performance trade-offs.', 0, 0),
+    ('bf26f749-e4a0-4e42-816c-6ef80c438cb2', '93465fa9-e8c4-4967-b991-bd71712c665e', 'CMOS Power Analysis — Lecture', 'VIDEO', NULL, 1, 0),
+    ('cc22b197-6b41-4bea-b7d1-89b644404a5f', '9a91a39b-6452-44f1-afd4-93e23236e497', 'Sequential Circuit Design — Overview', 'TEXT', 'This week covers: Storage elements; SR & D latches; Edge-triggered flip-flops; Master-slave structures; Static Timing Analysis (STA).', 0, 0),
+    ('3c2b7d8f-6217-4200-8d4c-37c57905f0df', '9a91a39b-6452-44f1-afd4-93e23236e497', 'Sequential Circuit Design — Lecture', 'VIDEO', NULL, 1, 0),
+    ('8197bdda-a21f-4ad0-8547-c17e6b4dc0b7', '198256de-c443-4da8-93f9-700d4a44e178', 'Registers, Counters & FSMs — Overview', 'TEXT', 'This week covers: Shift registers & phase-shifters; Ripple & synchronous counters; Frequency division; Moore & Mealy FSMs; FSM design examples.', 0, 0),
+    ('f3abeb43-83ba-4a1f-902d-ad80bc72c172', '198256de-c443-4da8-93f9-700d4a44e178', 'Registers, Counters & FSMs — Lecture', 'VIDEO', NULL, 1, 0),
+    ('9793a1b7-bcb3-4bfe-950c-83ca6c27f847', '3795d11d-93a2-4f55-a084-ed6dd264b737', 'RTL Design & Logic Synthesis — Overview', 'TEXT', 'This week covers: RTL coding guidelines; Synthesizable Verilog; Functional verification & testbenches; Timing constraints (SDC); Logic synthesis & technology mapping; LEC.', 0, 0),
+    ('d242b5c0-832d-49a5-958a-9df3b633d192', '3795d11d-93a2-4f55-a084-ed6dd264b737', 'RTL Design & Logic Synthesis — Lecture', 'VIDEO', NULL, 1, 0),
+    ('cf1656cb-4121-4294-9aa4-db876a55dc73', '29e46ede-5955-4f10-9392-548a8fe03ec7', 'Physical Design — Overview', 'TEXT', 'This week covers: Floor planning; IO & macro placement; Power planning & placement; Clock Tree Synthesis (CTS); Routing.', 0, 0),
+    ('5b567110-9cf7-4fc4-85e4-d0f59f3877ed', '29e46ede-5955-4f10-9392-548a8fe03ec7', 'Physical Design — Lecture', 'VIDEO', NULL, 1, 0),
+    ('02a9d639-3091-4e11-9465-1c64074d74a4', '96ee54df-1309-4f1b-b72a-2ad36554eee9', 'Signoffs — Overview', 'TEXT', 'This week covers: STA & DRVs; Signal integrity; DRC & LVS; IR-drop & electromigration analysis; ECO flow; GDSII generation & tapeout.', 0, 0),
+    ('4d97b7a5-0caa-4434-95f5-2914890a3d8d', '96ee54df-1309-4f1b-b72a-2ad36554eee9', 'Signoffs — Lecture', 'VIDEO', NULL, 1, 0),
+    ('3283edc2-b36c-4400-b9df-9bac67dafc23', 'f9bb9812-aa82-47fd-a72a-19c3c5d36ef8', 'Design for Testability (DFT) — Overview', 'TEXT', 'This week covers: Manufacturing defects & yield; Fault models & stuck-at faults; Controllability & observability; Scan-chain architecture; Industrial tools: Tessent, TestMAX, Modus; Project submission.', 0, 0),
+    ('da1b36eb-2083-4185-bc12-d640a0370a37', 'f9bb9812-aa82-47fd-a72a-19c3c5d36ef8', 'Design for Testability (DFT) — Lecture', 'VIDEO', NULL, 1, 0),
+    ('7d0b8fcf-6d6e-49f9-aa9e-a9fc6b994bc4', '8183c662-ea7f-44d2-99d8-bd19f6925d10', 'Final Digital Design Project — Overview', 'TEXT', 'This week covers: Final project presentation & review; Review by external expert.', 0, 0),
+    ('abf816e9-c81e-4010-9227-4c6553da57ad', '8183c662-ea7f-44d2-99d8-bd19f6925d10', 'Final Digital Design Project — Lecture', 'VIDEO', NULL, 1, 0);
+
+INSERT INTO courses (id, title, slug, description, category, level, is_free, price, original_price, published, teacher_id, created_at) VALUES
+      ('9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Analog VLSI Design', 'analog-vlsi-design', 'The complete analog design track (Weeks 9–20): MOS & differential amplifiers, op-amps, bandgap references, memory circuits, analog layout, noise & reliability, mixed-signal design and a final analog IC project.', 'Analog VLSI', 'ADVANCED', 0, 4999, 9999, 1, '33784211-ce9a-410c-8222-c18a6002a735', 1791223238);
+
+INSERT INTO sections (id, course_id, title, "order") VALUES
+    ('3f7af438-fc52-4c8a-9dc6-ff13b275a6e1', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 9: MOS Amplifiers', 0),
+    ('c20a1691-ccdc-40f2-92b7-ca5ce008da2b', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 10: Advanced Amplifiers', 1),
+    ('3ad6f64f-d01b-494d-b95e-6dc307174eb5', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 11: Differential Amplifier', 2),
+    ('be7006d4-fcd0-4f27-ade3-c2b8ee005a41', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 12: Operational Amplifier', 3),
+    ('2ee03a75-4fe6-4fa5-978c-1019f2efd24b', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 13: Advanced Op-Amps I', 4),
+    ('702d9289-d548-4073-847e-a1448cba0ab0', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 14: Advanced Op-Amps II', 5),
+    ('ac38bafa-ebfb-4a91-a66b-f6cdd3cdf03d', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 15: Bandgap Reference', 6),
+    ('35e9b648-0615-482c-9714-3b7dcacaa669', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 16: Memory Circuits', 7),
+    ('860f46b0-e8d9-4234-914f-bda37147c6ea', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 17: Analog Layout', 8),
+    ('6c849fd3-e050-4b27-b3c7-278754331e17', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 18: Noise & Reliability', 9),
+    ('14321ea9-9aae-4201-8f51-80b64ff1abde', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 19: Mixed Signal', 10),
+    ('b99ecca3-e759-43c1-8c76-c03613dcd9c2', '9fea856f-8dbc-4473-9364-e9941b64dbd9', 'Week 20: Final Analog IC Design Project', 11);
+
+INSERT INTO lessons (id, section_id, title, type, content, "order", is_preview) VALUES
+    ('9925a7e1-5898-4ad6-866f-ba600ab43bf8', '3f7af438-fc52-4c8a-9dc6-ff13b275a6e1', 'MOS Amplifiers — Overview', 'TEXT', 'This week covers: Small-signal model; Common Source, Drain & Gate; Gain, Rin/Rout; Frequency response; Lab.', 0, 0),
+    ('fc8abbf3-b4ac-40fe-9bdb-9534ddc82063', '3f7af438-fc52-4c8a-9dc6-ff13b275a6e1', 'MOS Amplifiers — Lecture', 'VIDEO', NULL, 1, 0),
+    ('7a3d9123-568d-4feb-acd2-58de5894037c', 'c20a1691-ccdc-40f2-92b7-ca5ce008da2b', 'Advanced Amplifiers — Overview', 'TEXT', 'This week covers: Cascade & cascode; Multistage amplifiers; Current mirrors & active loads; Small-signal analysis; Lab.', 0, 0),
+    ('36d0dcf9-ae05-43bc-8bfc-a4a8c75e3c59', 'c20a1691-ccdc-40f2-92b7-ca5ce008da2b', 'Advanced Amplifiers — Lecture', 'VIDEO', NULL, 1, 0),
+    ('a8acb768-c2a5-4487-8a21-cf26ebc5d38d', '3ad6f64f-d01b-494d-b95e-6dc307174eb5', 'Differential Amplifier — Overview', 'TEXT', 'This week covers: Differential pair; Active loads; CMRR & PSRR; Offset; Design & analysis; Lab.', 0, 0),
+    ('165eb93f-da27-4458-9b8b-c96fab9c76f8', '3ad6f64f-d01b-494d-b95e-6dc307174eb5', 'Differential Amplifier — Lecture', 'VIDEO', NULL, 1, 0),
+    ('60aa518c-b525-4865-9515-efa0681bf3a2', 'be7006d4-fcd0-4f27-ade3-c2b8ee005a41', 'Operational Amplifier — Overview', 'TEXT', 'This week covers: Two-stage Op-Amp; Folded cascode; Compensation & GBW; Phase margin & slew rate; Project allotted.', 0, 0),
+    ('b671c217-5f7a-4a10-ace1-064db570f9e4', 'be7006d4-fcd0-4f27-ade3-c2b8ee005a41', 'Operational Amplifier — Lecture', 'VIDEO', NULL, 1, 0),
+    ('f70eded1-da02-4c92-9ecc-5a46d22fa079', '2ee03a75-4fe6-4fa5-978c-1019f2efd24b', 'Advanced Op-Amps I — Overview', 'TEXT', 'This week covers: Rail-to-rail design; Low power; High speed.', 0, 0),
+    ('e27d5200-b459-414a-b57d-cb30f62a3079', '2ee03a75-4fe6-4fa5-978c-1019f2efd24b', 'Advanced Op-Amps I — Lecture', 'VIDEO', NULL, 1, 0),
+    ('a4b59c69-e77b-4e24-89d7-1fd4d6956ddc', '702d9289-d548-4073-847e-a1448cba0ab0', 'Advanced Op-Amps II — Overview', 'TEXT', 'This week covers: Gain boosting; Design trade-offs; Corner simulations.', 0, 0),
+    ('7e930238-8433-481a-9ce9-931033494584', '702d9289-d548-4073-847e-a1448cba0ab0', 'Advanced Op-Amps II — Lecture', 'VIDEO', NULL, 1, 0),
+    ('8c5ce999-e553-4fb2-b6b2-efde2ee9df4c', 'ac38bafa-ebfb-4a91-a66b-f6cdd3cdf03d', 'Bandgap Reference — Overview', 'TEXT', 'This week covers: PTAT & CTAT; Startup circuits; Temperature compensation; Applications; Lab.', 0, 0),
+    ('0a0bdb72-64fc-409e-9b09-7e79ec967b5e', 'ac38bafa-ebfb-4a91-a66b-f6cdd3cdf03d', 'Bandgap Reference — Lecture', 'VIDEO', NULL, 1, 0),
+    ('cba8fc42-30e6-4a79-8f1b-05cf34174fbd', '35e9b648-0615-482c-9714-3b7dcacaa669', 'Memory Circuits — Overview', 'TEXT', 'This week covers: SRAM / DRAM / ROM / Flash; 6T SRAM; Read/Write operation; Sense amplifier; Peripheral circuits.', 0, 0),
+    ('6fefe3a3-1f96-4f52-b1d3-de047aecf246', '35e9b648-0615-482c-9714-3b7dcacaa669', 'Memory Circuits — Lecture', 'VIDEO', NULL, 1, 0),
+    ('eba5d57f-689d-4bee-b320-719add13c2f8', '860f46b0-e8d9-4234-914f-bda37147c6ea', 'Analog Layout — Overview', 'TEXT', 'This week covers: Layout basics & matching; Common centroid & interdigitation; Dummy devices & guard rings; Latch-up; DRC/LVS/PEX & post-layout simulation.', 0, 0),
+    ('fbea8530-25c3-46f4-b0a2-31ef5dac2a93', '860f46b0-e8d9-4234-914f-bda37147c6ea', 'Analog Layout — Lecture', 'VIDEO', NULL, 1, 0),
+    ('9d1bf58d-97e4-461d-97a8-e87286fecbfc', '6c849fd3-e050-4b27-b3c7-278754331e17', 'Noise & Reliability — Overview', 'TEXT', 'This week covers: Thermal & flicker noise; Monte Carlo analysis; Corners; ESD & reliability; Analog design flow.', 0, 0),
+    ('4e566385-e144-4986-8777-6c09fe15dac0', '6c849fd3-e050-4b27-b3c7-278754331e17', 'Noise & Reliability — Lecture', 'VIDEO', NULL, 1, 0),
+    ('02df4864-3673-4507-9107-e373256e5f19', '14321ea9-9aae-4201-8f51-80b64ff1abde', 'Mixed Signal — Overview', 'TEXT', 'This week covers: ADC overview; DAC basics; PLL basics; Memory array; Mixed-signal flow; Project submission.', 0, 0),
+    ('8fb87a16-5649-48bd-a0ce-02a021add68d', '14321ea9-9aae-4201-8f51-80b64ff1abde', 'Mixed Signal — Lecture', 'VIDEO', NULL, 1, 0),
+    ('7d4ba359-3392-4ec4-83ad-fe98ac247e79', 'b99ecca3-e759-43c1-8c76-c03613dcd9c2', 'Final Analog IC Design Project — Overview', 'TEXT', 'This week covers: Project presentation & review; Review by external expert.', 0, 0),
+    ('9a30e553-30d1-47f6-9132-8b23823a0930', 'b99ecca3-e759-43c1-8c76-c03613dcd9c2', 'Final Analog IC Design Project — Lecture', 'VIDEO', NULL, 1, 0);
 
 INSERT INTO enrollments (id, user_id, course_id, enrolled_at, payment_status) VALUES
-    ('758196de-5baf-4723-a7d5-4c74c8c208da', 'aca4b840-c156-4eff-bf28-434ff7bb4059', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 1791222820, 'NONE');
+    ('5e9d3703-6444-4971-ae78-eac05098fa7e', '757f3f8f-aaf9-4856-9a3f-6b52498661f9', '648e1d75-a62f-4849-b134-30d365f817cf', 1791226838, 'NONE');
 
 INSERT INTO reviews (id, user_id, course_id, rating, comment, created_at) VALUES
-    ('e80590bd-7bb2-4aca-a73b-71500e1cd775', 'aca4b840-c156-4eff-bf28-434ff7bb4059', 'cf107b00-8701-4175-b43c-8c34944b8c7c', 5, 'The foundation-first approach made everything click. The free 8 weeks alone are worth it.', 1791222820);
+    ('0bc3a693-3469-44c1-b51b-9e647393d2fd', '757f3f8f-aaf9-4856-9a3f-6b52498661f9', '648e1d75-a62f-4849-b134-30d365f817cf', 5, 'The foundation-first approach made everything click. The free 8 weeks alone are worth it.', 1791226838);

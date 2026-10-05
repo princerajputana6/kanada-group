@@ -1,12 +1,11 @@
 "use server";
 
-import {
-  getPresignedUploadUrl,
-  getPresignedResumeUrl,
-  getPresignedPaymentUrl,
-} from "@/lib/storage";
-import { requireRole, requireUser } from "@/lib/session";
+import { resumeKeyFor } from "@kanada/storage";
+import { getPresignedUploadUrl, putObject } from "@/lib/storage";
+import { requireRole } from "@/lib/session";
 import { assertLessonOwner } from "./course-actions";
+
+const MAX_RESUME_BYTES = 10 * 1024 * 1024; // 10 MB
 
 export async function requestUploadUrlAction(
   lessonId: string,
@@ -24,32 +23,17 @@ export async function requestUploadUrlAction(
 }
 
 /**
- * Presigned URL for a resume upload during registration. Unauthenticated by
- * necessity (the account doesn't exist yet) — restricted to PDFs and a
- * random object key, so it can't overwrite anything.
+ * Uploads a registration resume (PDF) straight to R2 via the Worker binding
+ * and returns its object key. Unauthenticated by necessity (the account
+ * doesn't exist yet) — restricted to PDFs under 10 MB with a random key.
  */
-export async function requestResumeUploadUrlAction(
-  filename: string,
-  contentType: string,
-) {
-  if (contentType !== "application/pdf") {
-    throw new Error("Resume must be a PDF file.");
-  }
-  return getPresignedResumeUrl(filename, contentType);
-}
+export async function uploadResumeAction(formData: FormData): Promise<{ key: string }> {
+  const file = formData.get("file");
+  if (!(file instanceof File)) throw new Error("No file provided.");
+  if (file.type !== "application/pdf") throw new Error("Resume must be a PDF file.");
+  if (file.size > MAX_RESUME_BYTES) throw new Error("Resume must be 10 MB or smaller.");
 
-/**
- * Presigned URL for a payment-screenshot upload. The student must be signed
- * in and own the enrollment; images only.
- */
-export async function requestPaymentUploadUrlAction(
-  enrollmentId: string,
-  filename: string,
-  contentType: string,
-) {
-  await requireUser();
-  if (!contentType.startsWith("image/")) {
-    throw new Error("Payment proof must be an image.");
-  }
-  return getPresignedPaymentUrl(enrollmentId, filename, contentType);
+  const key = resumeKeyFor(crypto.randomUUID(), file.name);
+  await putObject(key, await file.arrayBuffer(), file.type);
+  return { key };
 }

@@ -4,13 +4,16 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { eq, and } from "drizzle-orm";
 import { courses, enrollments, users } from "@kanada/db";
+import { paymentKeyFor } from "@kanada/storage";
 import { getDb } from "@/lib/db";
+import { putObject } from "@/lib/storage";
 import { requireRole } from "@/lib/session";
-import { getFoundationsCompletion } from "@/lib/queries";
 import {
   sendPaymentApprovedEmail,
   sendPaymentSubmittedEmail,
 } from "@/lib/email";
+
+const MAX_SCREENSHOT_BYTES = 10 * 1024 * 1024; // 10 MB
 
 async function originFromHeaders(): Promise<string> {
   const h = await headers();
@@ -41,10 +44,7 @@ export async function enrollAction(courseSlug: string) {
   });
 
   if (!course.isFree) {
-    const foundations = await getFoundationsCompletion(user.id);
-    if (!foundations.completed) {
-      throw new Error("Complete the free Foundations program before enrolling in a paid track.");
-    }
+    // Paid tracks can be purchased directly — no Foundations prerequisite.
     if (!existing) {
       await db.insert(enrollments).values({
         userId: user.id,
@@ -66,12 +66,17 @@ export async function enrollAction(courseSlug: string) {
 }
 
 /**
- * Student uploads a payment screenshot (already in R2) → moves the enrollment
- * to SUBMITTED for admin review and emails a receipt.
+ * Student uploads a payment screenshot (image) → stored in R2 via the Worker
+ * binding, enrollment moves to SUBMITTED for admin review, receipt emailed.
  */
-export async function submitPaymentAction(enrollmentId: string, screenshotKey: string) {
+export async function submitPaymentAction(enrollmentId: string, formData: FormData) {
   const user = await requireRole(["STUDENT"]);
   const db = await getDb();
+
+  const file = formData.get("file");
+  if (!(file instanceof File)) throw new Error("No screenshot provided.");
+  if (!file.type.startsWith("image/")) throw new Error("Payment proof must be an image.");
+  if (file.size > MAX_SCREENSHOT_BYTES) throw new Error("Screenshot must be 10 MB or smaller.");
 
   const enrollment = await db.query.enrollments.findFirst({
     where: and(eq(enrollments.id, enrollmentId), eq(enrollments.userId, user.id)),
@@ -79,6 +84,9 @@ export async function submitPaymentAction(enrollmentId: string, screenshotKey: s
   });
   if (!enrollment) throw new Error("Enrollment not found.");
   if (enrollment.paymentStatus === "PAID") return;
+
+  const screenshotKey = paymentKeyFor(enrollmentId, crypto.randomUUID(), file.name);
+  await putObject(screenshotKey, await file.arrayBuffer(), file.type);
 
   await db
     .update(enrollments)

@@ -1,10 +1,4 @@
-import {
-  createUploadUrl,
-  videoKeyFor,
-  resumeKeyFor,
-  paymentKeyFor,
-  deleteVideo,
-} from "@kanada/storage";
+import { createUploadUrl, videoKeyFor, deleteVideo } from "@kanada/storage";
 import { getEnv } from "./cloudflare";
 
 async function signUpload(key: string, contentType: string) {
@@ -31,19 +25,24 @@ export async function getPresignedUploadUrl(
   return signUpload(videoKeyFor(courseId, lessonId, filename), contentType);
 }
 
-export async function getPresignedResumeUrl(filename: string, contentType: string) {
-  return signUpload(resumeKeyFor(crypto.randomUUID(), filename), contentType);
-}
-
-export async function getPresignedPaymentUrl(
-  enrollmentId: string,
-  filename: string,
-  contentType: string,
-) {
-  return signUpload(paymentKeyFor(enrollmentId, crypto.randomUUID(), filename), contentType);
-}
-
 export async function removeVideo(key: string) {
   const env = await getEnv();
   await deleteVideo(env.VIDEO_BUCKET, key);
+}
+
+/**
+ * Writes bytes straight to R2 through the Worker binding — no presigned S3
+ * URL and no R2 API-token credentials needed. Suitable for small files
+ * (resumes, payment screenshots); large videos still use presigned PUT.
+ */
+export async function putObject(
+  key: string,
+  data: ArrayBuffer,
+  contentType: string,
+) {
+  const env = await getEnv();
+  await env.VIDEO_BUCKET.put(key, data, {
+    httpMetadata: { contentType },
+  });
+  return key;
 }

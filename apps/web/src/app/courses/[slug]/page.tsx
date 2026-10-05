@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Badge, Button, buttonVariants, cn } from "@kanada/ui";
-import { getCourseDetail, getFoundationsCompletion } from "@/lib/queries";
+import { getCourseDetail } from "@/lib/queries";
 import { getSession } from "@/lib/session";
 import { enrollAction } from "@/actions/enrollment-actions";
 import { formatDuration, formatPrice } from "@/lib/utils";
@@ -31,11 +31,6 @@ export default async function CourseDetailPage({
   const hasAccess = course.isFree
     ? isEnrolled
     : myEnrollment?.paymentStatus === "PAID";
-  // For paid tracks: has the student finished the free Foundations program?
-  const foundations =
-    isStudent && !course.isFree
-      ? await getFoundationsCompletion(session!.user.id)
-      : null;
 
   const avgRating =
     course.reviews.length > 0
@@ -129,9 +124,29 @@ export default async function CourseDetailPage({
 
         <div className="glass h-fit rounded-3xl p-6 lg:sticky lg:top-24">
           <p className="mb-1 text-xs uppercase tracking-[0.14em] text-subtle">Price</p>
-          <p className="mb-5 font-display text-4xl font-bold tracking-tight text-foreground">
-            {course.isFree ? "Free" : formatPrice(course.price)}
-          </p>
+          {course.isFree ? (
+            <p className="mb-5 font-display text-4xl font-bold tracking-tight text-foreground">
+              Free
+            </p>
+          ) : (
+            <div className="mb-5">
+              <div className="flex items-baseline gap-3">
+                <span className="font-display text-4xl font-bold tracking-tight text-foreground">
+                  {formatPrice(course.price)}
+                </span>
+                {course.originalPrice && course.originalPrice > (course.price ?? 0) && (
+                  <span className="text-lg font-medium text-muted-foreground line-through">
+                    {formatPrice(course.originalPrice)}
+                  </span>
+                )}
+              </div>
+              {course.originalPrice && course.originalPrice > (course.price ?? 0) && (
+                <span className="mt-1 inline-block rounded-md bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+                  {Math.round((1 - (course.price ?? 0) / course.originalPrice) * 100)}% off
+                </span>
+              )}
+            </div>
+          )}
 
           {isOwner ? (
             <Link
@@ -167,25 +182,6 @@ export default async function CourseDetailPage({
                 Enroll for free
               </Button>
             </form>
-          ) : foundations && !foundations.completed ? (
-            // Paid track locked until the free Foundations program is complete.
-            <div className="space-y-3 text-sm">
-              <p className="rounded-xl border border-border bg-secondary/50 p-3 text-muted-foreground">
-                🔒 Complete the free{" "}
-                <span className="font-medium text-foreground">
-                  {foundations.freeCourseTitle ?? "Foundations"}
-                </span>{" "}
-                program to unlock this paid track.
-              </p>
-              {foundations.freeCourseSlug && (
-                <Link
-                  href={`/courses/${foundations.freeCourseSlug}`}
-                  className={cn(buttonVariants(), "w-full")}
-                >
-                  Go to Foundations
-                </Link>
-              )}
-            </div>
           ) : myEnrollment?.paymentStatus === "SUBMITTED" ? (
             <div className="rounded-xl border border-border bg-secondary/50 p-4 text-sm">
               <p className="font-medium text-foreground">⏳ Payment under review</p>
@@ -195,7 +191,7 @@ export default async function CourseDetailPage({
               </p>
             </div>
           ) : (
-            // AWAITING, REJECTED, or not-yet-enrolled (foundations complete).
+            // AWAITING, REJECTED, or not-yet-enrolled.
             <div className="space-y-4 text-sm">
               {myEnrollment?.paymentStatus === "REJECTED" && (
                 <p className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-destructive">
@@ -219,12 +215,15 @@ export default async function CourseDetailPage({
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src="/brand/payment-qr.png"
-                        alt="PhonePe payment QR code"
-                        width={240}
-                        height={453}
-                        className="w-full max-w-[240px]"
+                        alt="PhonePe payment QR code — pay to SULEKHA DEVI"
+                        width={220}
+                        height={220}
+                        className="h-56 w-56"
                       />
                     </div>
+                    <p className="mt-2 text-center text-xs font-medium text-foreground">
+                      PhonePe · SULEKHA DEVI
+                    </p>
                     <p className="mt-2 text-center text-xs text-muted-foreground">
                       Scan with any UPI app, then upload your payment screenshot below.
                     </p>

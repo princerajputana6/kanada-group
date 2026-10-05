@@ -12,7 +12,7 @@ export interface PlatformStats {
 export function Stats({ stats }: { stats: PlatformStats }) {
   const items = [
     { value: stats.courses, label: "Published courses" },
-    { value: stats.enrollments, label: "Course enrollments" },
+    { value: 20, label: "Weeks of training" },
     { value: stats.instructors, label: stats.instructors === 1 ? "Instructor" : "Instructors" },
     stats.avgRating !== null
       ? { value: stats.avgRating, decimals: 1, suffix: "★", label: "Average rating" }

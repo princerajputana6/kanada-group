@@ -93,7 +93,10 @@ export const courses = sqliteTable(
     category: text("category"),
     level: text("level").notNull().default("BEGINNER"),
     isFree: integer("is_free", { mode: "boolean" }).notNull().default(true),
+    /** Sale price actually charged (INR). */
     price: integer("price"),
+    /** Original/list price, shown struck-through when > price (INR). */
+    originalPrice: integer("original_price"),
     published: integer("published", { mode: "boolean" })
       .notNull()
       .default(false),

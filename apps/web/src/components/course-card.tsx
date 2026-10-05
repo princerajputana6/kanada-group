@@ -19,6 +19,7 @@ export interface CourseCardData {
   level: string;
   isFree?: boolean;
   price?: number | null;
+  originalPrice?: number | null;
   teacher: { name: string };
   enrollments: unknown[];
   reviews: { rating: number }[];
@@ -61,11 +62,21 @@ function CourseArt({ course }: { course: CourseCardData }) {
   );
 }
 
-export function CourseCard({ course }: { course: CourseCardData }) {
+export function CourseCard({
+  course,
+  showStudents = true,
+}: {
+  course: CourseCardData;
+  showStudents?: boolean;
+}) {
   const avgRating =
     course.reviews.length > 0
       ? course.reviews.reduce((sum, r) => sum + r.rating, 0) / course.reviews.length
       : null;
+  const hasDiscount =
+    !course.isFree &&
+    !!course.originalPrice &&
+    course.originalPrice > (course.price ?? 0);
 
   return (
     <StaggerItem>
@@ -81,7 +92,14 @@ export function CourseCard({ course }: { course: CourseCardData }) {
               {course.isFree ? (
                 <Badge variant="success">Free</Badge>
               ) : (
-                <Badge>{formatPrice(course.price)}</Badge>
+                <span className="inline-flex items-center gap-1.5">
+                  <Badge>{formatPrice(course.price)}</Badge>
+                  {hasDiscount && (
+                    <span className="text-xs text-muted-foreground line-through">
+                      {formatPrice(course.originalPrice)}
+                    </span>
+                  )}
+                </span>
               )}
             </div>
             <CardTitle className="line-clamp-2">{course.title}</CardTitle>
@@ -92,8 +110,10 @@ export function CourseCard({ course }: { course: CourseCardData }) {
           <CardFooter className="mt-auto flex items-center justify-between border-t border-border pt-4 text-sm text-muted-foreground">
             <span>{course.teacher.name}</span>
             <span>
-              {course.enrollments.length} student{course.enrollments.length === 1 ? "" : "s"}
-              {avgRating ? ` · ★ ${avgRating.toFixed(1)}` : ""}
+              {showStudents &&
+                `${course.enrollments.length} student${course.enrollments.length === 1 ? "" : "s"}`}
+              {showStudents && avgRating ? " · " : ""}
+              {avgRating ? `★ ${avgRating.toFixed(1)}` : ""}
             </span>
           </CardFooter>
         </MotionCard>

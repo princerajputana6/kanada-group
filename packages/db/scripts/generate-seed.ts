@@ -145,8 +145,10 @@ interface CourseSpec {
   level: "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
   teacher: number;
   isFree: boolean;
-  /** Price in INR (rupees). Admin-editable later; null for free. */
+  /** Sale price charged, in INR. Admin-editable later; null for free. */
   price: number | null;
+  /** Original/list price shown struck-through, in INR. */
+  originalPrice: number | null;
   weeks: Week[];
 }
 
@@ -155,12 +157,13 @@ const COURSES: CourseSpec[] = [
     title: "VLSI Foundations — Free 8-Week Program",
     slug: "vlsi-foundations",
     description:
-      "Our free, open 8-week common program. Build the semiconductor, CMOS and digital fundamentals every VLSI engineer needs — from MOS physics to Verilog & FPGA. Complete it to unlock the Digital and Analog design tracks.",
+      "Our free, open 8-week common program. Build the semiconductor, CMOS and digital fundamentals every VLSI engineer needs — from MOS physics to Verilog & FPGA. The ideal starting point before the Digital and Analog design tracks.",
     category: "Foundations",
     level: "BEGINNER",
     teacher: 0,
     isFree: true,
     price: null,
+    originalPrice: null,
     weeks: FOUNDATION_WEEKS,
   },
   {
@@ -172,7 +175,8 @@ const COURSES: CourseSpec[] = [
     level: "ADVANCED",
     teacher: 1,
     isFree: false,
-    price: 14999,
+    price: 4999,
+    originalPrice: 9999,
     weeks: DIGITAL_WEEKS,
   },
   {
@@ -184,7 +188,8 @@ const COURSES: CourseSpec[] = [
     level: "ADVANCED",
     teacher: 2,
     isFree: false,
-    price: 14999,
+    price: 4999,
+    originalPrice: 9999,
     weeks: ANALOG_WEEKS,
   },
 ];
@@ -198,8 +203,8 @@ for (let ci = 0; ci < COURSES.length; ci++) {
   const teacherId = teacherIds[c.teacher]!;
 
   statements.push(
-    `INSERT INTO courses (id, title, slug, description, category, level, is_free, price, published, teacher_id, created_at) VALUES
-      ('${courseId}', '${sqlEscape(c.title)}', '${c.slug}', '${sqlEscape(c.description)}', '${sqlEscape(c.category)}', '${c.level}', ${c.isFree ? 1 : 0}, ${c.price ?? "NULL"}, 1, '${teacherId}', ${now - (COURSES.length - ci) * 3600});`,
+    `INSERT INTO courses (id, title, slug, description, category, level, is_free, price, original_price, published, teacher_id, created_at) VALUES
+      ('${courseId}', '${sqlEscape(c.title)}', '${c.slug}', '${sqlEscape(c.description)}', '${sqlEscape(c.category)}', '${c.level}', ${c.isFree ? 1 : 0}, ${c.price ?? "NULL"}, ${c.originalPrice ?? "NULL"}, 1, '${teacherId}', ${now - (COURSES.length - ci) * 3600});`,
   );
 
   const sectionRows: string[] = [];
