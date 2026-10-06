@@ -81,7 +81,7 @@ export function Hero() {
             data-hero-reveal
             className="mt-8 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
           >
-            Digital &amp; analog VLSI training from industry experts — semiconductor
+            Digital &amp; analog VLSI training from industry & Acdemia experts — semiconductor
             fundamentals, CMOS technology, RTL to tapeout, and analog IC design, now on your
             schedule.
           </p>

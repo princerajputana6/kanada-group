@@ -21,7 +21,7 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Kanada Group | VLSI Learning Platform",
   description:
-    "Learn Digital & Analog VLSI design from industry experts — semiconductor fundamentals to tapeout.",
+    "Learn Digital & Analog VLSI design from industry & Acdemia experts — semiconductor fundamentals to tapeout.",
 };
 
 export const viewport: Viewport = {

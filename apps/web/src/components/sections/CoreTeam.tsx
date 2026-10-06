@@ -6,14 +6,22 @@ interface Member {
 }
 
 const TEAM: Member[] = [
-  { name: "Er. Deepak", role: "Director — Digital Design" },
-  { name: "Dr. Anshul Verma", role: "Director — Analog Design" },
-  { name: "Priyam Shukla", role: "Junior Manager" },
-  { name: "Tejal Patel", role: "Industry Expert — Physical Design" },
-  { name: "Dr. Rahul Mishra", role: "Mentor — Digital Design" },
+      { name: "Sulekha Dwivedi", role: "Director — Management" },
+        { name: "Dr. Anshul Verma", role: "Director — Analog Design" },
+  { name: "Er. Deepak Mishra", role: "Director — Digital Design" },
   { name: "Er. Ronit Mishra", role: "Industry Expert — Memory Design" },
+  { name: "Tejal Patel", role: "Industry Expert — Physical Design" },
   { name: "Dr. Vibhu Srivastava", role: "Mentor — Device Fabrication" },
   { name: "Dr. Pritesh", role: "Mentor — Analog Design" },
+  { name: "Dr. Rahul Mishra", role: "Mentor — Digital Design" },
+  { name: "Dr. Abhi", role: "Mentor — Digital Design (ML)" },
+  { name: "PK Dwivedi", role: "Mentor — Data Analytics" },
+
+
+
+    
+    { name: "Priyam Shukla", role: "Junior Manager" },
+
 ];
 
 /** Initials from a name, e.g. "Dr. Anshul Verma" → "AV", "Er. Deepak" → "DE". */
