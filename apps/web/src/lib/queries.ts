@@ -26,6 +26,17 @@ export async function listPublishedCourses(opts?: { search?: string; category?: 
   });
 }
 
+/** Just the titles of published courses (for the enquiry dropdown). */
+export async function getPublishedCourseTitles(): Promise<string[]> {
+  const db = await getDb();
+  const rows = await db.query.courses.findMany({
+    where: eq(courses.published, true),
+    columns: { title: true, isFree: true, createdAt: true },
+    orderBy: (c, { desc, asc }) => [desc(c.isFree), asc(c.createdAt)],
+  });
+  return rows.map((r) => r.title);
+}
+
 export async function getCourseDetail(slug: string) {
   const db = await getDb();
   return db.query.courses.findFirst({

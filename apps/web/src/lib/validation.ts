@@ -23,6 +23,19 @@ export const registrationSchema = z.object({
   resumeKey: z.string().min(1, "Upload your resume (PDF)").max(300),
 });
 
+export const enquirySchema = z.object({
+  name: z.string().min(2, "Enter your name").max(100),
+  email: z.string().email("Enter a valid email"),
+  phone: z
+    .string()
+    .min(10, "Enter a valid 10-digit mobile number")
+    .max(15, "Number is too long")
+    .regex(/^[0-9+\-\s]+$/, "Enter a valid mobile number"),
+  course: z.string().max(150).optional(),
+  source: z.string().max(100).optional(),
+  message: z.string().max(2000).optional(),
+});
+
 export const signInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1, "Password is required"),

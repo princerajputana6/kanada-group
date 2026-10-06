@@ -306,6 +306,25 @@ export async function getPaymentEnrollments() {
     });
 }
 
+/** All enquiry submissions for the admin inbox; NEW first, then newest. */
+export async function getEnquiries() {
+  const db = await getDb();
+  const rows = await db.query.enquiries.findMany();
+  const order: Record<string, number> = { NEW: 0, CONTACTED: 1, CLOSED: 2 };
+  return rows.sort((a, b) => {
+    const d = (order[a.status] ?? 9) - (order[b.status] ?? 9);
+    return d !== 0 ? d : b.createdAt.getTime() - a.createdAt.getTime();
+  });
+}
+
+export async function getEnquiryCounts() {
+  const rows = await getEnquiries();
+  return {
+    total: rows.length,
+    newCount: rows.filter((r) => r.status === "NEW").length,
+  };
+}
+
 export async function getPaymentCounts() {
   const rows = await getPaymentEnrollments();
   return {

@@ -20,6 +20,9 @@ export type LessonType = (typeof LESSON_TYPES)[number];
  *  PAID      — admin verified the payment; course unlocked
  *  REJECTED  — admin rejected the screenshot; student may re-upload
  */
+export const ENQUIRY_STATUSES = ["NEW", "CONTACTED", "CLOSED"] as const;
+export type EnquiryStatus = (typeof ENQUIRY_STATUSES)[number];
+
 export const PAYMENT_STATUSES = [
   "NONE",
   "AWAITING",
@@ -186,6 +189,20 @@ export const lessonProgress = sqliteTable(
     ),
   ],
 );
+
+/** Public "VLSI course enquiry" submissions from the header popup form. */
+export const enquiries = sqliteTable("enquiries", {
+  id: id(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone").notNull(),
+  course: text("course"),
+  message: text("message"),
+  /** "How did you hear about us?" — referral source. */
+  source: text("source"),
+  status: text("status", { enum: ENQUIRY_STATUSES }).notNull().default("NEW"),
+  createdAt: timestamp("created_at"),
+});
 
 export const reviews = sqliteTable(
   "reviews",
