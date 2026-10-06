@@ -417,7 +417,7 @@ export function CtaSection() {
             </p>
             <Magnetic>
               <Link
-                href="/sign-up"
+                href="/registration"
                 className={cn(buttonVariants({ size: "lg" }), "mt-8 glow-primary")}
               >
                 Register Yourself

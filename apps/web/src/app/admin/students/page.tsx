@@ -43,13 +43,21 @@ export default async function AdminStudentsPage({
             {isFiltered ? `${rows.length} of ${total}` : total} student{total === 1 ? "" : "s"}
           </p>
         </div>
-        <a
-          href={`/admin/students/export?${exportParams}`}
-          className={cn(buttonVariants({ variant: "outline", size: "sm" }), "self-start sm:self-auto")}
-          download
-        >
-          Export CSV{isFiltered ? " (filtered)" : ""}
-        </a>
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <Link
+            href="/admin/users/new?role=STUDENT"
+            className={cn(buttonVariants({ size: "sm" }))}
+          >
+            + Add student
+          </Link>
+          <a
+            href={`/admin/students/export?${exportParams}`}
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+            download
+          >
+            Export CSV{isFiltered ? " (filtered)" : ""}
+          </a>
+        </div>
       </div>
 
       <form method="get" role="search" className="mt-6 grid gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-[2fr_1fr_1.5fr_1fr_1fr_auto]">

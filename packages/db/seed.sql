@@ -10,8 +10,8 @@ DELETE FROM lesson_progress;
 INSERT INTO users (id, name, email, password_hash, role, bio, created_at) VALUES
     ('61f3a016-4bf7-4d0c-b1a1-db10b7d6fa82', 'Kanada Admin', 'admin@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'ADMIN', 'Platform administrator.', 1791226838),
     ('757f3f8f-aaf9-4856-9a3f-6b52498661f9', 'Demo Student', 'student@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'STUDENT', 'Learning VLSI design.', 1791226838),
-    ('321ef702-812a-49fa-b988-adc2aced0e0e', 'Dr. Vibhu Srivastava', 'teacher@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
-    ('d44789de-71c9-4445-b09b-98d0756f0c61', 'Dr. Anshul Verma', 'teacher2@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
+    ('321ef702-812a-49fa-b988-adc2aced0e0e', 'Shulekha Dwivedi', 'teacher@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
+    ('d44789de-71c9-4445-b09b-98d0756f0c61', 'Er. Deepak Mishra', 'teacher2@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
     ('33784211-ce9a-410c-8222-c18a6002a735', 'Er. Deepak', 'teacher3@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
     ('3e8e7c74-4fe2-4366-8a8b-b6a2e2477b05', 'Dr. Rahul Mishra', 'teacher4@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
     ('473244ca-4027-468a-ba95-df6bc4c07251', 'Er. Tejal Patel', 'teacher5@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838);
@@ -43,7 +43,7 @@ INSERT INTO lessons (id, section_id, title, type, content, "order", is_preview) 
     ('7dd6ab59-6434-4171-b70e-bf13f6cb502c', 'f1051daf-9559-4208-a78b-cb9102e30cdd', 'MOSFET Fundamentals — Lecture', 'VIDEO', NULL, 1, 0),
     ('8cfef2c2-9dfb-48c5-be8e-970ce6f8fc8a', '2d95b3d4-e179-4c1b-ba2f-0a1354039b8c', 'CMOS Fabrication Technology — Overview', 'TEXT', 'This week covers: MOSFET fabrication process; Oxidation & diffusion; Ion implantation; Lithography & metallization; Process-flow overview.', 0, 0),
     ('de288b06-a254-4f05-8458-d44e3f556df7', '2d95b3d4-e179-4c1b-ba2f-0a1354039b8c', 'CMOS Fabrication Technology — Lecture', 'VIDEO', NULL, 1, 0),
-    ('c40d485c-1ee3-438a-adb5-26526c35b60d', 'ff472df5-7b24-47ff-b4d1-8904c358c503', 'CMOS Inverter Fundamentals — Overview', 'TEXT', 'This week covers: CMOS inverter operation; Static DC characteristics & VTC; Switching threshold & noise margins; Beta ratio & PMOS/NMOS sizing; Design trade-offs.', 0, 0),
+    ('c40d485c-1ee3-438a-adb5-26526c35b60d', 'ff472df5-7b24-47ff-b4d1-8904c358c503', 'CMOS Inverter Fundamentals — Overview', 'TEXT', 'This week covers: SOC Operation; Static DC characteristics & VTC; Switching threshold & noise margins; Beta ratio & PMOS/NMOS sizing; Design trade-offs.', 0, 0),
     ('b4bebcd6-c4e6-40ea-b148-edced7afb5f6', 'ff472df5-7b24-47ff-b4d1-8904c358c503', 'CMOS Inverter Fundamentals — Lecture', 'VIDEO', NULL, 1, 0),
     ('95e7ef43-d2b6-4306-8bdc-c38472458899', 'f81a8918-fb71-480c-9ab3-1d3996b60bd2', 'Basic Analog Circuits — Overview', 'TEXT', 'This week covers: PN junction; Diodes and applications.', 0, 0),
     ('a613a80a-587f-4a94-8d5a-05ab92173927', 'f81a8918-fb71-480c-9ab3-1d3996b60bd2', 'Basic Analog Circuits — Lecture', 'VIDEO', NULL, 1, 0),

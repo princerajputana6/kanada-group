@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const LESSONS = [
   { title: "MOSFET I–V characteristics", done: true },
-  { title: "CMOS inverter operation", done: true, active: true },
+  { title: "SOC Operation", done: true, active: true },
   { title: "Static & dynamic power", done: false },
   { title: "Noise margins", done: false },
 ];
@@ -98,7 +98,7 @@ export function Platform() {
           </GlassCard>
 
           <GlassCard className="p-6 sm:p-8">
-            <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Taught by practitioners</h3>
+            <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">Led by practitioners</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               Courses are built by engineers who work in the industry, structured into sections
               and lessons you can preview before enrolling.

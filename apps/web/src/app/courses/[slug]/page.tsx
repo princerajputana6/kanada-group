@@ -61,7 +61,7 @@ export default async function CourseDetailPage({
           </h1>
           <p className="mt-5 text-muted-foreground md:text-lg">{course.description}</p>
           <p className="mt-3 text-sm text-muted-foreground">
-            Taught by <span className="font-medium text-foreground">{course.teacher.name}</span>
+            Led by <span className="font-medium text-foreground">{course.teacher.name}</span>
             {" · "}
             {course.enrollments.length} student{course.enrollments.length === 1 ? "" : "s"}
             {avgRating ? ` · ★ ${avgRating.toFixed(1)}` : ""}

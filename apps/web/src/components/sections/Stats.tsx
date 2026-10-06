@@ -13,7 +13,7 @@ export function Stats({ stats }: { stats: PlatformStats }) {
   const items = [
     { value: stats.courses, label: "Published courses" },
     { value: 20, label: "Weeks of training" },
-    { value: stats.instructors, label: stats.instructors === 1 ? "Instructor" : "Instructors" },
+    { value: 10, suffix: "+", label: "Instructors" },
     stats.avgRating !== null
       ? { value: stats.avgRating, decimals: 1, suffix: "★", label: "Average rating" }
       : { value: 100, suffix: "%", label: "Free to enroll" },

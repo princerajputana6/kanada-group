@@ -7,7 +7,7 @@ const COLUMNS = [
     title: "Learn",
     links: [
       { href: "/courses", label: "All courses" },
-      { href: "/sign-up", label: "Register Yourself" },
+      { href: "/registration", label: "Register Yourself" },
       { href: "/sign-in", label: "Sign in" },
     ],
   },
@@ -61,7 +61,17 @@ export function Footer() {
       </div>
       <div className="mx-auto flex max-w-container flex-col gap-2 border-t border-white/[0.06] px-4 py-6 text-xs text-subtle sm:flex-row sm:justify-between sm:px-8">
         <p>© {new Date().getFullYear()} Kanada Group. All rights reserved.</p>
-        <p>Built for engineers who ship silicon.</p>
+        <p>
+          Built by{" "}
+          <a
+            href="https://biztreck.world"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-medium text-foreground transition-colors hover:text-primary"
+          >
+            Biztreck Solutions
+          </a>
+        </p>
       </div>
       <p
         aria-hidden="true"

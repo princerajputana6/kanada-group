@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge, Button, Select, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@kanada/ui";
+import { Badge, Button, Select, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, buttonVariants, cn } from "@kanada/ui";
 import { requireRole } from "@/lib/session";
 import { getAdminStats } from "@/lib/queries";
 import { setUserBannedAction, setUserRoleAction } from "@/actions/admin-actions";
@@ -11,8 +11,15 @@ export default async function AdminUsersPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold">All users</h1>
-      <p className="mt-1 text-muted-foreground">Students, teachers and admins. Open a name for full details and account actions.</p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold">All users</h1>
+          <p className="mt-1 text-muted-foreground">Students, teachers and admins. Open a name for full details and account actions.</p>
+        </div>
+        <Link href="/admin/users/new" className={cn(buttonVariants({ size: "sm" }))}>
+          + Add user
+        </Link>
+      </div>
       <div className="mt-6">
         <Table>
           <TableHeader>

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { and, eq, inArray } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
@@ -46,6 +47,48 @@ export async function setUserRoleAction(userId: string, role: Role) {
   const db = await getDb();
   await db.update(users).set({ role: parsedRole }).where(eq(users.id, userId));
   revalidateUser(userId);
+}
+
+const adminCreateUserSchema = z.object({
+  name: z.string().min(2, "Name is too short").max(100),
+  email: z.string().email("Enter a valid email"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  role: z.enum(ROLES),
+});
+
+/**
+ * Admin creates a user (student, tutor or admin) to manage the portal.
+ * Redirects to the new user's detail page on success.
+ */
+export async function adminCreateUserAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  await requireRole(["ADMIN"]);
+  const parsed = adminCreateUserSchema.safeParse({
+    name: formData.get("name"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    role: formData.get("role"),
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
+  }
+
+  const email = parsed.data.email.toLowerCase();
+  const db = await getDb();
+  const existing = await db.query.users.findFirst({ where: eq(users.email, email) });
+  if (existing) return { error: "An account with this email already exists." };
+
+  const passwordHash = await bcrypt.hash(parsed.data.password, 10);
+  const rows = await db
+    .insert(users)
+    .values({ name: parsed.data.name, email, passwordHash, role: parsed.data.role })
+    .returning({ id: users.id });
+
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/students");
+  redirect(`/admin/users/${rows[0]!.id}`);
 }
 
 export async function setUserBannedAction(userId: string, banned: boolean) {

@@ -8,9 +8,9 @@ export const metadata = {
 };
 
 const TEAM = [
-  "Dr. Vibhu Srivastava",
+  "Shulekha Dwivedi",
+  "Er. Deepak Mishra",
   "Dr. Anshul Verma",
-  "Er. Deepak",
   "Dr. Rahul Mishra",
   "Dr. Vyom",
   "Er. Tejal Patel",
@@ -183,7 +183,7 @@ export default function AboutPage() {
           Don&apos;t just learn VLSI. Create with it. Start free today.
         </p>
         <div className="mt-6 flex justify-center gap-3">
-          <Link href="/sign-up" className={cn(buttonVariants({ size: "lg" }))}>
+          <Link href="/registration" className={cn(buttonVariants({ size: "lg" }))}>
             Register Yourself
           </Link>
           <Link

@@ -5,6 +5,7 @@ import { AnimatedButton } from "@/components/ui/AnimatedButton";
 import { LogoMarquee } from "@/components/ui/LogoMarquee";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CTA } from "@/components/sections/CTA";
+import { CoreTeam } from "@/components/sections/CoreTeam";
 import { Hero } from "@/components/sections/Hero";
 import { Intro } from "@/components/sections/Intro";
 import { Platform } from "@/components/sections/Platform";
@@ -86,6 +87,7 @@ export default async function HomePage() {
 
       <Platform />
       <CTA />
+      <CoreTeam />
     </div>
   );
 }

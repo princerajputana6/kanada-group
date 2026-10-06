@@ -26,7 +26,7 @@ export default async function SignInPage({
           <SignInForm callbackUrl={callbackUrl} />
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="font-medium text-primary hover:underline">
+            <Link href="/registration" className="font-medium text-primary hover:underline">
               Register Yourself
             </Link>
           </p>

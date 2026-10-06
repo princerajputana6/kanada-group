@@ -53,9 +53,9 @@ const adminId = uuid();
 const studentId = uuid();
 
 const TEACHER_NAMES = [
-  "Dr. Vibhu Srivastava",
-  "Dr. Anshul Verma",
-  "Er. Deepak",
+  "Shulekha Dwivedi",
+  "Er. Deepak Mishra",
+  "Dr. Anshul Verma,
   "Dr. Rahul Mishra",
   "Er. Tejal Patel",
 ];
@@ -101,7 +101,7 @@ const FOUNDATION_WEEKS: Week[] = [
   { week: 2, title: "MOS Capacitor Characteristics", topics: ["C–V characteristics", "Ideal MOS capacitor model", "Accumulation, depletion & inversion", "Diffusion & depletion capacitance"] },
   { week: 3, title: "MOSFET Fundamentals", topics: ["MOSFET introduction & structure", "Modes of operation", "Threshold voltage derivation", "Body effect & process dependence"] },
   { week: 4, title: "CMOS Fabrication Technology", topics: ["MOSFET fabrication process", "Oxidation & diffusion", "Ion implantation", "Lithography & metallization", "Process-flow overview"] },
-  { week: 5, title: "CMOS Inverter Fundamentals", topics: ["CMOS inverter operation", "Static DC characteristics & VTC", "Switching threshold & noise margins", "Beta ratio & PMOS/NMOS sizing", "Design trade-offs"] },
+  { week: 5, title: "CMOS Inverter Fundamentals", topics: ["SOC Operation", "Static DC characteristics & VTC", "Switching threshold & noise margins", "Beta ratio & PMOS/NMOS sizing", "Design trade-offs"] },
   { week: 6, title: "Basic Analog Circuits", topics: ["PN junction", "Diodes and applications"] },
   { week: 7, title: "Combinational Logic Design", topics: ["Logic gates & truth tables", "Logic simplification", "Adders, encoders, decoders", "Multiplexers"] },
   { week: 8, title: "Introduction to Verilog & FPGA", topics: ["Modelling styles", "Verilog operators & data types", "Combinational modelling in Verilog", "PLA & PAL", "FPGA architecture & overview"] },
@@ -264,5 +264,5 @@ writeFileSync(outPath, sql, "utf8");
 console.log(`Wrote ${outPath} (${COURSES.length} courses)`);
 console.log(`Demo accounts (password for all: "${DEMO_PASSWORD}"):`);
 console.log("  admin@kanadagroup.dev    (ADMIN)");
-console.log("  teacher@kanadagroup.dev  (TEACHER — Dr. Vibhu Srivastava)");
+console.log("  teacher@kanadagroup.dev  (TEACHER — Shulekha Dwivedi)");
 console.log("  student@kanadagroup.dev  (STUDENT)");

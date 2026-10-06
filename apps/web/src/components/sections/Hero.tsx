@@ -93,7 +93,7 @@ export function Hero() {
                   Browse courses
                 </AnimatedButton>
               </MagneticButton>
-              <AnimatedButton href="/sign-up" size="lg" variant="secondary" arrow={false}>
+              <AnimatedButton href="/registration" size="lg" variant="secondary" arrow={false}>
                 Register Yourself
               </AnimatedButton>
             </div>
@@ -115,7 +115,7 @@ export function Hero() {
           </div>
           <div className="glass absolute -bottom-6 left-4 right-4 rounded-2xl px-4 py-3 sm:left-auto sm:right-[-1.5rem] sm:min-w-64">
             <p className="text-xs font-medium text-subtle">Now playing</p>
-            <p className="mt-0.5 text-sm font-semibold text-white">CMOS Inverter Operation</p>
+            <p className="mt-0.5 text-sm font-semibold text-white">SOC Operation</p>
             <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-white/10">
               <div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#218390] to-[#22D3EE]" />
             </div>
