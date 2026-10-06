@@ -293,6 +293,15 @@ body {
   background-repeat: no-repeat;
 }
 
+/* Never allow a stray wide child (decorative glow orbs, marquees) to cause
+   horizontal scroll or crop content. `clip` (not `hidden`) doesn't create a
+   scroll container, so the sticky navbar keeps working. */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
 /* Primary-coloured text: deep purple on light (≈7:1), light purple on
  * dark sections (≈8:1) — #218390 alone fails AA on near-black. */
 .text-primary {
