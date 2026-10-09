@@ -6,6 +6,7 @@ import { getSession } from "@/lib/session";
 import { enrollAction } from "@/actions/enrollment-actions";
 import { formatDuration, formatPrice } from "@/lib/utils";
 import { ReviewForm } from "@/components/review-form";
+import { CouponBox } from "@/components/coupon-box";
 import { PaymentUpload } from "@/components/payment-upload";
 
 export default async function CourseDetailPage({
@@ -206,28 +207,55 @@ export default async function CourseDetailPage({
                   </Button>
                 </form>
               ) : (
-                <>
-                  <div>
-                    <p className="mb-2 font-medium text-foreground">
-                      Scan &amp; pay {formatPrice(course.price)}
-                    </p>
-                    <div className="mx-auto w-fit overflow-hidden rounded-2xl border border-border">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src="/brand/payment-qr.png"
-                        alt="PhonePe payment QR code — pay to SULEKHA DEVI"
-                        width={220}
-                        height={220}
-                        className="h-56 w-56"
-                      />
-                    </div>
-                 
-                    <p className="mt-2 text-center text-xs text-muted-foreground">
-                      Scan with any UPI app, then upload your payment screenshot below.
-                    </p>
-                  </div>
-                  <PaymentUpload enrollmentId={myEnrollment.id} />
-                </>
+                (() => {
+                  const listPrice = course.price ?? 0;
+                  const discount = myEnrollment.couponCode ? (myEnrollment.discount ?? 0) : 0;
+                  const amountDue = Math.max(0, listPrice - discount);
+                  return (
+                    <>
+                      <div className="space-y-1.5 rounded-xl border border-border bg-secondary/40 p-3">
+                        <div className="flex justify-between text-muted-foreground">
+                          <span>Course price</span>
+                          <span className="tabular-nums">{formatPrice(listPrice)}</span>
+                        </div>
+                        {discount > 0 && (
+                          <div className="flex justify-between text-emerald-700">
+                            <span>Coupon {myEnrollment.couponCode}</span>
+                            <span className="tabular-nums">− {formatPrice(discount)}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between border-t border-border pt-1.5 text-base font-semibold text-foreground">
+                          <span>Final price</span>
+                          <span className="tabular-nums">{formatPrice(amountDue)}</span>
+                        </div>
+                      </div>
+                      <CouponBox enrollmentId={myEnrollment.id} appliedCode={myEnrollment.couponCode} />
+                      {amountDue > 0 ? (
+                        <div>
+                          <p className="mb-2 font-medium text-foreground">Scan &amp; pay {formatPrice(amountDue)}</p>
+                          <div className="mx-auto w-fit overflow-hidden rounded-2xl border border-border">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src="/brand/payment-qr.png"
+                              alt="PhonePe payment QR code — pay to SULEKHA DEVI"
+                              width={220}
+                              height={220}
+                              className="h-56 w-56"
+                            />
+                          </div>
+                          <p className="mt-2 text-center text-xs text-muted-foreground">
+                            Scan with any UPI app and pay exactly {formatPrice(amountDue)}, then upload your payment screenshot below.
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-emerald-800">
+                          Your coupon covers the full price — nothing to pay. Submit below and an admin will approve your enrollment.
+                        </p>
+                      )}
+                      <PaymentUpload enrollmentId={myEnrollment.id} amountDue={amountDue} />
+                    </>
+                  );
+                })()
               )}
             </div>
           )}

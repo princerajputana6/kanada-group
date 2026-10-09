@@ -8,6 +8,7 @@ export function CourseForm({
   action,
   defaultValues,
   submitLabel = "Save",
+  hiddenFields,
 }: {
   action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   defaultValues?: {
@@ -17,11 +18,16 @@ export function CourseForm({
     level?: string;
   };
   submitLabel?: string;
+  hiddenFields?: Record<string, string>;
 }) {
   const [state, formAction, pending] = useActionState<ActionState, FormData>(action, {});
 
   return (
     <form action={formAction} className="max-w-xl space-y-4">
+      {hiddenFields &&
+        Object.entries(hiddenFields).map(([name, value]) => (
+          <input key={name} type="hidden" name={name} value={value} />
+        ))}
       <div className="space-y-1.5">
         <Label htmlFor="title">Course title</Label>
         <Input id="title" name="title" required defaultValue={defaultValues?.title} />

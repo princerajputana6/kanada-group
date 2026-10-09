@@ -3,7 +3,7 @@
 import { resumeKeyFor } from "@kanada/storage";
 import { getPresignedUploadUrl, putObject } from "@/lib/storage";
 import { requireRole } from "@/lib/session";
-import { assertLessonOwner } from "./course-actions";
+import { assertLessonOwner } from "@/lib/course-auth";
 
 const MAX_RESUME_BYTES = 10 * 1024 * 1024; // 10 MB
 
@@ -12,8 +12,8 @@ export async function requestUploadUrlAction(
   filename: string,
   contentType: string,
 ) {
-  const user = await requireRole(["TEACHER"]);
-  const { course } = await assertLessonOwner(lessonId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { course } = await assertLessonOwner(lessonId, user);
 
   if (!contentType.startsWith("video/")) {
     throw new Error("Only video files are supported.");

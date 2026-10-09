@@ -34,6 +34,9 @@ export async function Navbar() {
               <Link href={DASHBOARD_BY_ROLE[user.role] ?? "/"} className={linkClass}>
                 Dashboard
               </Link>
+              <Link href={user.role === "ADMIN" ? "/admin/support" : "/support"} className={linkClass}>
+                Support
+              </Link>
               <Link href={user.role === "ADMIN" ? "/admin/account" : "/account"} className={linkClass}>
                 Account
               </Link>

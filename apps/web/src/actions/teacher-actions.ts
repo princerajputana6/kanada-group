@@ -32,6 +32,7 @@ async function requireCourseManager(courseId: string) {
 
 function revalidateTeaching(courseId: string, slug?: string) {
   revalidatePath("/teacher", "layout");
+  revalidatePath("/admin/teachers", "layout");
   revalidatePath(`/teacher/courses/${courseId}/edit`);
   revalidatePath("/student/dashboard");
   if (slug) {

@@ -10,7 +10,7 @@ import { getEnv } from "./cloudflare";
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
 const DEFAULT_FROM = "Kanada Group <info@kanadagroup.com>";
 
-interface SendEmailInput {
+export interface SendEmailInput {
   to: string;
   subject: string;
   html: string;
@@ -252,7 +252,31 @@ export function buildLiveClassEmail(opts: {
   return { to: opts.to, subject: `${heading}: ${opts.classTitle}`, html };
 }
 
-function escapeHtml(s: string): string {
+export function buildTicketEmail(opts: {
+  to: string;
+  heading: string;
+  /** Trusted HTML — callers must escape any user-supplied text in it. */
+  intro: string;
+  ticketNumber: number;
+  subject: string;
+  excerpt?: string;
+  ticketUrl: string;
+  cta: string;
+}): SendEmailInput {
+  const quote = opts.excerpt
+    ? `<blockquote style="margin:16px 0;padding:12px 16px;border-left:3px solid ${BRAND};background:#f6f9fa;color:#3b4350;font-size:14px;line-height:1.6;white-space:pre-wrap">${escapeHtml(opts.excerpt.slice(0, 600))}${opts.excerpt.length > 600 ? "…" : ""}</blockquote>`
+    : "";
+  const html = layout(
+    opts.heading,
+    `<p style="font-size:15px;line-height:1.6;color:#3b4350">${opts.intro}</p>
+     <p style="font-size:14px;color:#0b0b12;font-weight:600;margin:16px 0 0">#${opts.ticketNumber} · ${escapeHtml(opts.subject)}</p>
+     ${quote}
+     <p style="margin:24px 0">${button(opts.ticketUrl, opts.cta)}</p>`,
+  );
+  return { to: opts.to, subject: `[#${opts.ticketNumber}] ${opts.heading}: ${opts.subject}`, html };
+}
+
+export function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")

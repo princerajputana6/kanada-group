@@ -5,9 +5,12 @@ import { SidebarNav } from "@/components/sidebar-nav";
 const NAV_ITEMS = [
   { href: "/admin/dashboard", label: "Overview" },
   { href: "/admin/students", label: "Students" },
+  { href: "/admin/teachers", label: "Teachers" },
   { href: "/admin/users", label: "All users" },
   { href: "/admin/enrollments", label: "Payments" },
+  { href: "/admin/coupons", label: "Coupons" },
   { href: "/admin/enquiries", label: "Enquiries" },
+  { href: "/admin/support", label: "Support" },
   { href: "/admin/courses", label: "Courses" },
   { href: "/admin/categories", label: "Categories" },
   { href: "/admin/analytics", label: "Analytics" },

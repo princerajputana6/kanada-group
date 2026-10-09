@@ -299,6 +299,9 @@ export async function getPaymentEnrollments() {
       hasScreenshot: !!e.paymentScreenshotKey,
       enrolledAt: e.enrolledAt,
       paidAt: e.paidAt,
+      note: e.paymentNote,
+      couponCode: e.couponCode,
+      discount: e.discount,
     }))
     .sort((a, b) => {
       const d = (order[a.status] ?? 9) - (order[b.status] ?? 9);

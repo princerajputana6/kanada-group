@@ -5,6 +5,8 @@ import { SidebarNav } from "@/components/sidebar-nav";
 const NAV_ITEMS = [
   { href: "/student/dashboard", label: "My Learning" },
   { href: "/courses", label: "Browse Courses" },
+  { href: "/support", label: "Support" },
+  { href: "/account", label: "Account" },
 ];
 
 export default async function StudentLayout({ children }: { children: ReactNode }) {

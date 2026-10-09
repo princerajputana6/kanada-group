@@ -35,8 +35,8 @@ export default async function AdminEnrollmentsPage() {
               <TableRow>
                 <TableHead>Student</TableHead>
                 <TableHead>Course</TableHead>
-                <TableHead>Amount</TableHead>
-                <TableHead>Proof</TableHead>
+                <TableHead>Final amount</TableHead>
+                <TableHead>Proof &amp; comment</TableHead>
                 <TableHead>Enrolled</TableHead>
                 <TableHead>Status</TableHead>
               </TableRow>
@@ -58,8 +58,20 @@ export default async function AdminEnrollmentsPage() {
                       {r.courseTitle}
                     </Link>
                   </TableCell>
-                  <TableCell className="tabular-nums">{formatPrice(r.amount)}</TableCell>
+                  <TableCell className="tabular-nums">
+                    <span className="block font-medium">{formatPrice(r.amount)}</span>
+                    {r.couponCode && (
+                      <span className="block text-xs text-emerald-700">
+                        {r.couponCode} · −{formatPrice(r.discount ?? 0)}
+                      </span>
+                    )}
+                  </TableCell>
                   <TableCell>
+                    {r.note && (
+                      <p className="mb-1 max-w-64 whitespace-pre-wrap break-words text-xs text-muted-foreground" title="Student's comment">
+                        “{r.note}”
+                      </p>
+                    )}
                     {r.hasScreenshot ? (
                       <a
                         href={`/api/payment-screenshot/${r.id}`}

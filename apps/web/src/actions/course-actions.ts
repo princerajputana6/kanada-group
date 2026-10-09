@@ -9,44 +9,33 @@ import { requireRole } from "@/lib/session";
 import { removeVideo } from "@/lib/storage";
 import { courseSchema, sectionSchema, lessonSchema } from "@/lib/validation";
 import { slugify } from "@/lib/utils";
+import {
+  assertCourseOwner,
+  assertLessonOwner,
+  assertSectionOwner,
+  resolveTeacherId,
+  workspaceBaseFor,
+} from "@/lib/course-auth";
 import type { ActionState } from "./auth-actions";
 
-async function assertCourseOwner(courseId: string, userId: string) {
-  const db = await getDb();
-  const course = await db.query.courses.findFirst({
-    where: eq(courses.id, courseId),
-  });
-  if (!course || course.teacherId !== userId) {
-    throw new Error("Not found or not authorized.");
-  }
-  return course;
-}
-
-async function assertSectionOwner(sectionId: string, userId: string) {
-  const db = await getDb();
-  const section = await db.query.sections.findFirst({
-    where: eq(sections.id, sectionId),
-  });
-  if (!section) throw new Error("Section not found.");
-  const course = await assertCourseOwner(section.courseId, userId);
-  return { section, course };
-}
-
-async function assertLessonOwner(lessonId: string, userId: string) {
-  const db = await getDb();
-  const lesson = await db.query.lessons.findFirst({
-    where: eq(lessons.id, lessonId),
-  });
-  if (!lesson) throw new Error("Lesson not found.");
-  const { section, course } = await assertSectionOwner(lesson.sectionId, userId);
-  return { lesson, section, course };
+/** Revalidates every view of a course: teacher portal and admin workspaces. */
+function revalidateCourse(courseId?: string) {
+  revalidatePath("/teacher", "layout");
+  revalidatePath("/admin/teachers", "layout");
+  if (courseId) revalidateCourse(courseId);
 }
 
 export async function createCourseAction(
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const user = await requireRole(["TEACHER"]);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  let teacherId: string;
+  try {
+    teacherId = await resolveTeacherId(user, formData.get("teacherId") as string | null);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Not allowed." };
+  }
   const parsed = courseSchema.safeParse({
     title: formData.get("title"),
     description: formData.get("description") ?? "",
@@ -67,10 +56,11 @@ export async function createCourseAction(
 
   const [course] = await db
     .insert(courses)
-    .values({ ...parsed.data, slug, teacherId: user.id })
+    .values({ ...parsed.data, slug, teacherId })
     .returning();
 
-  redirect(`/teacher/courses/${course!.id}/edit`);
+  revalidateCourse();
+  redirect(`${workspaceBaseFor(user, teacherId)}/courses/${course!.id}/edit`);
 }
 
 export async function updateCourseAction(
@@ -78,8 +68,8 @@ export async function updateCourseAction(
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const user = await requireRole(["TEACHER"]);
-  await assertCourseOwner(courseId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  await assertCourseOwner(courseId, user);
 
   const parsed = courseSchema.safeParse({
     title: formData.get("title"),
@@ -93,35 +83,35 @@ export async function updateCourseAction(
 
   const db = await getDb();
   await db.update(courses).set(parsed.data).where(eq(courses.id, courseId));
-  revalidatePath(`/teacher/courses/${courseId}/edit`);
+  revalidateCourse(courseId);
   return { success: true };
 }
 
 export async function togglePublishAction(courseId: string) {
-  const user = await requireRole(["TEACHER"]);
-  const course = await assertCourseOwner(courseId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const course = await assertCourseOwner(courseId, user);
   const db = await getDb();
   await db
     .update(courses)
     .set({ published: !course.published })
     .where(eq(courses.id, courseId));
-  revalidatePath(`/teacher/courses/${courseId}/edit`);
-  revalidatePath("/teacher/dashboard");
+  revalidateCourse(courseId);
+  revalidateCourse();
   revalidatePath("/courses");
 }
 
 export async function deleteCourseAction(courseId: string) {
-  const user = await requireRole(["TEACHER"]);
-  await assertCourseOwner(courseId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const course = await assertCourseOwner(courseId, user);
   const db = await getDb();
   await db.delete(courses).where(eq(courses.id, courseId));
-  revalidatePath("/teacher/dashboard");
-  redirect("/teacher/dashboard");
+  revalidateCourse();
+  redirect(`${workspaceBaseFor(user, course.teacherId)}/courses`);
 }
 
 export async function createSectionAction(courseId: string, formData: FormData) {
-  const user = await requireRole(["TEACHER"]);
-  await assertCourseOwner(courseId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  await assertCourseOwner(courseId, user);
 
   const parsed = sectionSchema.safeParse({ title: formData.get("title") });
   if (!parsed.success) return;
@@ -137,12 +127,12 @@ export async function createSectionAction(courseId: string, formData: FormData) 
     title: parsed.data.title,
     order: countRows[0]?.count ?? 0,
   });
-  revalidatePath(`/teacher/courses/${courseId}/edit`);
+  revalidateCourse(courseId);
 }
 
 export async function updateSectionAction(sectionId: string, formData: FormData) {
-  const user = await requireRole(["TEACHER"]);
-  const { section, course } = await assertSectionOwner(sectionId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { section, course } = await assertSectionOwner(sectionId, user);
 
   const parsed = sectionSchema.safeParse({ title: formData.get("title") });
   if (!parsed.success) return;
@@ -152,15 +142,15 @@ export async function updateSectionAction(sectionId: string, formData: FormData)
     .update(sections)
     .set({ title: parsed.data.title })
     .where(eq(sections.id, section.id));
-  revalidatePath(`/teacher/courses/${course.id}/edit`);
+  revalidateCourse(course.id);
 }
 
 export async function deleteSectionAction(sectionId: string) {
-  const user = await requireRole(["TEACHER"]);
-  const { course } = await assertSectionOwner(sectionId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { course } = await assertSectionOwner(sectionId, user);
   const db = await getDb();
   await db.delete(sections).where(eq(sections.id, sectionId));
-  revalidatePath(`/teacher/courses/${course.id}/edit`);
+  revalidateCourse(course.id);
 }
 
 export async function createLessonAction(
@@ -168,8 +158,8 @@ export async function createLessonAction(
   _prevState: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  const user = await requireRole(["TEACHER"]);
-  const { section, course } = await assertSectionOwner(sectionId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { section, course } = await assertSectionOwner(sectionId, user);
 
   const parsed = lessonSchema.safeParse({
     title: formData.get("title"),
@@ -195,13 +185,13 @@ export async function createLessonAction(
     isPreview: parsed.data.isPreview,
     order: countRows[0]?.count ?? 0,
   });
-  revalidatePath(`/teacher/courses/${course.id}/edit`);
+  revalidateCourse(course.id);
   return { success: true };
 }
 
 export async function updateLessonAction(lessonId: string, formData: FormData) {
-  const user = await requireRole(["TEACHER"]);
-  const { course } = await assertLessonOwner(lessonId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { course } = await assertLessonOwner(lessonId, user);
 
   const parsed = lessonSchema.safeParse({
     title: formData.get("title"),
@@ -222,27 +212,27 @@ export async function updateLessonAction(lessonId: string, formData: FormData) {
     })
     .where(eq(lessons.id, lessonId));
 
-  revalidatePath(`/teacher/courses/${course.id}/edit`);
+  revalidateCourse(course.id);
 }
 
 export async function deleteLessonAction(lessonId: string) {
-  const user = await requireRole(["TEACHER"]);
-  const { lesson, course } = await assertLessonOwner(lessonId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { lesson, course } = await assertLessonOwner(lessonId, user);
   const db = await getDb();
 
   if (lesson.videoKey) {
     await removeVideo(lesson.videoKey);
   }
   await db.delete(lessons).where(eq(lessons.id, lessonId));
-  revalidatePath(`/teacher/courses/${course.id}/edit`);
+  revalidateCourse(course.id);
 }
 
 export async function moveLessonAction(
   lessonId: string,
   direction: "up" | "down",
 ) {
-  const user = await requireRole(["TEACHER"]);
-  const { lesson, section, course } = await assertLessonOwner(lessonId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { lesson, section, course } = await assertLessonOwner(lessonId, user);
   const db = await getDb();
 
   const siblings = await db.query.lessons.findMany({
@@ -260,15 +250,15 @@ export async function moveLessonAction(
     db.update(lessons).set({ order: lesson.order }).where(eq(lessons.id, other.id)),
   ]);
 
-  revalidatePath(`/teacher/courses/${course.id}/edit`);
+  revalidateCourse(course.id);
 }
 
 export async function moveSectionAction(
   sectionId: string,
   direction: "up" | "down",
 ) {
-  const user = await requireRole(["TEACHER"]);
-  const { section, course } = await assertSectionOwner(sectionId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { section, course } = await assertSectionOwner(sectionId, user);
   const db = await getDb();
 
   const siblings = await db.query.sections.findMany({
@@ -286,7 +276,7 @@ export async function moveSectionAction(
     db.update(sections).set({ order: section.order }).where(eq(sections.id, other.id)),
   ]);
 
-  revalidatePath(`/teacher/courses/${course.id}/edit`);
+  revalidateCourse(course.id);
 }
 
 export async function confirmLessonVideoAction(
@@ -294,14 +284,13 @@ export async function confirmLessonVideoAction(
   videoKey: string,
   durationSeconds: number,
 ) {
-  const user = await requireRole(["TEACHER"]);
-  const { course } = await assertLessonOwner(lessonId, user.id);
+  const user = await requireRole(["TEACHER", "ADMIN"]);
+  const { course } = await assertLessonOwner(lessonId, user);
   const db = await getDb();
   await db
     .update(lessons)
     .set({ videoKey, durationSeconds, type: "VIDEO" })
     .where(eq(lessons.id, lessonId));
-  revalidatePath(`/teacher/courses/${course.id}/edit`);
+  revalidateCourse(course.id);
 }
 
-export { assertCourseOwner, assertSectionOwner, assertLessonOwner };

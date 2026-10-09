@@ -7,6 +7,7 @@ import {
   BarChart3,
   BookOpen,
   FileText,
+  LifeBuoy,
   LayoutDashboard,
   Plus,
   Radio,
@@ -22,30 +23,46 @@ export function TeacherNav({
   name,
   upcomingClasses,
   pendingPayments,
+  base = "/teacher",
+  variant = "sidebar",
 }: {
   name: string;
   upcomingClasses: number;
   pendingPayments: number;
+  /** "/teacher", or "/admin/teachers/<id>" when an admin manages a teacher. */
+  base?: string;
+  /** "tabs" always renders the horizontal bar (used inside the admin area). */
+  variant?: "sidebar" | "tabs";
 }) {
   const pathname = usePathname();
   const groups: { title: string; items: Item[] }[] = [
     {
       title: "Teach",
       items: [
-        { href: "/teacher/dashboard", label: "Overview", icon: LayoutDashboard },
-        { href: "/teacher/courses", label: "My courses", icon: BookOpen },
-        { href: "/teacher/live", label: "Live classes", icon: Radio, badge: upcomingClasses },
-        { href: "/teacher/notes", label: "Notes & materials", icon: FileText },
+        { href: `${base}/dashboard`, label: "Overview", icon: LayoutDashboard },
+        { href: `${base}/courses`, label: "My courses", icon: BookOpen },
+        { href: `${base}/live`, label: "Live classes", icon: Radio, badge: upcomingClasses },
+        { href: `${base}/notes`, label: "Notes & materials", icon: FileText },
       ],
     },
     {
       title: "Learners",
       items: [
-        { href: "/teacher/students", label: "Students", icon: Users, badge: pendingPayments },
-        { href: "/teacher/analytics", label: "Analytics", icon: BarChart3 },
+        { href: `${base}/students`, label: "Students", icon: Users, badge: pendingPayments },
+        { href: `${base}/analytics`, label: "Analytics", icon: BarChart3 },
       ],
     },
-    { title: "Settings", items: [{ href: "/account", label: "Account", icon: Settings }] },
+    ...(variant === "sidebar"
+      ? [
+          {
+            title: "Settings",
+            items: [
+              { href: "/support", label: "Support", icon: LifeBuoy },
+              { href: "/account", label: "Account", icon: Settings },
+            ],
+          },
+        ]
+      : []),
   ];
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   const initials = name
@@ -58,7 +75,7 @@ export function TeacherNav({
   return (
     <>
       {/* Desktop sidebar */}
-      <div className="hidden lg:block">
+      <div className={cn("hidden", variant === "sidebar" && "lg:block")}>
         <div className="rounded-3xl border border-border bg-card p-4 shadow-[var(--glass-shadow)]">
           <div className="flex items-center gap-3">
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-primary to-electric-cyan font-display text-sm font-bold text-white">
@@ -70,7 +87,7 @@ export function TeacherNav({
             </div>
           </div>
           <Link
-            href="/teacher/courses/new"
+            href={`${base}/courses/new`}
             className="mt-4 flex h-10 items-center justify-center gap-2 rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
           >
             <Plus className="h-4 w-4" aria-hidden="true" /> New course
@@ -127,7 +144,7 @@ export function TeacherNav({
       </div>
 
       {/* Mobile: horizontal tab bar */}
-      <nav aria-label="Teacher" className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
+      <nav aria-label="Teacher" className={cn("-mx-4 overflow-x-auto px-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden", variant === "sidebar" && "lg:hidden")}>
         <ul className="flex w-max gap-2 pb-1">
           {groups.flatMap((g) => g.items).map((item) => {
             const active = isActive(item.href);

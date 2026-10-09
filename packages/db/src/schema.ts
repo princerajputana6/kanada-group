@@ -157,6 +157,13 @@ export const enrollments = sqliteTable(
     /** R2 object key of the payment screenshot the student uploaded. */
     paymentScreenshotKey: text("payment_screenshot_key"),
     paidAt: integer("paid_at", { mode: "timestamp" }),
+    /** Student's comment submitted with the payment proof (UTR no., notes…). */
+    paymentNote: text("payment_note"),
+    /** Coupon applied at checkout (code snapshot kept even if the coupon is deleted). */
+    couponId: text("coupon_id").references(() => coupons.id, { onDelete: "set null" }),
+    couponCode: text("coupon_code"),
+    /** Discount in currency units; `amount` is the final price after it. */
+    discount: integer("discount"),
   },
   (table) => [
     uniqueIndex("enrollments_user_course_idx").on(
@@ -282,6 +289,63 @@ export const courseNotes = sqliteTable("course_notes", {
   createdAt: timestamp("created_at"),
 });
 
+export const DISCOUNT_TYPES = ["PERCENT", "FIXED"] as const;
+export type DiscountType = (typeof DISCOUNT_TYPES)[number];
+
+/** Admin-created discount codes applied at the paid-course payment step. */
+export const coupons = sqliteTable("coupons", {
+  id: id(),
+  /** Stored upper-case; matched case-insensitively. */
+  code: text("code").notNull().unique(),
+  description: text("description"),
+  discountType: text("discount_type", { enum: DISCOUNT_TYPES }).notNull(),
+  /** Percent (1–100) or a fixed amount in currency units. */
+  discountValue: integer("discount_value").notNull(),
+  /** Restrict to one course; null = any paid course. */
+  courseId: text("course_id").references(() => courses.id, { onDelete: "cascade" }),
+  /** Total uses allowed (submitted or paid enrollments); null = unlimited. */
+  maxRedemptions: integer("max_redemptions"),
+  validFrom: integer("valid_from", { mode: "timestamp" }),
+  validUntil: integer("valid_until", { mode: "timestamp" }),
+  active: integer("active", { mode: "boolean" }).notNull().default(true),
+  createdBy: text("created_by").references(() => users.id, { onDelete: "set null" }),
+  createdAt: timestamp("created_at"),
+});
+
+export const TICKET_CATEGORIES = ["GENERAL", "PAYMENT", "COURSE", "TECHNICAL", "ACCOUNT", "OTHER"] as const;
+export const TICKET_PRIORITIES = ["LOW", "NORMAL", "HIGH"] as const;
+export const TICKET_STATUSES = ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"] as const;
+export type TicketStatus = (typeof TICKET_STATUSES)[number];
+
+/** Support tickets opened by students or teachers. */
+export const supportTickets = sqliteTable("support_tickets", {
+  id: id(),
+  /** Short human-friendly number shown as #1042. */
+  number: integer("number").notNull().unique(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  subject: text("subject").notNull(),
+  category: text("category", { enum: TICKET_CATEGORIES }).notNull().default("GENERAL"),
+  priority: text("priority", { enum: TICKET_PRIORITIES }).notNull().default("NORMAL"),
+  status: text("status", { enum: TICKET_STATUSES }).notNull().default("OPEN"),
+  courseId: text("course_id").references(() => courses.id, { onDelete: "set null" }),
+  createdAt: timestamp("created_at"),
+  lastActivityAt: timestamp("last_activity_at"),
+});
+
+export const supportMessages = sqliteTable("support_messages", {
+  id: id(),
+  ticketId: text("ticket_id")
+    .notNull()
+    .references(() => supportTickets.id, { onDelete: "cascade" }),
+  authorId: text("author_id").references(() => users.id, { onDelete: "set null" }),
+  body: text("body").notNull(),
+  /** Written by an admin (support staff) rather than the ticket owner. */
+  fromStaff: integer("from_staff", { mode: "boolean" }).notNull().default(false),
+  createdAt: timestamp("created_at"),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
   coursesTaught: many(courses),
   enrollments: many(enrollments),
@@ -311,6 +375,7 @@ export const lessonsRelations = relations(lessons, ({ one, many }) => ({
 export const enrollmentsRelations = relations(enrollments, ({ one }) => ({
   user: one(users, { fields: [enrollments.userId], references: [users.id] }),
   course: one(courses, { fields: [enrollments.courseId], references: [courses.id] }),
+  coupon: one(coupons, { fields: [enrollments.couponId], references: [coupons.id] }),
 }));
 
 export const lessonProgressRelations = relations(lessonProgress, ({ one }) => ({
@@ -332,4 +397,20 @@ export const courseNotesRelations = relations(courseNotes, ({ one }) => ({
   course: one(courses, { fields: [courseNotes.courseId], references: [courses.id] }),
   section: one(sections, { fields: [courseNotes.sectionId], references: [sections.id] }),
   uploader: one(users, { fields: [courseNotes.uploadedBy], references: [users.id] }),
+}));
+
+export const couponsRelations = relations(coupons, ({ one, many }) => ({
+  course: one(courses, { fields: [coupons.courseId], references: [courses.id] }),
+  enrollments: many(enrollments),
+}));
+
+export const supportTicketsRelations = relations(supportTickets, ({ one, many }) => ({
+  user: one(users, { fields: [supportTickets.userId], references: [users.id] }),
+  course: one(courses, { fields: [supportTickets.courseId], references: [courses.id] }),
+  messages: many(supportMessages),
+}));
+
+export const supportMessagesRelations = relations(supportMessages, ({ one }) => ({
+  ticket: one(supportTickets, { fields: [supportMessages.ticketId], references: [supportTickets.id] }),
+  author: one(users, { fields: [supportMessages.authorId], references: [users.id] }),
 }));

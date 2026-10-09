@@ -1,60 +1,6 @@
-import Link from "next/link";
-import { History, Radio } from "lucide-react";
-import { requireRole } from "@/lib/session";
-import { getTeacherCourseOptions, getTeacherLiveClasses } from "@/lib/teacher-queries";
-import { EmptyState, PageHeader, Panel } from "@/components/teacher/ui";
-import { LiveClassItem } from "@/components/teacher/live-class-item";
-import { ScheduleClassForm } from "@/components/teacher/schedule-class-form";
+import { teacherSelfWorkspace } from "@/lib/workspace";
+import { LiveView } from "@/components/teacher/views/live";
 
-export default async function TeacherLivePage({ searchParams }: { searchParams: Promise<{ course?: string }> }) {
-  const user = await requireRole(["TEACHER"]);
-  const { course } = await searchParams;
-  const [courses, { upcoming, past }] = await Promise.all([
-    getTeacherCourseOptions(user.id),
-    getTeacherLiveClasses(user.id),
-  ]);
-
-  return (
-    <div className="space-y-8">
-      <PageHeader
-        eyebrow="Teach"
-        title="Live classes"
-        description="Schedule sessions on Google Meet, Zoom or Teams. Students with access see them on their dashboard and get an email; the Join button opens 15 minutes before start."
-      />
-
-      {courses.length === 0 ? (
-        <EmptyState icon={Radio} title="Create a course first">
-          Live classes belong to a course. <Link href="/teacher/courses/new" className="text-primary hover:underline">Create one</Link>.
-        </EmptyState>
-      ) : (
-        <Panel title="Schedule a class">
-          <ScheduleClassForm courses={courses} defaultCourseId={courses.some((c) => c.id === course) ? course : undefined} />
-        </Panel>
-      )}
-
-      <Panel title={`Upcoming (${upcoming.length})`}>
-        {upcoming.length === 0 ? (
-          <EmptyState icon={Radio} title="Nothing scheduled">Your next live class will appear here.</EmptyState>
-        ) : (
-          <ul className="space-y-3">
-            {upcoming.map((c) => (
-              <LiveClassItem key={c.id} cls={c} />
-            ))}
-          </ul>
-        )}
-      </Panel>
-
-      <Panel title={`Past & cancelled (${past.length})`}>
-        {past.length === 0 ? (
-          <EmptyState icon={History} title="No past classes yet">Add recording links here after each class.</EmptyState>
-        ) : (
-          <ul className="space-y-3">
-            {past.map((c) => (
-              <LiveClassItem key={c.id} cls={c} />
-            ))}
-          </ul>
-        )}
-      </Panel>
-    </div>
-  );
+export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
+  return <LiveView ws={await teacherSelfWorkspace()} searchParams={searchParams} />;
 }
