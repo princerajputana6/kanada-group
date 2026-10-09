@@ -1,6 +1,13 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Badge, Button, Input, Textarea } from "@kanada/ui";
+import { Badge, Button, Input, Progress, Textarea, cn } from "@kanada/ui";
+import { FileText, Radio, Users } from "lucide-react";
+import { getTeacherLiveClasses, getTeacherNotes, getTeacherStudentProgress } from "@/lib/teacher-queries";
+import { EmptyState, Panel } from "@/components/teacher/ui";
+import { LiveClassItem } from "@/components/teacher/live-class-item";
+import { ScheduleClassForm } from "@/components/teacher/schedule-class-form";
+import { NoteUploadForm } from "@/components/teacher/note-upload-form";
+import { NoteItem } from "@/components/teacher/note-item";
 import { requireRole } from "@/lib/session";
 import { getCourseForEdit } from "@/lib/queries";
 import { formatDuration } from "@/lib/utils";
@@ -21,19 +28,42 @@ import {
   updateSectionAction,
 } from "@/actions/course-actions";
 
+const TABS = [
+  { id: "curriculum", label: "Curriculum" },
+  { id: "details", label: "Details" },
+  { id: "live", label: "Live classes" },
+  { id: "notes", label: "Notes" },
+  { id: "students", label: "Students" },
+] as const;
+type Tab = (typeof TABS)[number]["id"];
+
 export default async function EditCoursePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ tab?: string }>;
 }) {
   const user = await requireRole(["TEACHER"]);
   const { id } = await params;
+  const { tab: rawTab } = await searchParams;
+  const tab: Tab = TABS.some((t) => t.id === rawTab) ? (rawTab as Tab) : "curriculum";
   const course = await getCourseForEdit(id, user.id);
   if (!course) notFound();
 
+  const [live, notes, studentRows] = await Promise.all([
+    tab === "live" ? getTeacherLiveClasses(user.id, course.id) : null,
+    tab === "notes" ? getTeacherNotes(user.id, course.id) : null,
+    tab === "students" ? getTeacherStudentProgress(user.id) : null,
+  ]);
+  const lessonCount = course.sections.reduce((n, s) => n + s.lessons.length, 0);
+
   return (
-    <div className="max-w-3xl">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <Link href="/teacher/courses" className="text-sm text-muted-foreground hover:text-foreground">
+        ← My courses
+      </Link>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
             <Badge variant={course.published ? "success" : "outline"}>
@@ -43,7 +73,10 @@ export default async function EditCoursePage({
               View public page
             </Link>
           </div>
-          <h1 className="mt-1 text-2xl font-bold">{course.title}</h1>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight">{course.title}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {course.sections.length} section{course.sections.length === 1 ? "" : "s"} · {lessonCount} lesson{lessonCount === 1 ? "" : "s"}
+          </p>
         </div>
         <div className="flex gap-2">
           <form action={togglePublishAction.bind(null, course.id)}>
@@ -63,7 +96,27 @@ export default async function EditCoursePage({
         </div>
       </div>
 
-      <section className="mt-8">
+      <nav aria-label="Course sections" className="-mx-1 overflow-x-auto border-b border-border [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="flex w-max gap-1 px-1">
+          {TABS.map((t) => (
+            <li key={t.id}>
+              <Link
+                href={`/teacher/courses/${course.id}/edit${t.id === "curriculum" ? "" : `?tab=${t.id}`}`}
+                aria-current={tab === t.id ? "page" : undefined}
+                className={cn(
+                  "-mb-px inline-block border-b-2 px-4 py-3 text-sm font-medium transition-colors",
+                  tab === t.id ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {t.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {tab === "details" && (
+      <section className="max-w-3xl">
         <h2 className="mb-4 text-lg font-semibold">Course details</h2>
         <CourseForm
           action={updateCourseAction.bind(null, course.id)}
@@ -77,7 +130,10 @@ export default async function EditCoursePage({
         />
       </section>
 
-      <section className="mt-10">
+      )}
+
+      {tab === "curriculum" && (
+      <section className="max-w-3xl">
         <h2 className="mb-4 text-lg font-semibold">Curriculum</h2>
         <div className="space-y-6">
           {course.sections.map((section, sIndex) => (
@@ -213,6 +269,73 @@ export default async function EditCoursePage({
           </Button>
         </form>
       </section>
+      )}
+
+      {tab === "live" && live && (
+        <div className="space-y-6">
+          <Panel title="Schedule a class for this course">
+            <ScheduleClassForm courses={[{ id: course.id, title: course.title }]} defaultCourseId={course.id} />
+          </Panel>
+          <Panel title={`Upcoming (${live.upcoming.length})`}>
+            {live.upcoming.length === 0 ? (
+              <EmptyState icon={Radio} title="Nothing scheduled" />
+            ) : (
+              <ul className="space-y-3">{live.upcoming.map((c) => <LiveClassItem key={c.id} cls={c} showCourse={false} />)}</ul>
+            )}
+          </Panel>
+          {live.past.length > 0 && (
+            <Panel title={`Past & cancelled (${live.past.length})`}>
+              <ul className="space-y-3">{live.past.map((c) => <LiveClassItem key={c.id} cls={c} showCourse={false} />)}</ul>
+            </Panel>
+          )}
+        </div>
+      )}
+
+      {tab === "notes" && notes && (
+        <div className="space-y-6">
+          <Panel title="Upload notes">
+            <NoteUploadForm
+              courses={[{ id: course.id, title: course.title, sections: course.sections.map((s) => ({ id: s.id, title: s.title })) }]}
+              defaultCourseId={course.id}
+            />
+          </Panel>
+          <Panel title={`Notes (${notes.length})`}>
+            {notes.length === 0 ? (
+              <EmptyState icon={FileText} title="No notes yet" />
+            ) : (
+              <ul className="divide-y divide-border">{notes.map((n) => <NoteItem key={n.id} note={n} showCourse={false} />)}</ul>
+            )}
+          </Panel>
+        </div>
+      )}
+
+      {tab === "students" && studentRows && (
+        <Panel title="Enrolled students">
+          {(() => {
+            const rows = studentRows.filter((r) => r.courseId === course.id);
+            if (rows.length === 0) return <EmptyState icon={Users} title="No students yet" />;
+            return (
+              <ul className="divide-y divide-border">
+                {rows.map((r) => (
+                  <li key={r.userId} className="grid gap-2 py-3 sm:grid-cols-[1fr_12rem_8rem] sm:items-center">
+                    <div className="min-w-0">
+                      <p className="truncate font-medium">{r.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">{r.email}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Progress value={r.percent} className="h-1.5" />
+                      <span className="text-xs tabular-nums text-muted-foreground">{r.percent}%</span>
+                    </div>
+                    <Badge variant={r.completedAt ? "success" : r.hasAccess ? "secondary" : "outline"}>
+                      {r.completedAt ? "Completed" : r.hasAccess ? "Learning" : "Payment pending"}
+                    </Badge>
+                  </li>
+                ))}
+              </ul>
+            );
+          })()}
+        </Panel>
+      )}
     </div>
   );
 }

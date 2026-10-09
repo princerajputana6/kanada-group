@@ -6,6 +6,7 @@ import { getCourseForLearning } from "@/lib/queries";
 import { VideoPlayer } from "@/components/video-player";
 import { LessonFade } from "@/components/lesson-fade";
 import { markLessonCompleteAction } from "@/actions/progress-actions";
+import { CourseExtras } from "@/components/student/course-extras";
 
 export default async function LearnPage({
   params,
@@ -29,7 +30,12 @@ export default async function LearnPage({
 
   const allLessons = course.sections.flatMap((s) => s.lessons);
   if (allLessons.length === 0) {
-    return <p className="mx-auto max-w-4xl px-4 py-12">This course has no lessons yet.</p>;
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-12">
+        <p>This course has no lessons yet.</p>
+        <CourseExtras courseId={course.id} />
+      </div>
+    );
   }
 
   const currentLesson =
@@ -74,6 +80,8 @@ export default async function LearnPage({
             </Button>
           </form>
         </LessonFade>
+
+        <CourseExtras courseId={course.id} />
       </div>
 
       <aside className="w-72 shrink-0">

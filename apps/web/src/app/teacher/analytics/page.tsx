@@ -3,6 +3,7 @@ import { Badge, Card, CardContent, CardHeader, CardTitle, Progress } from "@kana
 import { requireRole } from "@/lib/session";
 import { getTeacherAnalytics } from "@/lib/queries";
 import { formatDate } from "@/lib/utils";
+import { PageHeader } from "@/components/teacher/ui";
 
 export default async function TeacherAnalyticsPage() {
   const user = await requireRole(["TEACHER"]);
@@ -10,7 +11,7 @@ export default async function TeacherAnalyticsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Analytics</h1>
+      <PageHeader eyebrow="Learners" title="Analytics" description="Enrollments, completion and ratings for each of your courses." />
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">
         <Card>

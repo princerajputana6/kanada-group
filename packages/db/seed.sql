@@ -10,7 +10,7 @@ DELETE FROM lesson_progress;
 INSERT INTO users (id, name, email, password_hash, role, bio, created_at) VALUES
     ('61f3a016-4bf7-4d0c-b1a1-db10b7d6fa82', 'Kanada Admin', 'admin@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'ADMIN', 'Platform administrator.', 1791226838),
     ('757f3f8f-aaf9-4856-9a3f-6b52498661f9', 'Demo Student', 'student@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'STUDENT', 'Learning VLSI design.', 1791226838),
-    ('321ef702-812a-49fa-b988-adc2aced0e0e', 'Shulekha Dwivedi', 'teacher@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
+    ('321ef702-812a-49fa-b988-adc2aced0e0e', 'Sulekha Dwivedi', 'teacher@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
     ('d44789de-71c9-4445-b09b-98d0756f0c61', 'Er. Deepak Mishra', 'teacher2@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
     ('33784211-ce9a-410c-8222-c18a6002a735', 'Er. Deepak', 'teacher3@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),
     ('3e8e7c74-4fe2-4366-8a8b-b6a2e2477b05', 'Dr. Rahul Mishra', 'teacher4@kanadagroup.dev', '$2a$10$pWPguAwCvUrw09/uOwsdKex1amsobX/jGJ3iQWlZeCnhiiAbiuflu', 'TEACHER', 'VLSI faculty at Kanada Group.', 1791226838),

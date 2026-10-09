@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { Button, Input, Label } from "@kanada/ui";
-import { changeOwnPasswordAction } from "@/actions/admin-actions";
+import { changeOwnPasswordAction } from "@/actions/account-actions";
 import type { ActionState } from "@/actions/auth-actions";
 
 export function ChangePasswordForm() {
@@ -16,12 +16,12 @@ export function ChangePasswordForm() {
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="next">New password</Label>
-        <Input id="next" name="next" type="password" required minLength={12} autoComplete="new-password" />
-        <p className="text-xs text-muted-foreground">At least 12 characters. A password manager is ideal.</p>
+        <Input id="next" name="next" type="password" required minLength={8} autoComplete="new-password" />
+        <p className="text-xs text-muted-foreground">At least 8 characters (12 for admins). A password manager is ideal.</p>
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="confirm">Confirm new password</Label>
-        <Input id="confirm" name="confirm" type="password" required minLength={12} autoComplete="new-password" />
+        <Input id="confirm" name="confirm" type="password" required minLength={8} autoComplete="new-password" />
       </div>
       {state.error && <p className="text-sm text-destructive">{state.error}</p>}
       <Button type="submit" disabled={pending}>

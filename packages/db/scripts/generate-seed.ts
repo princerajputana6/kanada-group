@@ -53,7 +53,7 @@ const adminId = uuid();
 const studentId = uuid();
 
 const TEACHER_NAMES = [
-  "Shulekha Dwivedi",
+  "Sulekha Dwivedi",
   "Er. Deepak Mishra",
   "Dr. Anshul Verma,
   "Dr. Rahul Mishra",
@@ -264,5 +264,5 @@ writeFileSync(outPath, sql, "utf8");
 console.log(`Wrote ${outPath} (${COURSES.length} courses)`);
 console.log(`Demo accounts (password for all: "${DEMO_PASSWORD}"):`);
 console.log("  admin@kanadagroup.dev    (ADMIN)");
-console.log("  teacher@kanadagroup.dev  (TEACHER — Shulekha Dwivedi)");
+console.log("  teacher@kanadagroup.dev  (TEACHER — Sulekha Dwivedi)");
 console.log("  student@kanadagroup.dev  (STUDENT)");

@@ -1,21 +1,20 @@
 import type { ReactNode } from "react";
 import { requireRole } from "@/lib/session";
-import { SidebarNav } from "@/components/sidebar-nav";
-
-const NAV_ITEMS = [
-  { href: "/teacher/dashboard", label: "My Courses" },
-  { href: "/teacher/students", label: "Students" },
-  { href: "/teacher/analytics", label: "Analytics" },
-  { href: "/teacher/courses/new", label: "New Course" },
-];
+import { getTeacherOverview } from "@/lib/teacher-queries";
+import { TeacherNav } from "@/components/teacher/teacher-nav";
 
 export default async function TeacherLayout({ children }: { children: ReactNode }) {
-  await requireRole(["TEACHER"]);
+  const user = await requireRole(["TEACHER"]);
+  const { stats } = await getTeacherOverview(user.id);
 
   return (
-    <div className="mx-auto flex max-w-6xl gap-8 px-4 py-8">
-      <aside className="w-48 shrink-0">
-        <SidebarNav items={NAV_ITEMS} layoutId="teacher-nav-pill" />
+    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:px-8 lg:flex-row lg:gap-10">
+      <aside className="shrink-0 lg:sticky lg:top-24 lg:h-fit lg:w-64">
+        <TeacherNav
+          name={user.name ?? "Instructor"}
+          upcomingClasses={stats.upcomingClasses}
+          pendingPayments={stats.pendingPayments}
+        />
       </aside>
       <div className="min-w-0 flex-1">{children}</div>
     </div>

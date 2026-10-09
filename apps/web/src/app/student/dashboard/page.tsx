@@ -11,10 +11,12 @@ import {
 } from "@kanada/ui";
 import { requireRole } from "@/lib/session";
 import { getStudentDashboard } from "@/lib/queries";
+import { getStudentUpcomingClasses } from "@/lib/teacher-queries";
+import { UpcomingClassesList } from "@/components/student/upcoming-classes";
 
 export default async function StudentDashboardPage() {
   const user = await requireRole(["STUDENT"]);
-  const items = await getStudentDashboard(user.id);
+  const [items, classes] = await Promise.all([getStudentDashboard(user.id), getStudentUpcomingClasses(user.id)]);
 
   return (
     <div>
@@ -22,6 +24,14 @@ export default async function StudentDashboardPage() {
       <p className="mt-1 text-muted-foreground">
         {items.length} course{items.length === 1 ? "" : "s"} enrolled
       </p>
+
+      {classes.length > 0 && (
+        <section id="live-classes" className="mt-8 scroll-mt-24 rounded-3xl border border-primary/25 bg-primary/[0.04] p-5 sm:p-6">
+          <h2 className="text-lg font-semibold">Upcoming live classes</h2>
+          <p className="mb-2 text-sm text-muted-foreground">The Join button opens 15 minutes before each class. Times are in IST.</p>
+          <UpcomingClassesList classes={classes} />
+        </section>
+      )}
 
       {items.length === 0 ? (
         <p className="mt-8 text-muted-foreground">

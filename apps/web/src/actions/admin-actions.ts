@@ -19,7 +19,6 @@ import {
 import { getDb } from "@/lib/db";
 import { requireRole } from "@/lib/session";
 import { slugify } from "@/lib/utils";
-import { signOut } from "@/auth";
 import type { ActionState } from "./auth-actions";
 
 // Server actions are public POST endpoints: every one re-checks the admin
@@ -205,41 +204,6 @@ export async function adminResetProgressAction(enrollmentId: string) {
   await clearProgress(e.userId, e.courseId);
   await db.update(enrollments).set({ completedAt: null }).where(eq(enrollments.id, enrollmentId));
   revalidateUser(e.userId);
-}
-
-const changePasswordSchema = z
-  .object({
-    current: z.string().min(1, "Enter your current password."),
-    next: z.string().min(12, "Use at least 12 characters.").max(200),
-    confirm: z.string(),
-  })
-  .refine((v) => v.next === v.confirm, { message: "The new passwords don't match." })
-  .refine((v) => v.next !== v.current, { message: "Choose a different password." });
-
-/** Admin changes their own password; all their sessions (this one too) end. */
-export async function changeOwnPasswordAction(
-  _prev: ActionState,
-  formData: FormData,
-): Promise<ActionState> {
-  const admin = await requireRole(["ADMIN"]);
-  const parsed = changePasswordSchema.safeParse({
-    current: formData.get("current"),
-    next: formData.get("next"),
-    confirm: formData.get("confirm"),
-  });
-  if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
-
-  const db = await getDb();
-  const row = await db.query.users.findFirst({ where: eq(users.id, admin.id) });
-  if (!row || !(await bcrypt.compare(parsed.data.current, row.passwordHash))) {
-    return { error: "Your current password is incorrect." };
-  }
-  await db
-    .update(users)
-    .set({ passwordHash: await bcrypt.hash(parsed.data.next, 10), sessionsValidAfter: new Date() })
-    .where(eq(users.id, admin.id));
-  await signOut({ redirectTo: "/sign-in?passwordChanged=1" });
-  return { success: true };
 }
 
 export async function setCoursePublishedAction(courseId: string, published: boolean) {

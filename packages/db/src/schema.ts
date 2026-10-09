@@ -223,6 +223,65 @@ export const reviews = sqliteTable(
   ],
 );
 
+/**
+ * Single-use password-reset links. Only a SHA-256 hash of the token is
+ * stored, so a database leak can't be turned into working reset links.
+ */
+export const passwordResetTokens = sqliteTable("password_reset_tokens", {
+  id: id(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  tokenHash: text("token_hash").notNull().unique(),
+  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  usedAt: integer("used_at", { mode: "timestamp" }),
+  createdAt: timestamp("created_at"),
+});
+
+export const LIVE_CLASS_STATUSES = ["SCHEDULED", "CANCELLED"] as const;
+export type LiveClassStatus = (typeof LIVE_CLASS_STATUSES)[number];
+
+/** A scheduled live session for a course, held on an external meeting link. */
+export const liveClasses = sqliteTable("live_classes", {
+  id: id(),
+  courseId: text("course_id")
+    .notNull()
+    .references(() => courses.id, { onDelete: "cascade" }),
+  teacherId: text("teacher_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  description: text("description"),
+  startsAt: integer("starts_at", { mode: "timestamp" }).notNull(),
+  durationMinutes: integer("duration_minutes").notNull().default(60),
+  /** Google Meet / Zoom / Teams link — only revealed to students with access. */
+  meetingUrl: text("meeting_url").notNull(),
+  /** Optional link to the recording, added after the class. */
+  recordingUrl: text("recording_url"),
+  status: text("status", { enum: LIVE_CLASS_STATUSES }).notNull().default("SCHEDULED"),
+  createdAt: timestamp("created_at"),
+});
+
+/** Downloadable course material (PDF, Word, PowerPoint, …) stored in R2. */
+export const courseNotes = sqliteTable("course_notes", {
+  id: id(),
+  courseId: text("course_id")
+    .notNull()
+    .references(() => courses.id, { onDelete: "cascade" }),
+  /** Optional: file the note under a curriculum section. */
+  sectionId: text("section_id").references(() => sections.id, { onDelete: "set null" }),
+  uploadedBy: text("uploaded_by")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  description: text("description"),
+  fileKey: text("file_key").notNull(),
+  fileName: text("file_name").notNull(),
+  contentType: text("content_type").notNull(),
+  sizeBytes: integer("size_bytes").notNull(),
+  createdAt: timestamp("created_at"),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
   coursesTaught: many(courses),
   enrollments: many(enrollments),
@@ -234,11 +293,14 @@ export const coursesRelations = relations(courses, ({ one, many }) => ({
   sections: many(sections),
   enrollments: many(enrollments),
   reviews: many(reviews),
+  liveClasses: many(liveClasses),
+  notes: many(courseNotes),
 }));
 
 export const sectionsRelations = relations(sections, ({ one, many }) => ({
   course: one(courses, { fields: [sections.courseId], references: [courses.id] }),
   lessons: many(lessons),
+  notes: many(courseNotes),
 }));
 
 export const lessonsRelations = relations(lessons, ({ one, many }) => ({
@@ -259,4 +321,15 @@ export const lessonProgressRelations = relations(lessonProgress, ({ one }) => ({
 export const reviewsRelations = relations(reviews, ({ one }) => ({
   user: one(users, { fields: [reviews.userId], references: [users.id] }),
   course: one(courses, { fields: [reviews.courseId], references: [courses.id] }),
+}));
+
+export const liveClassesRelations = relations(liveClasses, ({ one }) => ({
+  course: one(courses, { fields: [liveClasses.courseId], references: [courses.id] }),
+  teacher: one(users, { fields: [liveClasses.teacherId], references: [users.id] }),
+}));
+
+export const courseNotesRelations = relations(courseNotes, ({ one }) => ({
+  course: one(courses, { fields: [courseNotes.courseId], references: [courses.id] }),
+  section: one(sections, { fields: [courseNotes.sectionId], references: [sections.id] }),
+  uploader: one(users, { fields: [courseNotes.uploadedBy], references: [users.id] }),
 }));

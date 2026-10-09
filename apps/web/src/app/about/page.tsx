@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 const TEAM = [
-  "Shulekha Dwivedi",
+  "Sulekha Dwivedi",
   "Er. Deepak Mishra",
   "Dr. Anshul Verma",
   "Dr. Rahul Mishra",

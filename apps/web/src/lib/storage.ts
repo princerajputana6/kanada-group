@@ -39,10 +39,22 @@ export async function putObject(
   key: string,
   data: ArrayBuffer,
   contentType: string,
+  contentDisposition?: string,
 ) {
   const env = await getEnv();
   await env.VIDEO_BUCKET.put(key, data, {
-    httpMetadata: { contentType },
+    httpMetadata: { contentType, ...(contentDisposition && { contentDisposition }) },
   });
   return key;
+}
+
+export async function deleteObject(key: string) {
+  const env = await getEnv();
+  await env.VIDEO_BUCKET.delete(key);
+}
+
+/** `attachment` disposition with an RFC 5987 UTF-8 filename. */
+export function attachmentDisposition(fileName: string) {
+  const ascii = fileName.replace(/[^\x20-\x7e]/g, "_").replace(/["\\]/g, "_");
+  return `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(fileName).replace(/['()*]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)}`;
 }

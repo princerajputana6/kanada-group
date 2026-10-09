@@ -7,9 +7,9 @@ const nextConfig = {
     ignoreDuringBuilds: false,
   },
   experimental: {
-    // Resume / payment-screenshot uploads post the file to a server action.
+    // Resumes, payment screenshots and course notes (≤20 MB) post files to server actions.
     serverActions: {
-      bodySizeLimit: "12mb",
+      bodySizeLimit: "25mb",
     },
   },
 };

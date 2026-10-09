@@ -49,6 +49,38 @@ export async function sendEmail({ to, subject, html }: SendEmailInput): Promise<
   }
 }
 
+/**
+ * Sends many emails via Resend's batch endpoint (≤100 per call). A Worker
+ * on the free plan may make only 50 outbound requests per invocation, so
+ * one fetch per recipient would silently stop partway through a class roster.
+ */
+export async function sendEmailBatch(messages: SendEmailInput[]): Promise<number> {
+  if (messages.length === 0) return 0;
+  const env = await getEnv();
+  const apiKey = env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn("[email] RESEND_API_KEY not set — skipping", messages.length, "emails");
+    return 0;
+  }
+  const from = env.RESEND_FROM || DEFAULT_FROM;
+  let sent = 0;
+  for (let i = 0; i < messages.length; i += 100) {
+    const chunk = messages.slice(i, i + 100);
+    try {
+      const res = await fetch(`${RESEND_ENDPOINT}/batch`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify(chunk.map((m) => ({ from, to: [m.to], subject: m.subject, html: m.html }))),
+      });
+      if (res.ok) sent += chunk.length;
+      else console.error("[email] Resend batch error", res.status, await res.text());
+    } catch (err) {
+      console.error("[email] batch send failed", err);
+    }
+  }
+  return sent;
+}
+
 const BRAND = "#218390";
 
 /** Shared responsive shell so every Kanada email looks consistent. */
@@ -133,6 +165,91 @@ export async function sendPaymentSubmittedEmail(opts: {
      </p>`,
   );
   await sendEmail({ to: opts.to, subject: `Payment received — ${opts.courseTitle}`, html });
+}
+
+export async function sendPasswordResetEmail(opts: {
+  to: string;
+  name: string;
+  resetUrl: string;
+  expiresMinutes: number;
+}): Promise<boolean> {
+  const html = layout(
+    "Reset your password",
+    `<p style="font-size:15px;line-height:1.6;color:#3b4350">
+       Hi ${escapeHtml(opts.name)}, we received a request to reset the password for your
+       Kanada Group account.
+     </p>
+     <p style="margin:24px 0">${button(opts.resetUrl, "Choose a new password")}</p>
+     <p style="font-size:13px;line-height:1.6;color:#6b7280">
+       This link works once and expires in ${opts.expiresMinutes} minutes. If you didn't ask
+       for this, you can ignore this email — your password won't change.
+     </p>
+     <p style="font-size:12px;line-height:1.6;color:#9aa1ab;word-break:break-all">
+       Button not working? Paste this into your browser:<br>${escapeHtml(opts.resetUrl)}
+     </p>`,
+  );
+  return sendEmail({ to: opts.to, subject: "Reset your Kanada Group password", html });
+}
+
+export async function sendPasswordChangedEmail(opts: {
+  to: string;
+  name: string;
+  appUrl: string;
+}): Promise<void> {
+  const html = layout(
+    "Your password was changed",
+    `<p style="font-size:15px;line-height:1.6;color:#3b4350">
+       Hi ${escapeHtml(opts.name)}, the password for your Kanada Group account was just
+       changed, and you've been signed out on all devices.
+     </p>
+     <p style="font-size:15px;line-height:1.6;color:#3b4350">
+       If this wasn't you, reset your password right away and contact us.
+     </p>
+     <p style="margin:24px 0">${button(`${opts.appUrl}/forgot-password`, "Reset password")}</p>`,
+  );
+  await sendEmail({ to: opts.to, subject: "Your Kanada Group password was changed", html });
+}
+
+export type LiveClassEmailKind = "scheduled" | "updated" | "cancelled";
+
+export function buildLiveClassEmail(opts: {
+  to: string;
+  name: string;
+  kind: LiveClassEmailKind;
+  classTitle: string;
+  courseTitle: string;
+  teacherName: string;
+  when: string;
+  durationMinutes: number;
+  classesUrl: string;
+}): SendEmailInput {
+  const heading = {
+    scheduled: "New live class scheduled",
+    updated: "Live class updated",
+    cancelled: "Live class cancelled",
+  }[opts.kind];
+  const lead = {
+    scheduled: "a new live class has been scheduled for your course.",
+    updated: "the details of an upcoming live class have changed.",
+    cancelled: "the following live class has been cancelled.",
+  }[opts.kind];
+  const strike = opts.kind === "cancelled" ? "text-decoration:line-through;" : "";
+  const html = layout(
+    heading,
+    `<p style="font-size:15px;line-height:1.6;color:#3b4350">Hi ${escapeHtml(opts.name)}, ${lead}</p>
+     <div style="border:1px solid #e6e9ee;border-radius:12px;padding:16px 18px;margin:18px 0;${strike}">
+       <div style="font-size:17px;font-weight:700;color:#0b0b12">${escapeHtml(opts.classTitle)}</div>
+       <div style="font-size:14px;color:#3b4350;margin-top:6px">${escapeHtml(opts.courseTitle)} · with ${escapeHtml(opts.teacherName)}</div>
+       <div style="font-size:14px;color:#218390;font-weight:600;margin-top:10px">${escapeHtml(opts.when)} · ${opts.durationMinutes} min</div>
+     </div>
+     ${
+       opts.kind === "cancelled"
+         ? ""
+         : `<p style="font-size:14px;line-height:1.6;color:#3b4350">The Join button opens 15 minutes before the class starts.</p>
+            <p style="margin:24px 0">${button(opts.classesUrl, "View live classes")}</p>`
+     }`,
+  );
+  return { to: opts.to, subject: `${heading}: ${opts.classTitle}`, html };
 }
 
 function escapeHtml(s: string): string {
