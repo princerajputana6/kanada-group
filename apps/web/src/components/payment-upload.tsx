@@ -4,6 +4,7 @@ import { useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@kanada/ui";
 import { submitPaymentAction } from "@/actions/enrollment-actions";
+import { actionErrorMessage } from "@/lib/action-errors";
 
 const MAX_BYTES = 10 * 1024 * 1024;
 
@@ -43,7 +44,7 @@ export function PaymentUpload({ enrollmentId, amountDue }: { enrollmentId: strin
       await submitPaymentAction(enrollmentId, fd);
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
+      setError(actionErrorMessage(err, "Upload failed"));
     } finally {
       setBusy(false);
     }

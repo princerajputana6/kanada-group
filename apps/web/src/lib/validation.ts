@@ -20,7 +20,11 @@ export const registrationSchema = z.object({
   workExperience: z.string().min(1, "Write NA if none").max(1000),
   priorTools: z.string().min(1, "Write NA if none").max(1000),
   interestField: z.string().min(1, "Select your interested field").max(100),
-  resumeKey: z.string().min(1, "Upload your resume (PDF)").max(300),
+  // Only keys our upload route issues — never an arbitrary bucket object.
+  resumeKey: z
+    .string()
+    .min(1, "Upload your resume (PDF)")
+    .regex(/^resumes\/[0-9a-f-]{36}\.pdf$/, "Please re-upload your resume (PDF)."),
 });
 
 export const enquirySchema = z.object({

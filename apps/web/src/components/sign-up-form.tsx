@@ -3,7 +3,6 @@
 import { useActionState, useRef, useState, type ChangeEvent } from "react";
 import { Button, Input, Label, Select, Textarea } from "@kanada/ui";
 import { signUpAction, type ActionState } from "@/actions/auth-actions";
-import { uploadResumeAction } from "@/actions/upload-actions";
 
 const MAX_RESUME_BYTES = 10 * 1024 * 1024; // 10 MB
 
@@ -71,7 +70,9 @@ export function SignUpForm() {
     if (!file) return;
     setResumeError(null);
     setResumeKey("");
-    if (file.type !== "application/pdf") {
+    // Phone file pickers (Drive, Files) often omit the MIME type — accept by
+    // extension too; the server verifies the real PDF signature.
+    if (file.type !== "application/pdf" && !/\.pdf$/i.test(file.name)) {
       setResumeError("Resume must be a PDF file.");
       return;
     }
@@ -83,11 +84,21 @@ export function SignUpForm() {
     try {
       const fd = new FormData();
       fd.append("file", file);
-      const { key } = await uploadResumeAction(fd);
-      setResumeKey(key);
+      const res = await fetch("/api/uploads/resume", { method: "POST", body: fd });
+      const data = (await res.json().catch(() => ({}))) as { key?: string; error?: string };
+      if (!res.ok || !data.key) {
+        throw new Error(data.error ?? "Upload failed — please check your connection and try again.");
+      }
+      setResumeKey(data.key);
       setResumeName(file.name);
     } catch (err) {
-      setResumeError(err instanceof Error ? err.message : "Upload failed");
+      setResumeError(
+        err instanceof TypeError
+          ? "Upload failed — please check your connection and try again."
+          : err instanceof Error
+            ? err.message
+            : "Upload failed",
+      );
     } finally {
       setUploading(false);
     }

@@ -6,6 +6,7 @@ import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { PageTransition } from "@/components/page-transition";
 import { SmoothScroll } from "@/components/smooth-scroll";
+import { StaleBuildGuard } from "@/components/stale-build-guard";
 import { NoiseOverlay } from "@/components/ui/NoiseOverlay";
 import "lenis/dist/lenis.css";
 import "./globals.css";
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </main>
         <Footer />
         <NoiseOverlay />
+        <StaleBuildGuard />
         <Toaster richColors position="top-center" theme="light" />
       </body>
     </html>
