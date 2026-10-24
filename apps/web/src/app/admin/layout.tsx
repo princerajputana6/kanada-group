@@ -22,11 +22,13 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:px-8 lg:flex-row lg:gap-10">
-      <aside className="shrink-0 lg:w-48">
-        <p className="mb-3 px-3 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
+      <aside className="min-w-0 shrink-0 lg:w-48">
+        <p className="mb-3 hidden px-3 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground lg:block">
           Admin
         </p>
-        <SidebarNav items={NAV_ITEMS} layoutId="admin-nav-pill" />
+        <div className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none] sm:-mx-8 sm:px-8 lg:mx-0 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden">
+          <SidebarNav items={NAV_ITEMS} layoutId="admin-nav-pill" />
+        </div>
       </aside>
       <div className="min-w-0 flex-1">{children}</div>
     </div>

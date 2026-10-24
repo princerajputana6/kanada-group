@@ -23,7 +23,7 @@ jobs:
         run: pnpm install
 
       - name: Build web app for Cloudflare
-        run: pnpm --filter web exec opennextjs-cloudflare build
+        run: pnpm --filter web exec opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion
 
       - name: Deploy to Cloudflare Workers
         shell: bash

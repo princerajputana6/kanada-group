@@ -47,14 +47,14 @@ export default async function LearnPage({
   const completedCount = allLessons.filter((l) => progressByLesson.get(l.id)?.completed).length;
 
   return (
-    <div className="mx-auto flex max-w-6xl gap-8 px-4 py-8">
+    <div className="flex flex-col gap-8 xl:flex-row">
       <div className="min-w-0 flex-1">
         <Link href={`/courses/${slug}`} className="text-sm text-muted-foreground hover:underline">
           ← {course.title}
         </Link>
 
         <LessonFade lessonKey={currentLesson.id}>
-          <h1 className="mt-2 text-2xl font-bold">{currentLesson.title}</h1>
+          <h1 className="mt-2 break-words text-xl font-bold sm:text-2xl">{currentLesson.title}</h1>
 
           <div className="mt-4">
             {currentLesson.type === "VIDEO" && currentLesson.videoKey ? (
@@ -84,7 +84,7 @@ export default async function LearnPage({
         <CourseExtras courseId={course.id} />
       </div>
 
-      <aside className="w-72 shrink-0">
+      <aside className="w-full rounded-3xl border border-border bg-card p-4 xl:w-72 xl:shrink-0 xl:self-start xl:border-0 xl:bg-transparent xl:p-0">
         <p className="mb-3 text-sm font-medium text-muted-foreground">
           {completedCount}/{allLessons.length} lessons complete
         </p>
