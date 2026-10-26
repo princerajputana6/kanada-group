@@ -9,6 +9,7 @@ export const registrationSchema = z.object({
   name: z.string().min(2, "Enter your full name").max(100),
   email: z.string().email("Enter a valid email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string().min(1, "Confirm your password"),
   whatsapp: z
     .string()
     .min(7, "Enter a valid WhatsApp number")
@@ -25,6 +26,9 @@ export const registrationSchema = z.object({
     .string()
     .min(1, "Upload your resume (PDF)")
     .regex(/^resumes\/[0-9a-f-]{36}\.pdf$/, "Please re-upload your resume (PDF)."),
+}).refine((d) => d.password === d.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
 });
 
 export const enquirySchema = z.object({
@@ -50,6 +54,10 @@ export const courseSchema = z.object({
   description: z.string().max(5000).default(""),
   category: z.string().max(100).optional(),
   level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED"]).default("BEGINNER"),
+  // Pricing — a free course ignores price/originalPrice.
+  isFree: z.coerce.boolean().default(false),
+  price: z.coerce.number().int().min(0).max(10_000_000).optional(),
+  originalPrice: z.coerce.number().int().min(0).max(10_000_000).optional(),
 });
 
 export const sectionSchema = z.object({

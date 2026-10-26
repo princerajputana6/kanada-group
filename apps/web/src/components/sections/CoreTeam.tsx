@@ -6,7 +6,7 @@ interface Member {
 }
 
 const TEAM: Member[] = [
-      { name: "Sulekha Dwivedi", role: "Director — Management" },
+      { name: "Sulekha Devi", role: "Director — Management" },
         { name: "Dr. Anshul Verma", role: "Director — Analog Design" },
   { name: "Er. Deepak Mishra", role: "Director — Digital Design" },
   { name: "Er. Ronit Mishra", role: "Industry Expert — Memory Design" },

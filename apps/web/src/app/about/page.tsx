@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 const TEAM = [
-  "Sulekha Dwivedi",
+  "Sulekha Devi",
   "Er. Deepak Mishra",
   "Dr. Anshul Verma",
   "Dr. Rahul Mishra",
@@ -119,9 +119,9 @@ export default function AboutPage() {
               1
             </span>
             <p className="text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">Free 8-week Foundations</span> — a common
-              program open to everyone: semiconductor and CMOS fundamentals through to Verilog &amp;
-              FPGA. No charge.
+              <span className="font-medium text-foreground">8-week Foundations</span> — the common
+              program for everyone: semiconductor and CMOS fundamentals through to Verilog &amp;
+              FPGA.
             </p>
           </li>
           <li className="flex gap-4">
@@ -180,7 +180,7 @@ export default function AboutPage() {
       <section className="mt-16 text-center">
         <h2 className="text-2xl font-semibold">Learn → Design → Experiment → Innovate → Build</h2>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-          Don&apos;t just learn VLSI. Create with it. Start free today.
+          Don&apos;t just learn VLSI. Create with it. Start today.
         </p>
         <div className="mt-6 flex justify-center gap-3">
           <Link href="/registration" className={cn(buttonVariants({ size: "lg" }))}>

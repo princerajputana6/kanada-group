@@ -120,6 +120,9 @@ export async function CourseEditorView({ ws, params,
             description: course.description,
             category: course.category,
             level: course.level,
+            isFree: course.isFree,
+            price: course.price,
+            originalPrice: course.originalPrice,
           }}
           submitLabel="Save details"
         />

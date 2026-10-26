@@ -27,6 +27,7 @@ export async function signUpAction(
     name: formData.get("name"),
     email: formData.get("email"),
     password: formData.get("password"),
+    confirmPassword: formData.get("confirmPassword"),
     whatsapp: formData.get("whatsapp"),
     qualification: formData.get("qualification"),
     branch: formData.get("branch"),

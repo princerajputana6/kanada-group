@@ -154,15 +154,15 @@ interface CourseSpec {
 
 const COURSES: CourseSpec[] = [
   {
-    title: "VLSI Foundations — Free 8-Week Program",
+    title: "VLSI Foundations — 8-Week Program",
     slug: "vlsi-foundations",
     description:
-      "Our free, open 8-week common program. Build the semiconductor, CMOS and digital fundamentals every VLSI engineer needs — from MOS physics to Verilog & FPGA. The ideal starting point before the Digital and Analog design tracks.",
+      "Our 8-week common program. Build the semiconductor, CMOS and digital fundamentals every VLSI engineer needs — from MOS physics to Verilog & FPGA. The ideal starting point before the Digital and Analog design tracks.",
     category: "Foundations",
     level: "BEGINNER",
     teacher: 0,
-    isFree: true,
-    price: null,
+    isFree: false,
+    price: 1000,
     originalPrice: null,
     weeks: FOUNDATION_WEEKS,
   },

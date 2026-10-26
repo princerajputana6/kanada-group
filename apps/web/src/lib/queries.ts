@@ -85,7 +85,10 @@ export async function getStudentDashboard(userId: string) {
     progressRows.filter((p) => p.completed).map((p) => p.lessonId),
   );
 
-  return rows.map(({ course, enrolledAt, paymentStatus }) => {
+  return rows
+    // Hide unpublished courses from the student's dashboard entirely.
+    .filter(({ course }) => course.published)
+    .map(({ course, enrolledAt, paymentStatus }) => {
     const allLessons = course.sections.flatMap((s) => s.lessons);
     const total = allLessons.length;
     const completed = allLessons.filter((l) => completedLessonIds.has(l.id)).length;
@@ -114,7 +117,8 @@ export async function getCourseForLearning(slug: string, userId: string) {
       },
     },
   });
-  if (!course) return null;
+  // Students can't open an unpublished course even if enrolled.
+  if (!course || !course.published) return null;
 
   const enrollment = await db.query.enrollments.findFirst({
     where: and(eq(enrollments.userId, userId), eq(enrollments.courseId, course.id)),

@@ -17,10 +17,13 @@ export async function canAccessCourseContent(viewer: Viewer, courseId: string): 
   const db = await getDb();
   const course = await db.query.courses.findFirst({
     where: eq(courses.id, courseId),
-    columns: { teacherId: true, isFree: true },
+    columns: { teacherId: true, isFree: true, published: true },
   });
   if (!course) return false;
   if (viewer.role === "TEACHER") return course.teacherId === viewer.id;
+
+  // Students never see an unpublished course — even if already enrolled.
+  if (!course.published) return false;
 
   const enrollment = await db.query.enrollments.findFirst({
     where: and(eq(enrollments.userId, viewer.id), eq(enrollments.courseId, courseId)),
@@ -35,9 +38,11 @@ export async function accessibleCourseIds(studentId: string): Promise<string[]> 
   const rows = await db.query.enrollments.findMany({
     where: eq(enrollments.userId, studentId),
     columns: { courseId: true, paymentStatus: true },
-    with: { course: { columns: { isFree: true } } },
+    with: { course: { columns: { isFree: true, published: true } } },
   });
-  return rows.filter((r) => r.course.isFree || r.paymentStatus === "PAID").map((r) => r.courseId);
+  return rows
+    .filter((r) => r.course.published && (r.course.isFree || r.paymentStatus === "PAID"))
+    .map((r) => r.courseId);
 }
 
 /** Emails of students with access to the course (for class notifications). */

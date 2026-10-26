@@ -23,7 +23,7 @@ export async function CourseExtras({ courseId }: { courseId: string }) {
       {notes.length > 0 && (
         <section className="rounded-3xl border border-border bg-card p-5 sm:p-6">
           <h2 className="mb-2 flex items-center gap-2 text-lg font-semibold">
-            <FileText className="h-5 w-5 text-primary" aria-hidden="true" /> Notes &amp; materials
+            <FileText className="h-5 w-5 text-primary" aria-hidden="true" /> Reading material
           </h2>
           <ul className="divide-y divide-border">
             {notes.map((n) => (

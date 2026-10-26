@@ -14,7 +14,7 @@ export default function SignUpPage() {
           <p className="mt-2 text-sm text-muted-foreground">
             Join the Kanada Group VLSI Training Program. We bridge the gap between
             academia and the semiconductor industry with hands-on, tool-based training.
-            Start with the free 8-week Foundations program right away.
+            Start with the 8-week Foundations program.
           </p>
         </CardHeader>
         <CardContent>

@@ -136,6 +136,21 @@ export function SignUpForm() {
       </div>
 
       <div className="space-y-1.5">
+        <Label htmlFor="confirmPassword">
+          Confirm Password <span className="text-destructive">*</span>
+        </Label>
+        <Input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="new-password"
+          placeholder="Re-enter your password"
+        />
+      </div>
+
+      <div className="space-y-1.5">
         <Label htmlFor="whatsapp">
           WhatsApp Number <span className="text-destructive">*</span>
         </Label>

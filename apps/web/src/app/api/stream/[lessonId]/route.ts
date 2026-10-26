@@ -36,6 +36,8 @@ export async function GET(
     const isAdmin = session.user.role === "ADMIN";
 
     if (!isOwnerTeacher && !isAdmin) {
+      // Unpublished courses are invisible to students even if enrolled.
+      if (!course.published) return new Response("Forbidden", { status: 403 });
       const enrollment = await db.query.enrollments.findFirst({
         where: and(
           eq(enrollments.userId, session.user.id),

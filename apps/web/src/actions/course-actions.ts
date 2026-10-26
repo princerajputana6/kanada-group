@@ -18,6 +18,18 @@ import {
 } from "@/lib/course-auth";
 import type { ActionState } from "./auth-actions";
 
+/** A free course stores no price; a paid one keeps price/originalPrice (or null). */
+function normalizePricing<
+  T extends { isFree: boolean; price?: number; originalPrice?: number },
+>(data: T) {
+  const { price, originalPrice, ...rest } = data;
+  return {
+    ...rest,
+    price: data.isFree ? null : (price ?? null),
+    originalPrice: data.isFree ? null : (originalPrice ?? null),
+  };
+}
+
 /** Revalidates every view of a course: teacher portal and admin workspaces. */
 function revalidateCourse(courseId?: string) {
   revalidatePath("/teacher", "layout");
@@ -41,6 +53,9 @@ export async function createCourseAction(
     description: formData.get("description") ?? "",
     category: formData.get("category") || undefined,
     level: formData.get("level") || "BEGINNER",
+    isFree: formData.get("isFree") === "on" || formData.get("isFree") === "true",
+    price: formData.get("price") || undefined,
+    originalPrice: formData.get("originalPrice") || undefined,
   });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
@@ -56,7 +71,7 @@ export async function createCourseAction(
 
   const [course] = await db
     .insert(courses)
-    .values({ ...parsed.data, slug, teacherId })
+    .values({ ...normalizePricing(parsed.data), slug, teacherId })
     .returning();
 
   revalidateCourse();
@@ -76,13 +91,16 @@ export async function updateCourseAction(
     description: formData.get("description") ?? "",
     category: formData.get("category") || undefined,
     level: formData.get("level") || "BEGINNER",
+    isFree: formData.get("isFree") === "on" || formData.get("isFree") === "true",
+    price: formData.get("price") || undefined,
+    originalPrice: formData.get("originalPrice") || undefined,
   });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
 
   const db = await getDb();
-  await db.update(courses).set(parsed.data).where(eq(courses.id, courseId));
+  await db.update(courses).set(normalizePricing(parsed.data)).where(eq(courses.id, courseId));
   revalidateCourse(courseId);
   return { success: true };
 }

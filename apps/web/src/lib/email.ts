@@ -116,8 +116,8 @@ export async function sendWelcomeEmail(opts: {
     `Welcome to Kanada Group, ${escapeHtml(opts.name)}!`,
     `<p style="font-size:15px;line-height:1.6;color:#3b4350">
        Your registration for the Kanada Group VLSI Training Program is complete.
-       You now have access to our <strong>free 8-week VLSI Foundations</strong> program —
-       start learning the fundamentals right away.
+       Explore our <strong>8-week VLSI Foundations</strong> program to build the
+       fundamentals before the Digital and Analog design tracks.
      </p>
      <p style="font-size:15px;line-height:1.6;color:#3b4350">
        Once you complete the Foundations program, you can unlock the
