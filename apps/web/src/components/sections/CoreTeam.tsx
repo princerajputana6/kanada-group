@@ -9,6 +9,7 @@ const TEAM: Member[] = [
       { name: "Sulekha Devi", role: "Director — Management" },
         { name: "Dr. Anshul Verma", role: "Director — Analog Design" },
   { name: "Er. Deepak Mishra", role: "Director — Digital Design" },
+  { name: "Dhiraj Mishra", role: "Director — AIML" },
   { name: "Er. Ronit Mishra", role: "Industry Expert — Memory Design" },
   { name: "Tejal Patel", role: "Industry Expert — Physical Design" },
   { name: "Dr. Vibhu Srivastava", role: "Mentor — Device Fabrication" },
@@ -20,6 +21,7 @@ const TEAM: Member[] = [
 
 
     
+    { name: "Sourav Mishra", role: "Sr. Manager — AIML" },
     { name: "Priyam Shukla", role: "Junior Manager" },
 
 ];

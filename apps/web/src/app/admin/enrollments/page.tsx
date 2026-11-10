@@ -1,15 +1,5 @@
-import Link from "next/link";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from "@kanada/ui";
 import { getPaymentEnrollments } from "@/lib/admin-queries";
-import { formatPrice, formatDate } from "@/lib/utils";
-import { PaymentStatusControl } from "@/components/admin/payment-status-control";
+import { PaymentsTable } from "@/components/admin/payments-table";
 
 export default async function AdminEnrollmentsPage() {
   const rows = await getPaymentEnrollments();
@@ -20,82 +10,15 @@ export default async function AdminEnrollmentsPage() {
       <div>
         <h1 className="text-3xl font-bold">Payments &amp; Enrollments</h1>
         <p className="mt-1 text-muted-foreground">
-          Verify paid-track payments. {pending > 0
-            ? `${pending} awaiting review.`
-            : "Nothing awaiting review."}
+          Verify paid-track payments.{" "}
+          {pending > 0 ? `${pending} awaiting review.` : "Nothing awaiting review."}
         </p>
       </div>
 
       {rows.length === 0 ? (
         <p className="text-sm text-muted-foreground">No paid enrollments yet.</p>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-border bg-card">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Student</TableHead>
-                <TableHead>Course</TableHead>
-                <TableHead>Final amount</TableHead>
-                <TableHead>Proof &amp; comment</TableHead>
-                <TableHead>Enrolled</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((r) => (
-                <TableRow key={r.id}>
-                  <TableCell>
-                    <span className="block font-medium">{r.studentName}</span>
-                    <span className="block text-xs text-muted-foreground">
-                      {r.studentEmail}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <Link
-                      href={`/courses/${r.courseSlug}`}
-                      className="hover:text-primary hover:underline"
-                    >
-                      {r.courseTitle}
-                    </Link>
-                  </TableCell>
-                  <TableCell className="tabular-nums">
-                    <span className="block font-medium">{formatPrice(r.amount)}</span>
-                    {r.couponCode && (
-                      <span className="block text-xs text-emerald-700">
-                        {r.couponCode} · −{formatPrice(r.discount ?? 0)}
-                      </span>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {r.note && (
-                      <p className="mb-1 max-w-64 whitespace-pre-wrap break-words text-xs text-muted-foreground" title="Student's comment">
-                        “{r.note}”
-                      </p>
-                    )}
-                    {r.hasScreenshot ? (
-                      <a
-                        href={`/api/payment-screenshot/${r.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm font-medium text-primary hover:underline"
-                      >
-                        View
-                      </a>
-                    ) : (
-                      <span className="text-xs text-muted-foreground">—</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
-                    {formatDate(r.enrolledAt)}
-                  </TableCell>
-                  <TableCell>
-                    <PaymentStatusControl enrollmentId={r.id} status={r.status} />
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <PaymentsTable rows={rows} />
       )}
     </div>
   );

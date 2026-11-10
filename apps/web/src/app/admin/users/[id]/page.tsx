@@ -20,8 +20,10 @@ import { requireRole } from "@/lib/session";
 import { getUserDetail } from "@/lib/admin-queries";
 import { formatDate } from "@/lib/utils";
 import {
+  adminEnrollAllAction,
   adminResetProgressAction,
   adminUnenrollAction,
+  deleteUserAction,
   setUserBannedAction,
   setUserRoleAction,
   signOutUserEverywhereAction,
@@ -200,6 +202,20 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
                     Sign out everywhere
                   </ConfirmSubmitButton>
                 </form>
+                <form
+                  action={async () => {
+                    "use server";
+                    await deleteUserAction(u.id);
+                  }}
+                >
+                  <ConfirmSubmitButton
+                    size="sm"
+                    variant="destructive"
+                    confirmText={`Permanently delete ${u.name}? This removes their enrollments, progress and support history and can't be undone.`}
+                  >
+                    Delete account
+                  </ConfirmSubmitButton>
+                </form>
               </div>
             </div>
           </CardContent>
@@ -293,6 +309,23 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
         <div className="mt-4">
           <p className="mb-2 text-sm font-medium">Enroll in a course</p>
           <EnrollForm userId={u.id} courses={data.enrollableCourses} />
+          {data.enrollableCourses.length > 0 && (
+            <form
+              action={async () => {
+                "use server";
+                await adminEnrollAllAction(u.id);
+              }}
+              className="mt-3"
+            >
+              <ConfirmSubmitButton
+                size="sm"
+                variant="outline"
+                confirmText={`Enroll ${u.name} in all ${data.enrollableCourses.length} remaining course${data.enrollableCourses.length === 1 ? "" : "s"}?`}
+              >
+                Enroll in all courses
+              </ConfirmSubmitButton>
+            </form>
+          )}
         </div>
       </section>
 

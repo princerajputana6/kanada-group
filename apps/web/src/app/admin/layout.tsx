@@ -22,7 +22,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 sm:px-8 lg:flex-row lg:gap-10">
-      <aside className="min-w-0 shrink-0 lg:w-48">
+      <aside className="min-w-0 shrink-0 lg:sticky lg:top-6 lg:z-20 lg:max-h-[calc(100vh-3rem)] lg:w-48 lg:self-start lg:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <p className="mb-3 hidden px-3 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground lg:block">
           Admin
         </p>

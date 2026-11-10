@@ -13,6 +13,13 @@ import {
   lessonProgress,
   lessons,
   sections,
+  reviews,
+  passwordResetTokens,
+  courseNotes,
+  liveClasses,
+  supportTickets,
+  supportMessages,
+  coupons,
   ROLES,
   type Role,
 } from "@kanada/db";
@@ -109,6 +116,65 @@ export async function signOutUserEverywhereAction(userId: string) {
   revalidateUser(userId);
 }
 
+/**
+ * Permanently deletes a user and every row that belongs only to them
+ * (enrollments, lesson progress, reviews, reset tokens, uploaded notes, their
+ * own support tickets and messages). Rows that merely reference them as an
+ * author (support replies on others' tickets, coupons they created) are kept
+ * with the link nulled. A teacher who still owns courses is refused — reassign
+ * or delete those courses first, so deleting an account can never silently wipe
+ * other students' enrollments and progress.
+ */
+export async function deleteUserAction(userId: string) {
+  await requireAdminActingOnOther(userId);
+  const db = await getDb();
+
+  const target = await db.query.users.findFirst({ where: eq(users.id, userId) });
+  if (!target) return;
+
+  const ownedCourse = await db.query.courses.findFirst({
+    where: eq(courses.teacherId, userId),
+    columns: { id: true },
+  });
+  if (ownedCourse) {
+    throw new Error(
+      "This user still owns courses. Reassign or delete their courses before deleting the account.",
+    );
+  }
+
+  const ownTickets = await db
+    .select({ id: supportTickets.id })
+    .from(supportTickets)
+    .where(eq(supportTickets.userId, userId));
+  const ticketIds = ownTickets.map((t) => t.id);
+
+  // Detach references that should outlive the user.
+  await db
+    .update(supportMessages)
+    .set({ authorId: null })
+    .where(eq(supportMessages.authorId, userId));
+  await db.update(coupons).set({ createdBy: null }).where(eq(coupons.createdBy, userId));
+
+  // Remove rows owned by the user.
+  await db.delete(lessonProgress).where(eq(lessonProgress.userId, userId));
+  await db.delete(enrollments).where(eq(enrollments.userId, userId));
+  await db.delete(reviews).where(eq(reviews.userId, userId));
+  await db.delete(passwordResetTokens).where(eq(passwordResetTokens.userId, userId));
+  await db.delete(courseNotes).where(eq(courseNotes.uploadedBy, userId));
+  await db.delete(liveClasses).where(eq(liveClasses.teacherId, userId));
+  if (ticketIds.length > 0) {
+    await db.delete(supportMessages).where(inArray(supportMessages.ticketId, ticketIds));
+    await db.delete(supportTickets).where(eq(supportTickets.userId, userId));
+  }
+
+  await db.delete(users).where(eq(users.id, userId));
+
+  revalidatePath("/admin/users");
+  revalidatePath("/admin/students");
+  revalidatePath("/admin/teachers");
+  redirect("/admin/users");
+}
+
 /** Unambiguous temporary password (no 0/O/1/l/I), shown once to the admin. */
 function generateTempPassword() {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
@@ -161,6 +227,25 @@ export async function adminEnrollAction(
   await db.insert(enrollments).values({ userId, courseId: parsed.data.courseId });
   revalidateUser(userId);
   return { success: true };
+}
+
+/** Enrolls the user in every course they are not already enrolled in. */
+export async function adminEnrollAllAction(userId: string) {
+  await requireRole(["ADMIN"]);
+  idSchema.parse(userId);
+  const db = await getDb();
+  const [allCourses, mine] = await Promise.all([
+    db.select({ id: courses.id }).from(courses),
+    db
+      .select({ courseId: enrollments.courseId })
+      .from(enrollments)
+      .where(eq(enrollments.userId, userId)),
+  ]);
+  const have = new Set(mine.map((m) => m.courseId));
+  const missing = allCourses.filter((c) => !have.has(c.id));
+  if (missing.length === 0) return;
+  await db.insert(enrollments).values(missing.map((c) => ({ userId, courseId: c.id })));
+  revalidateUser(userId);
 }
 
 async function lessonIdsOfCourse(courseId: string) {
