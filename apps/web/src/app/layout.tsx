@@ -8,6 +8,7 @@ import { PageTransition } from "@/components/page-transition";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { StaleBuildGuard } from "@/components/stale-build-guard";
 import { NoiseOverlay } from "@/components/ui/NoiseOverlay";
+import { WhatsAppSticky } from "@/components/whatsapp-sticky";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <PageTransition>{children}</PageTransition>
         </main>
         <Footer />
+        <WhatsAppSticky />
         <NoiseOverlay />
         <StaleBuildGuard />
         <Toaster richColors position="top-center" theme="light" />

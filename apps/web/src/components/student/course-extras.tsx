@@ -27,7 +27,7 @@ export async function CourseExtras({ courseId }: { courseId: string }) {
           </h2>
           <ul className="divide-y divide-border">
             {notes.map((n) => (
-              <NoteItem key={n.id} note={n} showCourse={false} canDelete={false} />
+              <NoteItem key={n.id} note={n} showCourse={false} canDelete={false} viewOnly />
             ))}
           </ul>
         </section>

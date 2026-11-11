@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { requireRole } from "@/lib/session";
 import { SidebarNav } from "@/components/sidebar-nav";
-import { CoordinatorWhatsApp } from "@/components/student/coordinator-whatsapp";
 
 const NAV_ITEMS = [
   { href: "/student/dashboard", label: "My Learning" },
@@ -21,7 +20,6 @@ export default async function StudentLayout({ children }: { children: ReactNode 
         <SidebarNav items={NAV_ITEMS} layoutId="student-nav-pill" />
       </aside>
       <div className="min-w-0 flex-1">{children}</div>
-      <CoordinatorWhatsApp />
     </div>
   );
 }

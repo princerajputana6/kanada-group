@@ -24,5 +24,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ note
   // Never let a browser sniff an uploaded document into something executable.
   res.headers.set("X-Content-Type-Options", "nosniff");
   res.headers.set("Cache-Control", "private, no-store");
+  // View-only: serve inline so browsers display the note (PDF/image) instead of
+  // forcing a download. Quotes stripped from the name to keep the header valid.
+  const safeName = note.fileName.replace(/["\\\r\n]/g, "");
+  res.headers.set("Content-Disposition", `inline; filename="${safeName}"`);
   return res;
 }

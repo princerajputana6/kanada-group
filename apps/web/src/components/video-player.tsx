@@ -17,6 +17,9 @@ export function VideoPlayer({
     <video
       ref={videoRef}
       controls
+      controlsList="nodownload noplaybackrate"
+      disablePictureInPicture
+      onContextMenu={(e) => e.preventDefault()}
       preload="metadata"
       className="aspect-video w-full rounded-lg bg-black"
       src={`/api/stream/${lessonId}`}

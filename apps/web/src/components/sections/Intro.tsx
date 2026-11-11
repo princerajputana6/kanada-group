@@ -21,9 +21,9 @@ export function Intro() {
           lineClassNames={[undefined, "text-muted-foreground/70"]}
         >
           {[
-            "Ancient thinkers imagined a world built from indivisible particles.",
-            "Today, engineers place billions of transistors on a sliver of silicon.",
-            "We teach you how.",
+            "Maharshi Kanada imagined a world built from indivisible particles.",
+            "Today, we are placing billions of transistor on a mm size of wafer.",
+            "Do you want to know how?",
           ]}
         </TextReveal>
       </div>

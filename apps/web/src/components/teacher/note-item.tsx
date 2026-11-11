@@ -1,4 +1,4 @@
-import { Download, FileSpreadsheet, FileText, Presentation } from "lucide-react";
+import { Download, Eye, FileSpreadsheet, FileText, Presentation } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { deleteNoteAction } from "@/actions/teacher-actions";
 import { ConfirmSubmitButton } from "@/components/confirm-submit-button";
@@ -19,6 +19,7 @@ export function NoteItem({
   note,
   showCourse = true,
   canDelete = true,
+  viewOnly = false,
 }: {
   note: {
     id: string;
@@ -32,6 +33,8 @@ export function NoteItem({
   };
   showCourse?: boolean;
   canDelete?: boolean;
+  /** Students get a read-only "View" link (opens inline) instead of a download. */
+  viewOnly?: boolean;
 }) {
   return (
     <li className="flex items-center gap-4 py-3">
@@ -45,10 +48,26 @@ export function NoteItem({
         </p>
         {note.description && <p className="mt-0.5 truncate text-sm text-muted-foreground">{note.description}</p>}
       </div>
-      <a href={`/api/notes/${note.id}`} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-medium hover:border-primary/40 hover:text-primary" download>
-        <Download className="h-4 w-4" aria-hidden="true" />
-        <span className="hidden sm:inline">Download</span>
-      </a>
+      {viewOnly ? (
+        <a
+          href={`/api/notes/${note.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-medium hover:border-primary/40 hover:text-primary"
+        >
+          <Eye className="h-4 w-4" aria-hidden="true" />
+          <span className="hidden sm:inline">View</span>
+        </a>
+      ) : (
+        <a
+          href={`/api/notes/${note.id}`}
+          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-medium hover:border-primary/40 hover:text-primary"
+          download
+        >
+          <Download className="h-4 w-4" aria-hidden="true" />
+          <span className="hidden sm:inline">Download</span>
+        </a>
+      )}
       {canDelete && (
         <form action={deleteNoteAction.bind(null, note.id)}>
           <ConfirmSubmitButton size="sm" variant="ghost" className="text-destructive" confirmText={`Delete "${note.title}"? Students will no longer be able to download it.`}>
