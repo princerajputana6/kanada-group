@@ -34,7 +34,11 @@ function normalizePricing<
 function revalidateCourse(courseId?: string) {
   revalidatePath("/teacher", "layout");
   revalidatePath("/admin/teachers", "layout");
-  if (courseId) revalidateCourse(courseId);
+  // The teacher editor lives here; the admin editor is already covered by the
+  // "/admin/teachers" layout revalidation above. (This used to call
+  // revalidateCourse(courseId) — a self-call that recursed until the Worker
+  // threw "Maximum call stack size exceeded" on every course/section save.)
+  if (courseId) revalidatePath(`/teacher/courses/${courseId}/edit`);
 }
 
 export async function createCourseAction(
